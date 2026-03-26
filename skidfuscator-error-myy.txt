@@ -1,0 +1,1934 @@
+handler=Block #HC, types=[Ljava/lang/RuntimeException;], range=[Block #CI, Block #CH]
+handler=Block #HG, types=[Ljava/lang/IllegalAccessException;], range=[Block #CL, Block #CK]
+handler=Block #HK, types=[Ljava/io/IOException;], range=[Block #CO, Block #CN]
+handler=Block #HO, types=[Ljava/lang/IllegalAccessException;], range=[Block #CR, Block #CQ]
+handler=Block #HS, types=[Ljava/lang/IllegalAccessException;], range=[Block #CU, Block #CT]
+handler=Block #HW, types=[Ljava/lang/RuntimeException;], range=[Block #CX, Block #CW]
+handler=Block #IA, types=[Ljava/io/IOException;], range=[Block #DA, Block #CZ]
+===#Block A(size=7, flags=1)===
+   0. lvar267 = {59818050 ^ {1968120526 ^ 2068421340}};
+   1. synth(lvar0 = lvar0);
+   2. synth(lvar1 = lvar1);
+   3. synth(lvar2 = lvar2);
+   4. synth(lvar3 = lvar3);
+   5. synth(lvar4 = lvar4);
+   6. lvar267 = {1920269196 ^ lvar267};
+      -> Immediate #A -> #B
+===#Block B(size=4, flags=0)===
+   0. lvar6 = lvar2;
+   1. lvar37 = lvar6.method_75260();
+   2. lvar23 = lvar37;
+   3. lvar267 = {377611243 ^ lvar267};
+      -> Immediate #B -> #C
+      <- Immediate #A -> #B
+===#Block C(size=5, flags=0)===
+   0. lvar39 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpRepathTick;
+   1. lvar8 = 0L;
+   2. lvar41 = (lvar39 CMP lvar8);
+   3. if (lvar41 == {1768120375 ^ lvar267})
+      goto FM
+   4. lvar267 = {1225002447 ^ lvar267};
+      -> Immediate #C -> #D
+      -> ConditionalJump[IF_ICMPEQ] #C -> #FM
+      <- Immediate #B -> #C
+===#Block FM(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 16361888:
+      	 goto	#DG
+      case 148272476:
+      	 goto	#FM
+      case 204530441:
+      	 goto	#FN
+      case 378368871:
+      	 goto	#DD
+      default:
+      	 goto	#DD
+   }
+      -> Immediate #FM -> #FN
+      -> Switch[148272476] #FM -> #FM
+      -> Switch[204530441] #FM -> #FN
+      -> Switch[16361888] #FM -> #DG
+      -> Switch[378368871] #FM -> #DD
+      -> DefaultSwitch #FM -> #DD
+      <- Switch[148272476] #FM -> #FM
+      <- ConditionalJump[IF_ICMPEQ] #C -> #FM
+===#Block FN(size=2, flags=100)===
+   0. lvar267 = {480144146 ^ lvar267};
+   1. goto DG
+      -> UnconditionalJump[GOTO] #FN -> #DG
+      <- Immediate #FM -> #FN
+      <- Switch[204530441] #FM -> #FN
+===#Block DG(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == -1343727317)
+      goto FL
+   1. goto DX
+      -> UnconditionalJump[GOTO] #DG -> #DX
+      -> ConditionalJump[IF_ICMPEQ] #DG -> #FL
+      <- Switch[16361888] #FM -> #DG
+      <- UnconditionalJump[GOTO] #FN -> #DG
+===#Block FL(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1463562678);
+   1. goto H
+      -> UnconditionalJump[GOTO] #FL -> #H
+      <- ConditionalJump[IF_ICMPEQ] #DG -> #FL
+===#Block DX(size=2, flags=10100)===
+   0. lvar267 = {397353888 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #DX -> #DD
+      <- UnconditionalJump[GOTO] #DG -> #DX
+===#Block D(size=5, flags=0)===
+   0. lvar42 = lvar23;
+   1. lvar177 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpRepathTick;
+   2. lvar44 = (lvar42 CMP lvar177);
+   3. if (lvar44 < {543649272 ^ lvar267})
+      goto FR
+   4. lvar267 = {105243330 ^ lvar267};
+      -> Immediate #D -> #E
+      -> ConditionalJump[IF_ICMPLT] #D -> #FR
+      <- Immediate #C -> #D
+===#Block FR(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 2098486484);
+   1. goto DJ
+      -> UnconditionalJump[GOTO] #FR -> #DJ
+      <- ConditionalJump[IF_ICMPLT] #D -> #FR
+===#Block DJ(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == -342259358)
+      goto GH
+   1. goto EP
+      -> UnconditionalJump[GOTO] #DJ -> #EP
+      -> ConditionalJump[IF_ICMPEQ] #DJ -> #GH
+      <- UnconditionalJump[GOTO] #FR -> #DJ
+===#Block GH(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 2142374847);
+   1. goto H
+      -> UnconditionalJump[GOTO] #GH -> #H
+      <- ConditionalJump[IF_ICMPEQ] #DJ -> #GH
+===#Block EP(size=2, flags=10100)===
+   0. lvar267 = {1059133865 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #EP -> #DD
+      <- UnconditionalJump[GOTO] #DJ -> #EP
+===#Block E(size=3, flags=0)===
+   0. lvar45 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpActive;
+   1. if (lvar45 != {639799098 ^ lvar267})
+      goto GO
+   2. lvar267 = {2113769381 ^ lvar267};
+      -> ConditionalJump[IF_ICMPNE] #E -> #GO
+      -> Immediate #E -> #F
+      <- Immediate #D -> #E
+===#Block F(size=3, flags=0)===
+   0. lvar46 = 0L;
+   1. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpRepathTick = lvar46;
+   2. lvar267 = {1273178778 ^ lvar267};
+      -> Immediate #F -> #G
+      <- Immediate #E -> #F
+===#Block G(size=10, flags=0)===
+   0. lvar48 = lvar0;
+   1. lvar7 = lvar1;
+   2. lvar179 = lvar2;
+   3. lvar10 = lvar3;
+   4. lvar11 = org.cobalt.internal.pathfinding.DuskPathfinder.rlskjxpqwt(org.cobalt.internal.pathfinding.DuskPathfinder.ysiexlklopeqthy(), lvar267);
+   5. lvar12 = lvar4;
+   6. lvar13 = {272378372 ^ lvar267};
+   7. lvar14 = {272378373 ^ lvar267};
+   8. lvar49 = lvar48.attemptRepath(lvar7, lvar179, lvar10, lvar11, lvar12, lvar13, lvar14, 1996036193);
+   9. lvar267 = {855445654 ^ lvar267};
+      -> Immediate #G -> #H
+      <- Immediate #F -> #G
+===#Block GO(size=2, flags=10100)===
+   0. lvar267 = {1822096251 ^ lvar267};
+   1. goto DQ
+      -> UnconditionalJump[GOTO] #GO -> #DQ
+      <- ConditionalJump[IF_ICMPNE] #E -> #GO
+===#Block DQ(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == 1438884362)
+      goto GJ
+   1. goto ES
+      -> UnconditionalJump[GOTO] #DQ -> #ES
+      -> ConditionalJump[IF_ICMPEQ] #DQ -> #GJ
+      <- UnconditionalJump[GOTO] #GO -> #DQ
+===#Block GJ(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 12921733:
+      	 goto	#GK
+      case 775824860:
+      	 goto	#H
+      case 778395067:
+      	 goto	#DD
+      case 920468293:
+      	 goto	#GJ
+      default:
+      	 goto	#DD
+   }
+      -> Immediate #GJ -> #GK
+      -> Switch[920468293] #GJ -> #GJ
+      -> DefaultSwitch #GJ -> #DD
+      -> Switch[12921733] #GJ -> #GK
+      -> Switch[778395067] #GJ -> #DD
+      -> Switch[775824860] #GJ -> #H
+      <- Switch[920468293] #GJ -> #GJ
+      <- ConditionalJump[IF_ICMPEQ] #DQ -> #GJ
+===#Block GK(size=2, flags=100)===
+   0. lvar267 = {1752780498 ^ lvar267};
+   1. goto H
+      -> UnconditionalJump[GOTO] #GK -> #H
+      <- Immediate #GJ -> #GK
+      <- Switch[12921733] #GJ -> #GK
+===#Block H(size=4, flags=0)===
+   0. // Frame: locals[1] [4] stack[0] []
+   1. lvar50 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpActive;
+   2. if (lvar50 != {583088787 ^ lvar267})
+      goto FV
+   3. lvar267 = {1517621041 ^ lvar267};
+      -> Immediate #H -> #I
+      -> ConditionalJump[IF_ICMPNE] #H -> #FV
+      <- UnconditionalJump[GOTO] #GK -> #H
+      <- UnconditionalJump[GOTO] #FL -> #H
+      <- Switch[775824860] #GJ -> #H
+      <- Immediate #G -> #H
+      <- UnconditionalJump[GOTO] #GH -> #H
+===#Block FV(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 55985085:
+      	 goto	#FW
+      case 550771999:
+      	 goto	#FV
+      case 1096672956:
+      	 goto	#DD
+      case 1710311746:
+      	 goto	#DL
+      default:
+      	 goto	#DD
+   }
+      -> DefaultSwitch #FV -> #DD
+      -> Switch[550771999] #FV -> #FV
+      -> Switch[1710311746] #FV -> #DL
+      -> Switch[1096672956] #FV -> #DD
+      -> Immediate #FV -> #FW
+      -> Switch[55985085] #FV -> #FW
+      <- Switch[550771999] #FV -> #FV
+      <- ConditionalJump[IF_ICMPNE] #H -> #FV
+===#Block FW(size=2, flags=100)===
+   0. lvar267 = {246148837 ^ lvar267};
+   1. goto DL
+      -> UnconditionalJump[GOTO] #FW -> #DL
+      <- Immediate #FV -> #FW
+      <- Switch[55985085] #FV -> #FW
+===#Block DL(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == 1666622385)
+      goto GN
+   1. goto EU
+      -> UnconditionalJump[GOTO] #DL -> #EU
+      -> ConditionalJump[IF_ICMPEQ] #DL -> #GN
+      <- UnconditionalJump[GOTO] #FW -> #DL
+      <- Switch[1710311746] #FV -> #DL
+===#Block GN(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 710891100);
+   1. goto K
+      -> UnconditionalJump[GOTO] #GN -> #K
+      <- ConditionalJump[IF_ICMPEQ] #DL -> #GN
+===#Block K(size=5, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar53 = lvar0;
+   2. lvar147 = lvar1;
+   3. lvar54 = lvar53.ensureEtherwarpHotbarSelected(lvar147, 749244583);
+   4. lvar267 = {1860506138 ^ lvar267};
+      -> Immediate #K -> #L
+      <- UnconditionalJump[GOTO] #GN -> #K
+===#Block L(size=5, flags=0)===
+   0. lvar55 = lvar0;
+   1. lvar148 = lvar2;
+   2. lvar180 = lvar3;
+   3. _consume(lvar55.renderEtherwarpOverlay(lvar148, lvar180, 1670356438));
+   4. lvar267 = {2012097727 ^ lvar267};
+      -> Immediate #L -> #M
+      <- Immediate #K -> #L
+===#Block M(size=4, flags=0)===
+   0. lvar56 = org.cobalt.internal.etherwarp.EtherwarpLogic.INSTANCE;
+   1. lvar57 = lvar56.holdingEtherwarpItem(1097715761);
+   2. if (lvar57 == {524205199 ^ lvar267})
+      goto FJ
+   3. lvar267 = {285545985 ^ lvar267};
+      -> ConditionalJump[IF_ICMPEQ] #M -> #FJ
+      -> Immediate #M -> #N
+      <- Immediate #L -> #M
+===#Block N(size=3, flags=0)===
+   0. lvar58 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStage;
+   1. if (lvar58 != {238791310 ^ lvar267})
+      goto FO
+   2. lvar267 = {654923325 ^ lvar267};
+      -> Immediate #N -> #O
+      -> ConditionalJump[IF_ICMPNE] #N -> #FO
+      <- Immediate #M -> #N
+===#Block FO(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 830246476);
+   1. goto DH
+      -> UnconditionalJump[GOTO] #FO -> #DH
+      <- ConditionalJump[IF_ICMPNE] #N -> #FO
+===#Block DH(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == -96917999)
+      goto GP
+   1. goto EZ
+      -> UnconditionalJump[GOTO] #DH -> #EZ
+      -> ConditionalJump[IF_ICMPEQ] #DH -> #GP
+      <- UnconditionalJump[GOTO] #FO -> #DH
+===#Block GP(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 177858672:
+      	 goto	#GQ
+      case 288235851:
+      	 goto	#P
+      case 878854320:
+      	 goto	#DD
+      case 1515674299:
+      	 goto	#GP
+      default:
+      	 goto	#DD
+   }
+      -> Switch[288235851] #GP -> #P
+      -> Switch[177858672] #GP -> #GQ
+      -> Immediate #GP -> #GQ
+      -> Switch[878854320] #GP -> #DD
+      -> DefaultSwitch #GP -> #DD
+      -> Switch[1515674299] #GP -> #GP
+      <- Switch[1515674299] #GP -> #GP
+      <- ConditionalJump[IF_ICMPEQ] #DH -> #GP
+===#Block GQ(size=2, flags=100)===
+   0. lvar267 = {1454081661 ^ lvar267};
+   1. goto P
+      -> UnconditionalJump[GOTO] #GQ -> #P
+      <- Switch[177858672] #GP -> #GQ
+      <- Immediate #GP -> #GQ
+===#Block EZ(size=2, flags=10100)===
+   0. lvar267 = {1561660487 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #EZ -> #DD
+      <- UnconditionalJump[GOTO] #DH -> #EZ
+===#Block O(size=4, flags=0)===
+   0. lvar59 = org.cobalt.internal.etherwarp.EtherwarpLogic.INSTANCE;
+   1. lvar60 = lvar59.canEtherwarp(1574127539);
+   2. if (lvar60 != {691207347 ^ lvar267})
+      goto FH
+   3. lvar267 = {646724030 ^ lvar267};
+      -> ConditionalJump[IF_ICMPNE] #O -> #FH
+      -> Immediate #O -> #CC
+      <- Immediate #N -> #O
+===#Block FH(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 265478312:
+      	 goto	#FI
+      case 901129076:
+      	 goto	#FH
+      case 1824382484:
+      	 goto	#DD
+      case 1884478475:
+      	 goto	#DE
+      default:
+      	 goto	#DD
+   }
+      -> Switch[901129076] #FH -> #FH
+      -> Switch[1884478475] #FH -> #DE
+      -> Immediate #FH -> #FI
+      -> Switch[265478312] #FH -> #FI
+      -> DefaultSwitch #FH -> #DD
+      -> Switch[1824382484] #FH -> #DD
+      <- Switch[901129076] #FH -> #FH
+      <- ConditionalJump[IF_ICMPNE] #O -> #FH
+===#Block FI(size=2, flags=100)===
+   0. lvar267 = {502423739 ^ lvar267};
+   1. goto DE
+      -> UnconditionalJump[GOTO] #FI -> #DE
+      <- Immediate #FH -> #FI
+      <- Switch[265478312] #FH -> #FI
+===#Block DE(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == -1509629887)
+      goto GT
+   1. goto FA
+      -> ConditionalJump[IF_ICMPEQ] #DE -> #GT
+      -> UnconditionalJump[GOTO] #DE -> #FA
+      <- UnconditionalJump[GOTO] #FI -> #DE
+      <- Switch[1884478475] #FH -> #DE
+===#Block FA(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 104143503:
+      	 goto	#FB
+      case 380721691:
+      	 goto	#DD
+      case 422924265:
+      	 goto	#DD
+      case 2006999337:
+      	 goto	#FA
+      default:
+      	 goto	#DD
+   }
+      -> DefaultSwitch #FA -> #DD
+      -> Switch[2006999337] #FA -> #FA
+      -> Switch[422924265] #FA -> #DD
+      -> Switch[104143503] #FA -> #FB
+      -> Immediate #FA -> #FB
+      <- Switch[2006999337] #FA -> #FA
+      <- UnconditionalJump[GOTO] #DE -> #FA
+===#Block FB(size=2, flags=100)===
+   0. lvar267 = {1452455053 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #FB -> #DD
+      <- Switch[104143503] #FA -> #FB
+      <- Immediate #FA -> #FB
+===#Block GT(size=2, flags=10100)===
+   0. lvar267 = {1563180727 ^ lvar267};
+   1. goto P
+      -> UnconditionalJump[GOTO] #GT -> #P
+      <- ConditionalJump[IF_ICMPEQ] #DE -> #GT
+===#Block P(size=4, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar61 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpTarget;
+   2. if (lvar61 != nullconst)
+      goto FF
+   3. lvar267 = {892662092 ^ lvar267};
+      -> Immediate #P -> #BX
+      -> ConditionalJump[IFNONNULL] #P -> #FF
+      <- Switch[288235851] #GP -> #P
+      <- UnconditionalJump[GOTO] #GT -> #P
+      <- UnconditionalJump[GOTO] #GQ -> #P
+===#Block FF(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 221909694:
+      	 goto	#FG
+      case 916752182:
+      	 goto	#DC
+      case 1021028339:
+      	 goto	#FF
+      case 1686025891:
+      	 goto	#DD
+      default:
+      	 goto	#DD
+   }
+      -> Immediate #FF -> #FG
+      -> Switch[1686025891] #FF -> #DD
+      -> DefaultSwitch #FF -> #DD
+      -> Switch[1021028339] #FF -> #FF
+      -> Switch[916752182] #FF -> #DC
+      -> Switch[221909694] #FF -> #FG
+      <- Switch[1021028339] #FF -> #FF
+      <- ConditionalJump[IFNONNULL] #P -> #FF
+===#Block FG(size=2, flags=100)===
+   0. lvar267 = {216573112 ^ lvar267};
+   1. goto DC
+      -> UnconditionalJump[GOTO] #FG -> #DC
+      <- Immediate #FF -> #FG
+      <- Switch[221909694] #FF -> #FG
+===#Block DC(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == 673198139)
+      goto GF
+   1. goto EM
+      -> UnconditionalJump[GOTO] #DC -> #EM
+      -> ConditionalJump[IF_ICMPEQ] #DC -> #GF
+      <- UnconditionalJump[GOTO] #FG -> #DC
+      <- Switch[916752182] #FF -> #DC
+===#Block GF(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 62369449:
+      	 goto	#GG
+      case 763021285:
+      	 goto	#GF
+      case 1279807875:
+      	 goto	#DD
+      case 1571314658:
+      	 goto	#Q
+      default:
+      	 goto	#DD
+   }
+      -> Switch[763021285] #GF -> #GF
+      -> Immediate #GF -> #GG
+      -> Switch[62369449] #GF -> #GG
+      -> DefaultSwitch #GF -> #DD
+      -> Switch[1571314658] #GF -> #Q
+      -> Switch[1279807875] #GF -> #DD
+      <- Switch[763021285] #GF -> #GF
+      <- ConditionalJump[IF_ICMPEQ] #DC -> #GF
+===#Block GG(size=2, flags=100)===
+   0. lvar267 = {731739953 ^ lvar267};
+   1. goto Q
+      -> UnconditionalJump[GOTO] #GG -> #Q
+      <- Immediate #GF -> #GG
+      <- Switch[62369449] #GF -> #GG
+===#Block Q(size=3, flags=0)===
+   0. // Frame: locals[0] [] stack[1] [net/minecraft/class_2338]
+   1. lvar25 = lvar61;
+   2. lvar267 = {2024578411 ^ lvar267};
+      -> Immediate #Q -> #R
+      <- UnconditionalJump[GOTO] #GG -> #Q
+      <- Switch[1571314658] #GF -> #Q
+===#Block R(size=2, flags=0)===
+   0. lvar62 = lvar0;
+   1. lvar267 = {622813284 ^ lvar267};
+      -> Immediate #R -> #S
+      <- Immediate #Q -> #R
+===#Block S(size=3, flags=0)===
+   0. lvar149 = lvar3;
+   1. lvar150 = lvar149.method_23317();
+   2. lvar267 = {1343821237 ^ lvar267};
+      -> Immediate #S -> #T
+      <- Immediate #R -> #S
+===#Block T(size=3, flags=0)===
+   0. lvar198 = lvar3;
+   1. lvar199 = lvar198.method_23318();
+   2. lvar267 = {1508067985 ^ lvar267};
+      -> Immediate #T -> #U
+      <- Immediate #S -> #T
+===#Block U(size=3, flags=0)===
+   0. lvar211 = lvar3;
+   1. lvar212 = lvar211.method_23321();
+   2. lvar267 = {1215476133 ^ lvar267};
+      -> Immediate #U -> #V
+      <- Immediate #T -> #U
+===#Block V(size=6, flags=0)===
+   0. lvar228 = lvar25;
+   1. lvar229 = lvar228.method_10263();
+   2. lvar230 = (double)lvar229;
+   3. lvar16 = 0.5D;
+   4. lvar232 = {lvar230 + lvar16};
+   5. lvar267 = {485588955 ^ lvar267};
+      -> Immediate #V -> #W
+      <- Immediate #U -> #V
+===#Block W(size=6, flags=0)===
+   0. lvar244 = lvar25;
+   1. lvar245 = lvar244.method_10264();
+   2. lvar246 = (double)lvar245;
+   3. lvar19 = 0.5D;
+   4. lvar248 = {lvar246 + lvar19};
+   5. lvar267 = {1693483972 ^ lvar267};
+      -> Immediate #W -> #X
+      <- Immediate #V -> #W
+===#Block X(size=6, flags=0)===
+   0. lvar253 = lvar25;
+   1. lvar254 = lvar253.method_10260();
+   2. lvar255 = (double)lvar254;
+   3. lvar21 = 0.5D;
+   4. lvar257 = {lvar255 + lvar21};
+   5. lvar267 = {414703568 ^ lvar267};
+      -> Immediate #X -> #Y
+      <- Immediate #W -> #X
+===#Block Y(size=8, flags=0)===
+   0. lvar63 = lvar62.computeYawPitch(lvar150, lvar199, lvar212, lvar232, lvar248, lvar257, 5022984);
+   1. lvar26 = lvar63;
+   2. lvar64 = lvar26;
+   3. lvar65 = lvar64.component1();
+   4. lvar66 = (java.lang.Number)lvar65;
+   5. lvar67 = lvar66.doubleValue();
+   6. lvar27 = lvar67;
+   7. lvar267 = {1824985721 ^ lvar267};
+      -> Immediate #Y -> #Z
+      <- Immediate #X -> #Y
+===#Block Z(size=6, flags=0)===
+   0. lvar69 = lvar26;
+   1. lvar70 = lvar69.component2();
+   2. lvar71 = (java.lang.Number)lvar70;
+   3. lvar72 = lvar71.doubleValue();
+   4. lvar30 = lvar72;
+   5. lvar267 = {170400751 ^ lvar267};
+      -> Immediate #Z -> #AA
+      <- Immediate #Y -> #Z
+===#Block AA(size=3, flags=0)===
+   0. lvar74 = lvar30;
+   1. org.cobalt.internal.pathfinding.DuskPathfinder.debugLookPitch = lvar74;
+   2. lvar267 = {194213173 ^ lvar267};
+      -> Immediate #AA -> #AB
+      <- Immediate #Z -> #AA
+===#Block AB(size=7, flags=0)===
+   0. lvar76 = lvar25;
+   1. lvar77 = lvar76.method_10264();
+   2. lvar152 = lvar3;
+   3. lvar153 = lvar152.method_31478();
+   4. lvar78 = {lvar77 - lvar153};
+   5. org.cobalt.internal.pathfinding.DuskPathfinder.debugDy = lvar78;
+   6. lvar267 = {474748348 ^ lvar267};
+      -> Immediate #AB -> #AC
+      <- Immediate #AA -> #AB
+===#Block AC(size=1, flags=0)===
+   0. lvar267 = {817186440 ^ lvar267};
+      -> Immediate #AC -> #AD
+      <- Immediate #AB -> #AC
+===#Block AD(size=6, flags=0)===
+   0. lvar79 = lvar0;
+   1. lvar154 = lvar3;
+   2. lvar181 = lvar27;
+   3. lvar183 = (float)lvar181;
+   4. _consume(lvar79.smoothRotate(lvar154, lvar183, 1766058804));
+   5. lvar267 = {1344033143 ^ lvar267};
+      -> Immediate #AD -> #AE
+      <- Immediate #AC -> #AD
+===#Block AE(size=9, flags=0)===
+   0. lvar80 = lvar0;
+   1. lvar155 = lvar27;
+   2. lvar201 = lvar3;
+   3. lvar202 = lvar201.method_36454();
+   4. lvar203 = (double)lvar202;
+   5. lvar157 = {lvar155 - lvar203};
+   6. lvar81 = lvar80.wrapDegrees(lvar157, 1093131853);
+   7. lvar83 = java.lang.Math.abs(lvar81);
+   8. lvar267 = {750370300 ^ lvar267};
+      -> Immediate #AE -> #AF
+      <- Immediate #AD -> #AE
+===#Block AF(size=2, flags=0)===
+   0. lvar32 = lvar83;
+   1. lvar267 = {980742531 ^ lvar267};
+      -> Immediate #AF -> #AG
+      <- Immediate #AE -> #AF
+===#Block AG(size=5, flags=0)===
+   0. lvar85 = lvar32;
+   1. lvar184 = 6.0D;
+   2. lvar87 = (lvar85 CMP lvar184);
+   3. if (lvar87 <= {893416424 ^ lvar267})
+      goto GW
+   4. lvar267 = {1293297299 ^ lvar267};
+      -> ConditionalJump[IF_ICMPLE] #AG -> #GW
+      -> Immediate #AG -> #AH
+      <- Immediate #AF -> #AG
+===#Block AH(size=4, flags=0)===
+   0. lvar88 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks;
+   1. lvar159 = {2018923901 ^ lvar267};
+   2. if (lvar88 < lvar159)
+      goto FP
+   3. lvar267 = {1488550936 ^ lvar267};
+      -> ConditionalJump[IF_ICMPLT] #AH -> #FP
+      -> Immediate #AH -> #AJ
+      <- Immediate #AG -> #AH
+===#Block FP(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 153566664:
+      	 goto	#FQ
+      case 1201058712:
+      	 goto	#FP
+      case 1396319602:
+      	 goto	#DI
+      case 1669180669:
+      	 goto	#DD
+      default:
+      	 goto	#DD
+   }
+      -> Switch[1201058712] #FP -> #FP
+      -> Switch[1396319602] #FP -> #DI
+      -> Switch[153566664] #FP -> #FQ
+      -> Switch[1669180669] #FP -> #DD
+      -> Immediate #FP -> #FQ
+      -> DefaultSwitch #FP -> #DD
+      <- Switch[1201058712] #FP -> #FP
+      <- ConditionalJump[IF_ICMPLT] #AH -> #FP
+===#Block FQ(size=2, flags=100)===
+   0. lvar267 = {1859315666 ^ lvar267};
+   1. goto DI
+      -> UnconditionalJump[GOTO] #FQ -> #DI
+      <- Switch[153566664] #FP -> #FQ
+      <- Immediate #FP -> #FQ
+===#Block DI(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == -1272605368)
+      goto FT
+   1. goto EC
+      -> ConditionalJump[IF_ICMPEQ] #DI -> #FT
+      -> UnconditionalJump[GOTO] #DI -> #EC
+      <- UnconditionalJump[GOTO] #FQ -> #DI
+      <- Switch[1396319602] #FP -> #DI
+===#Block EC(size=2, flags=10100)===
+   0. lvar267 = {1960221228 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #EC -> #DD
+      <- UnconditionalJump[GOTO] #DI -> #EC
+===#Block FT(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 195103907:
+      	 goto	#FU
+      case 562092410:
+      	 goto	#AI
+      case 1312551179:
+      	 goto	#FT
+      case 1489786833:
+      	 goto	#DD
+      default:
+      	 goto	#DD
+   }
+      -> Immediate #FT -> #FU
+      -> DefaultSwitch #FT -> #DD
+      -> Switch[195103907] #FT -> #FU
+      -> Switch[1312551179] #FT -> #FT
+      -> Switch[1489786833] #FT -> #DD
+      -> Switch[562092410] #FT -> #AI
+      <- Switch[1312551179] #FT -> #FT
+      <- ConditionalJump[IF_ICMPEQ] #DI -> #FT
+===#Block FU(size=2, flags=100)===
+   0. lvar267 = {144055596 ^ lvar267};
+   1. goto AI
+      -> UnconditionalJump[GOTO] #FU -> #AI
+      <- Immediate #FT -> #FU
+      <- Switch[195103907] #FT -> #FU
+===#Block AI(size=3, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar145 = {504541061 ^ lvar267};
+   2. lvar267 = {785830931 ^ lvar267};
+      -> Immediate #AI -> #AK
+      <- UnconditionalJump[GOTO] #FU -> #AI
+      <- Switch[562092410] #FT -> #AI
+===#Block GW(size=2, flags=10100)===
+   0. lvar267 = {663773671 ^ lvar267};
+   1. goto DS
+      -> UnconditionalJump[GOTO] #GW -> #DS
+      <- ConditionalJump[IF_ICMPLE] #AG -> #GW
+===#Block DS(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == -1769959304)
+      goto FZ
+   1. goto EG
+      -> ConditionalJump[IF_ICMPEQ] #DS -> #FZ
+      -> UnconditionalJump[GOTO] #DS -> #EG
+      <- UnconditionalJump[GOTO] #GW -> #DS
+===#Block EG(size=2, flags=10100)===
+   0. lvar267 = {1887582858 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #EG -> #DD
+      <- UnconditionalJump[GOTO] #DS -> #EG
+===#Block FZ(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 843004780);
+   1. goto AJ
+      -> UnconditionalJump[GOTO] #FZ -> #AJ
+      <- ConditionalJump[IF_ICMPEQ] #DS -> #FZ
+===#Block AJ(size=3, flags=0)===
+   0. // Frame: locals[11] [org/cobalt/internal/pathfinding/DuskPathfinder, net/minecraft/class_310, net/minecraft/class_1937, net/minecraft/class_746, net/minecraft/class_2338, 4, net/minecraft/class_2338, kotlin/Pair, 3, 3, 3] stack[0] []
+   1. lvar145 = {552544610 ^ lvar267};
+   2. goto EH
+      -> UnconditionalJump[GOTO] #AJ -> #EH
+      <- UnconditionalJump[GOTO] #FZ -> #AJ
+      <- Immediate #AH -> #AJ
+===#Block EH(size=2, flags=10100)===
+   0. lvar267 = {1940374065 ^ lvar267};
+   1. goto CX
+      -> UnconditionalJump[GOTO] #EH -> #CX
+      <- UnconditionalJump[GOTO] #AJ -> #EH
+===#Block CX(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267) == 22877350)
+      goto CW
+   1. throw nullconst;
+      -> ConditionalJump[IF_ICMPEQ] #CX -> #CW
+      -> TryCatch range: [CX...CW] -> HW ([Ljava/lang/RuntimeException;])
+      <- UnconditionalJump[GOTO] #EH -> #CX
+===#Block CW(size=1, flags=0)===
+   0. throw new java/lang/RuntimeException();
+      -> TryCatch range: [CX...CW] -> HW ([Ljava/lang/RuntimeException;])
+      <- ConditionalJump[IF_ICMPEQ] #CX -> #CW
+===#Block HW(size=1, flags=0)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.kktfnmestbvflzmw(lvar267)) {
+      case -1706599790:
+      	 goto	#HX
+      case 747334954:
+      	 goto	#HY
+      default:
+      	 goto	#HZ
+   }
+      -> Switch[-1706599790] #HW -> #HX
+      -> DefaultSwitch #HW -> #HZ
+      -> Switch[747334954] #HW -> #HY
+      <- TryCatch range: [CX...CW] -> HW ([Ljava/lang/RuntimeException;])
+      <- TryCatch range: [CX...CW] -> HW ([Ljava/lang/RuntimeException;])
+===#Block HY(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1158056347);
+   1. goto CY
+      -> UnconditionalJump[GOTO] #HY -> #CY
+      <- Switch[747334954] #HW -> #HY
+===#Block HZ(size=1, flags=0)===
+   0. throw new java/lang/RuntimeException("Error in hash");
+      <- DefaultSwitch #HW -> #HZ
+===#Block HX(size=2, flags=10100)===
+   0. lvar267 = {1407127404 ^ lvar267};
+   1. goto CY
+      -> UnconditionalJump[GOTO] #HX -> #CY
+      <- Switch[-1706599790] #HW -> #HX
+===#Block CY(size=2, flags=0)===
+   0. _consume(catch());
+   1. goto EA
+      -> UnconditionalJump[GOTO] #CY -> #EA
+      <- UnconditionalJump[GOTO] #HX -> #CY
+      <- UnconditionalJump[GOTO] #HY -> #CY
+===#Block EA(size=2, flags=10100)===
+   0. lvar267 = {810786728 ^ lvar267};
+   1. goto AK
+      -> UnconditionalJump[GOTO] #EA -> #AK
+      <- UnconditionalJump[GOTO] #CY -> #EA
+===#Block AK(size=3, flags=0)===
+   0. // Frame: locals[0] [] stack[1] [1]
+   1. lvar34 = lvar145;
+   2. lvar267 = {2008569298 ^ lvar267};
+      -> Immediate #AK -> #AL
+      <- UnconditionalJump[GOTO] #EA -> #AK
+      <- Immediate #AI -> #AK
+===#Block AL(size=13, flags=0)===
+   0. lvar89 = lvar0;
+   1. lvar160 = lvar1;
+   2. lvar186 = lvar3;
+   3. lvar187 = lvar186.field_3913;
+   4. lvar208 = org.cobalt.internal.pathfinding.DuskPathfinder.rlskjxpqwt(org.cobalt.internal.pathfinding.DuskPathfinder.gwfprxwaepqphtm(), lvar267);
+   5. _consume(kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(lvar187, lvar208));
+   6. lvar205 = 0.0F;
+   7. lvar209 = 0.0F;
+   8. lvar214 = {1199320644 ^ lvar267};
+   9. lvar222 = {1199320644 ^ lvar267};
+   10. lvar234 = {1199320644 ^ lvar267};
+   11. _consume(lvar89.applyMovement(lvar160, lvar187, lvar205, lvar209, lvar214, lvar222, lvar234, 1776543350));
+   12. lvar267 = {1970368733 ^ lvar267};
+      -> Immediate #AL -> #AM
+      <- Immediate #AK -> #AL
+===#Block AM(size=2, flags=0)===
+   0. lvar90 = lvar0;
+   1. lvar267 = {383355255 ^ lvar267};
+      -> Immediate #AM -> #AN
+      <- Immediate #AL -> #AM
+===#Block AN(size=2, flags=0)===
+   0. lvar161 = lvar1;
+   1. lvar267 = {2090952653 ^ lvar267};
+      -> Immediate #AN -> #AO
+      <- Immediate #AM -> #AN
+===#Block AO(size=2, flags=0)===
+   0. lvar188 = lvar2;
+   1. lvar267 = {754920666 ^ lvar267};
+      -> Immediate #AO -> #AP
+      <- Immediate #AN -> #AO
+===#Block AP(size=23, flags=0)===
+   0. lvar206 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStage;
+   1. lvar210 = lvar34;
+   2. lvar215 = org.cobalt.internal.pathfinding.DuskPathfinder.rlskjxpqwt(org.cobalt.internal.pathfinding.DuskPathfinder.juhzurzbbtgozkn(), lvar267);
+   3. lvar35 = lvar215;
+   4. lvar216 = {1955241208 ^ lvar267};
+   5. lvar217 = new java.lang.Object[lvar216];
+   6. lvar36 = lvar217;
+   7. lvar218 = lvar36;
+   8. lvar223 = {1955241209 ^ lvar267};
+   9. lvar235 = lvar32;
+   10. lvar237 = java.lang.Double.valueOf(lvar235);
+   11. lvar218[lvar223] = lvar237;
+   12. lvar219 = lvar36;
+   13. lvar263 = lvar219;
+   14. lvar220 = lvar35;
+   15. lvar224 = lvar263;
+   16. lvar238 = lvar263;
+   17. lvar239 = lvar238.length;
+   18. lvar225 = java.util.Arrays.copyOf(lvar224, lvar239);
+   19. lvar221 = java.lang.String.format(lvar220, lvar225);
+   20. lvar240 = org.cobalt.internal.pathfinding.DuskPathfinder.rlskjxpqwt(org.cobalt.internal.pathfinding.DuskPathfinder.genazvokvhnjuub(), lvar267);
+   21. _consume(kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(lvar221, lvar240));
+   22. lvar267 = {1958045618 ^ lvar267};
+      -> Immediate #AP -> #AQ
+      <- Immediate #AO -> #AP
+===#Block AQ(size=7, flags=0)===
+   0. lvar226 = lvar25;
+   1. lvar227 = lvar226.method_10263();
+   2. lvar241 = lvar25;
+   3. lvar242 = lvar241.method_10264();
+   4. lvar15 = lvar25;
+   5. lvar243 = lvar15.method_10260();
+   6. lvar267 = {163585031 ^ lvar267};
+      -> Immediate #AQ -> #AR
+      <- Immediate #AP -> #AQ
+===#Block AR(size=8, flags=0)===
+   0. lvar250 = lvar3;
+   1. lvar251 = lvar250.method_31477();
+   2. lvar18 = lvar3;
+   3. lvar252 = lvar18.method_31478();
+   4. lvar259 = lvar3;
+   5. lvar260 = lvar259.method_31479();
+   6. lvar207 = dynamic_invoke<java.lang.String>(java.lang.invoke.StringConcatFactory.makeConcatWithConstants("stage= ready= yawErr= target=   player=  ", lvar206, lvar210, lvar221, lvar227, lvar242, lvar243, lvar251, lvar252, lvar260));
+   7. lvar267 = {2072121137 ^ lvar267};
+      -> Immediate #AR -> #AS
+      <- Immediate #AQ -> #AR
+===#Block AS(size=2, flags=0)===
+   0. _consume(lvar90.etherwarpTick(lvar161, lvar188, lvar207, 1622303767));
+   1. lvar267 = {1048311221 ^ lvar267};
+      -> Immediate #AS -> #AT
+      <- Immediate #AR -> #AS
+===#Block AT(size=3, flags=0)===
+   0. lvar91 = lvar34;
+   1. if (lvar91 != {1275469256 ^ lvar267})
+      goto GI
+   2. lvar267 = {1704295002 ^ lvar267};
+      -> ConditionalJump[IF_ICMPNE] #AT -> #GI
+      -> Immediate #AT -> #BV
+      <- Immediate #AS -> #AT
+===#Block BV(size=7, flags=0)===
+   0. lvar130 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks;
+   1. lvar262 = lvar130;
+   2. lvar131 = lvar262;
+   3. lvar173 = {697526163 ^ lvar267};
+   4. lvar132 = {lvar131 + lvar173};
+   5. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks = lvar132;
+   6. lvar267 = {327007479 ^ lvar267};
+      -> Immediate #BV -> #BW
+      <- Immediate #AT -> #BV
+===#Block BW(size=2, flags=0)===
+   0. lvar133 = {988732260 ^ lvar267};
+   1. return lvar133;
+      <- Immediate #BV -> #BW
+===#Block GI(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 242546986);
+   1. goto DO
+      -> UnconditionalJump[GOTO] #GI -> #DO
+      <- ConditionalJump[IF_ICMPNE] #AT -> #GI
+===#Block DO(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == 328673042)
+      goto GU
+   1. goto FC
+      -> UnconditionalJump[GOTO] #DO -> #FC
+      -> ConditionalJump[IF_ICMPEQ] #DO -> #GU
+      <- UnconditionalJump[GOTO] #GI -> #DO
+===#Block GU(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1174154099);
+   1. goto AU
+      -> UnconditionalJump[GOTO] #GU -> #AU
+      <- ConditionalJump[IF_ICMPEQ] #DO -> #GU
+===#Block AU(size=4, flags=0)===
+   0. // Frame: locals[3] [1, java/lang/String, [Ljava/lang/Object;] stack[0] []
+   1. lvar92 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStage;
+   2. svar269 = {lvar92 ^ lvar267};
+   3. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(svar269)) {
+      case 118875417:
+      	 goto	#GZ
+      default:
+      	 goto	#HA
+   }
+      -> Switch[118875417] #AU -> #GZ
+      -> DefaultSwitch #AU -> #HA
+      <- UnconditionalJump[GOTO] #GU -> #AU
+===#Block HA(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 790004:
+      	 goto	#HA
+      case 76375900:
+      	 goto	#BH
+      case 118875417:
+      	 goto	#HB
+      case 704629599:
+      	 goto	#DD
+      default:
+      	 goto	#DD
+   }
+      -> Immediate #HA -> #HB
+      -> Switch[118875417] #HA -> #HB
+      -> Switch[704629599] #HA -> #DD
+      -> DefaultSwitch #HA -> #DD
+      -> Switch[76375900] #HA -> #BH
+      -> Switch[790004] #HA -> #HA
+      <- DefaultSwitch #AU -> #HA
+      <- Switch[790004] #HA -> #HA
+===#Block HB(size=2, flags=100)===
+   0. lvar267 = {510158986 ^ lvar267};
+   1. goto BH
+      -> UnconditionalJump[GOTO] #HB -> #BH
+      <- Immediate #HA -> #HB
+      <- Switch[118875417] #HA -> #HB
+===#Block BH(size=4, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar110 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks;
+   2. if (lvar110 != {434546459 ^ lvar267})
+      goto FS
+   3. lvar267 = {1687516962 ^ lvar267};
+      -> Immediate #BH -> #BI
+      -> ConditionalJump[IF_ICMPNE] #BH -> #FS
+      <- Switch[76375900] #HA -> #BH
+      <- UnconditionalJump[GOTO] #HB -> #BH
+===#Block FS(size=2, flags=10100)===
+   0. lvar267 = {1235677148 ^ lvar267};
+   1. goto DK
+      -> UnconditionalJump[GOTO] #FS -> #DK
+      <- ConditionalJump[IF_ICMPNE] #BH -> #FS
+===#Block DK(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == -2113780166)
+      goto GE
+   1. goto EK
+      -> ConditionalJump[IF_ICMPEQ] #DK -> #GE
+      -> UnconditionalJump[GOTO] #DK -> #EK
+      <- UnconditionalJump[GOTO] #FS -> #DK
+===#Block EK(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 192732481:
+      	 goto	#EL
+      case 1256190147:
+      	 goto	#DD
+      case 1434675850:
+      	 goto	#DD
+      case 1605329464:
+      	 goto	#EK
+      default:
+      	 goto	#DD
+   }
+      -> Immediate #EK -> #EL
+      -> DefaultSwitch #EK -> #DD
+      -> Switch[1256190147] #EK -> #DD
+      -> Switch[1605329464] #EK -> #EK
+      -> Switch[192732481] #EK -> #EL
+      <- UnconditionalJump[GOTO] #DK -> #EK
+      <- Switch[1605329464] #EK -> #EK
+===#Block EL(size=2, flags=100)===
+   0. lvar267 = {840065090 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #EL -> #DD
+      <- Immediate #EK -> #EL
+      <- Switch[192732481] #EK -> #EL
+===#Block GE(size=2, flags=10100)===
+   0. lvar267 = {891234170 ^ lvar267};
+   1. goto BL
+      -> UnconditionalJump[GOTO] #GE -> #BL
+      <- ConditionalJump[IF_ICMPEQ] #DK -> #GE
+===#Block BI(size=5, flags=0)===
+   0. lvar111 = lvar1;
+   1. lvar112 = lvar111.field_1690;
+   2. lvar113 = lvar112.field_1904;
+   3. if (lvar113 == nullconst)
+      goto GR
+   4. lvar267 = {396624273 ^ lvar267};
+      -> ConditionalJump[IFNULL] #BI -> #GR
+      -> Immediate #BI -> #BK
+      <- Immediate #BH -> #BI
+===#Block BK(size=3, flags=0)===
+   0. lvar172 = {1792528808 ^ lvar267};
+   1. _consume(lvar113.method_23481(lvar172));
+   2. goto DT
+      -> UnconditionalJump[GOTO] #BK -> #DT
+      <- Immediate #BI -> #BK
+===#Block DT(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 251808994:
+      	 goto	#DU
+      case 336599666:
+      	 goto	#DT
+      case 1493757507:
+      	 goto	#CI
+      case 1527765696:
+      	 goto	#DD
+      default:
+      	 goto	#DD
+   }
+      -> Immediate #DT -> #DU
+      -> Switch[251808994] #DT -> #DU
+      -> Switch[336599666] #DT -> #DT
+      -> Switch[1493757507] #DT -> #CI
+      -> Switch[1527765696] #DT -> #DD
+      -> DefaultSwitch #DT -> #DD
+      <- UnconditionalJump[GOTO] #BK -> #DT
+      <- Switch[336599666] #DT -> #DT
+===#Block DU(size=2, flags=100)===
+   0. lvar267 = {893198195 ^ lvar267};
+   1. goto CI
+      -> UnconditionalJump[GOTO] #DU -> #CI
+      <- Immediate #DT -> #DU
+      <- Switch[251808994] #DT -> #DU
+===#Block CI(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267) == 165064482)
+      goto CH
+   1. throw nullconst;
+      -> ConditionalJump[IF_ICMPEQ] #CI -> #CH
+      -> TryCatch range: [CI...CH] -> HC ([Ljava/lang/RuntimeException;])
+      <- Switch[1493757507] #DT -> #CI
+      <- UnconditionalJump[GOTO] #DU -> #CI
+===#Block CH(size=1, flags=0)===
+   0. throw new java/lang/RuntimeException();
+      -> TryCatch range: [CI...CH] -> HC ([Ljava/lang/RuntimeException;])
+      <- ConditionalJump[IF_ICMPEQ] #CI -> #CH
+===#Block HC(size=1, flags=0)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.kktfnmestbvflzmw(lvar267)) {
+      case -11110694:
+      	 goto	#HD
+      case 1864102353:
+      	 goto	#HE
+      default:
+      	 goto	#HF
+   }
+      -> DefaultSwitch #HC -> #HF
+      -> Switch[1864102353] #HC -> #HE
+      -> Switch[-11110694] #HC -> #HD
+      <- TryCatch range: [CI...CH] -> HC ([Ljava/lang/RuntimeException;])
+      <- TryCatch range: [CI...CH] -> HC ([Ljava/lang/RuntimeException;])
+===#Block HD(size=2, flags=10100)===
+   0. lvar267 = {163966382 ^ lvar267};
+   1. goto CJ
+      -> UnconditionalJump[GOTO] #HD -> #CJ
+      <- Switch[-11110694] #HC -> #HD
+===#Block HE(size=2, flags=10100)===
+   0. lvar267 = {2076990799 ^ lvar267};
+   1. goto CJ
+      -> UnconditionalJump[GOTO] #HE -> #CJ
+      <- Switch[1864102353] #HC -> #HE
+===#Block CJ(size=2, flags=0)===
+   0. _consume(catch());
+   1. goto EN
+      -> UnconditionalJump[GOTO] #CJ -> #EN
+      <- UnconditionalJump[GOTO] #HD -> #CJ
+      <- UnconditionalJump[GOTO] #HE -> #CJ
+===#Block EN(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 862997704);
+   1. goto BL
+      -> UnconditionalJump[GOTO] #EN -> #BL
+      <- UnconditionalJump[GOTO] #CJ -> #EN
+===#Block HF(size=1, flags=0)===
+   0. throw new java/lang/IllegalAccessException("Error in hash");
+      <- DefaultSwitch #HC -> #HF
+===#Block GR(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 51387933:
+      	 goto	#GS
+      case 982029418:
+      	 goto	#GR
+      case 1178395525:
+      	 goto	#DR
+      case 1286297834:
+      	 goto	#DD
+      default:
+      	 goto	#DD
+   }
+      -> Switch[1286297834] #GR -> #DD
+      -> Immediate #GR -> #GS
+      -> DefaultSwitch #GR -> #DD
+      -> Switch[1178395525] #GR -> #DR
+      -> Switch[982029418] #GR -> #GR
+      -> Switch[51387933] #GR -> #GS
+      <- ConditionalJump[IFNULL] #BI -> #GR
+      <- Switch[982029418] #GR -> #GR
+===#Block GS(size=2, flags=100)===
+   0. lvar267 = {541524993 ^ lvar267};
+   1. goto DR
+      -> UnconditionalJump[GOTO] #GS -> #DR
+      <- Immediate #GR -> #GS
+      <- Switch[51387933] #GR -> #GS
+===#Block DR(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == -374955582)
+      goto GD
+   1. goto EJ
+      -> UnconditionalJump[GOTO] #DR -> #EJ
+      -> ConditionalJump[IF_ICMPEQ] #DR -> #GD
+      <- UnconditionalJump[GOTO] #GS -> #DR
+      <- Switch[1178395525] #GR -> #DR
+===#Block GD(size=2, flags=10100)===
+   0. lvar267 = {489194889 ^ lvar267};
+   1. goto BJ
+      -> UnconditionalJump[GOTO] #GD -> #BJ
+      <- ConditionalJump[IF_ICMPEQ] #DR -> #GD
+===#Block BJ(size=2, flags=0)===
+   0. // Frame: locals[0] [] stack[1] [net/minecraft/class_304]
+   1. lvar267 = {625163788 ^ lvar267};
+      -> Immediate #BJ -> #BL
+      <- UnconditionalJump[GOTO] #GD -> #BJ
+===#Block BL(size=5, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar114 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks;
+   2. lvar168 = {1700753339 ^ lvar267};
+   3. if (lvar114 < lvar168)
+      goto GB
+   4. lvar267 = {909258828 ^ lvar267};
+      -> ConditionalJump[IF_ICMPLT] #BL -> #GB
+      -> Immediate #BL -> #BM
+      <- UnconditionalJump[GOTO] #GE -> #BL
+      <- Immediate #BJ -> #BL
+      <- UnconditionalJump[GOTO] #EN -> #BL
+===#Block BM(size=6, flags=0)===
+   0. lvar115 = lvar1;
+   1. lvar116 = lvar115.field_1690;
+   2. lvar117 = lvar116.field_1832;
+   3. lvar169 = {1399676913 ^ lvar267};
+   4. _consume(lvar117.method_23481(lvar169));
+   5. lvar267 = {1932357452 ^ lvar267};
+      -> Immediate #BM -> #BN
+      <- Immediate #BL -> #BM
+===#Block BN(size=3, flags=0)===
+   0. lvar118 = {541077693 ^ lvar267};
+   1. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpActive = lvar118;
+   2. lvar267 = {1563921129 ^ lvar267};
+      -> Immediate #BN -> #BO
+      <- Immediate #BM -> #BN
+===#Block BO(size=3, flags=0)===
+   0. lvar119 = nullconst;
+   1. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpTarget = lvar119;
+   2. lvar267 = {468983442 ^ lvar267};
+      -> Immediate #BO -> #BP
+      <- Immediate #BN -> #BO
+===#Block BP(size=3, flags=0)===
+   0. lvar120 = {1719903430 ^ lvar267};
+   1. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStage = lvar120;
+   2. lvar267 = {1818734008 ^ lvar267};
+      -> Immediate #BP -> #BQ
+      <- Immediate #BO -> #BP
+===#Block BQ(size=3, flags=0)===
+   0. lvar121 = {182716798 ^ lvar267};
+   1. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks = lvar121;
+   2. lvar267 = {994073586 ^ lvar267};
+      -> Immediate #BQ -> #BR
+      <- Immediate #BP -> #BQ
+===#Block BR(size=6, flags=0)===
+   0. lvar122 = lvar23;
+   1. lvar191 = {832852622 ^ lvar267};
+   2. lvar192 = (long)lvar191;
+   3. lvar124 = {lvar122 + lvar192};
+   4. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpRepathTick = lvar124;
+   5. lvar267 = {985710307 ^ lvar267};
+      -> Immediate #BR -> #BS
+      <- Immediate #BQ -> #BR
+===#Block BS(size=5, flags=0)===
+   0. lvar126 = lvar0;
+   1. lvar170 = lvar1;
+   2. lvar194 = org.cobalt.internal.pathfinding.DuskPathfinder.rlskjxpqwt(org.cobalt.internal.pathfinding.DuskPathfinder.guqsszewnqqlrhb(), lvar267);
+   3. _consume(lvar126.etherwarpLog(lvar170, lvar194, 1314051846));
+   4. goto ER
+      -> UnconditionalJump[GOTO] #BS -> #ER
+      <- Immediate #BR -> #BS
+===#Block ER(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1561260408);
+   1. goto CR
+      -> UnconditionalJump[GOTO] #ER -> #CR
+      <- UnconditionalJump[GOTO] #BS -> #ER
+===#Block CR(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267) == 124636726)
+      goto CQ
+   1. throw nullconst;
+      -> TryCatch range: [CR...CQ] -> HO ([Ljava/lang/IllegalAccessException;])
+      -> ConditionalJump[IF_ICMPEQ] #CR -> #CQ
+      <- UnconditionalJump[GOTO] #ER -> #CR
+===#Block CQ(size=1, flags=0)===
+   0. throw new java/lang/IllegalAccessException();
+      -> TryCatch range: [CR...CQ] -> HO ([Ljava/lang/IllegalAccessException;])
+      <- ConditionalJump[IF_ICMPEQ] #CR -> #CQ
+===#Block HO(size=1, flags=0)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.kktfnmestbvflzmw(lvar267)) {
+      case -1286543174:
+      	 goto	#HP
+      case 1488995064:
+      	 goto	#HQ
+      default:
+      	 goto	#HR
+   }
+      -> Switch[-1286543174] #HO -> #HP
+      -> Switch[1488995064] #HO -> #HQ
+      -> DefaultSwitch #HO -> #HR
+      <- TryCatch range: [CR...CQ] -> HO ([Ljava/lang/IllegalAccessException;])
+      <- TryCatch range: [CR...CQ] -> HO ([Ljava/lang/IllegalAccessException;])
+===#Block HR(size=1, flags=0)===
+   0. throw new java/io/IOException("Error in hash");
+      <- DefaultSwitch #HO -> #HR
+===#Block HQ(size=2, flags=10100)===
+   0. lvar267 = {818326556 ^ lvar267};
+   1. goto CS
+      -> UnconditionalJump[GOTO] #HQ -> #CS
+      <- Switch[1488995064] #HO -> #HQ
+===#Block HP(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1840560468);
+   1. goto CS
+      -> UnconditionalJump[GOTO] #HP -> #CS
+      <- Switch[-1286543174] #HO -> #HP
+===#Block CS(size=2, flags=0)===
+   0. _consume(catch());
+   1. goto EO
+      -> UnconditionalJump[GOTO] #CS -> #EO
+      <- UnconditionalJump[GOTO] #HP -> #CS
+      <- UnconditionalJump[GOTO] #HQ -> #CS
+===#Block EO(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 786715181);
+   1. goto BU
+      -> UnconditionalJump[GOTO] #EO -> #BU
+      <- UnconditionalJump[GOTO] #CS -> #EO
+===#Block GB(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 73960737:
+      	 goto	#GC
+      case 388832194:
+      	 goto	#DD
+      case 879355122:
+      	 goto	#DN
+      case 1854713928:
+      	 goto	#GB
+      default:
+      	 goto	#DD
+   }
+      -> Switch[73960737] #GB -> #GC
+      -> Immediate #GB -> #GC
+      -> Switch[879355122] #GB -> #DN
+      -> Switch[388832194] #GB -> #DD
+      -> DefaultSwitch #GB -> #DD
+      -> Switch[1854713928] #GB -> #GB
+      <- ConditionalJump[IF_ICMPLT] #BL -> #GB
+      <- Switch[1854713928] #GB -> #GB
+===#Block GC(size=2, flags=100)===
+   0. lvar267 = {1018426800 ^ lvar267};
+   1. goto DN
+      -> UnconditionalJump[GOTO] #GC -> #DN
+      <- Switch[73960737] #GB -> #GC
+      <- Immediate #GB -> #GC
+===#Block DN(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == -815476630)
+      goto GX
+   1. goto FE
+      -> UnconditionalJump[GOTO] #DN -> #FE
+      -> ConditionalJump[IF_ICMPEQ] #DN -> #GX
+      <- Switch[879355122] #GB -> #DN
+      <- UnconditionalJump[GOTO] #GC -> #DN
+===#Block GX(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 198097132:
+      	 goto	#BT
+      case 238695317:
+      	 goto	#GY
+      case 971156183:
+      	 goto	#GX
+      case 1097035903:
+      	 goto	#DD
+      default:
+      	 goto	#DD
+   }
+      -> Immediate #GX -> #GY
+      -> Switch[1097035903] #GX -> #DD
+      -> DefaultSwitch #GX -> #DD
+      -> Switch[238695317] #GX -> #GY
+      -> Switch[971156183] #GX -> #GX
+      -> Switch[198097132] #GX -> #BT
+      <- ConditionalJump[IF_ICMPEQ] #DN -> #GX
+      <- Switch[971156183] #GX -> #GX
+===#Block GY(size=2, flags=100)===
+   0. lvar267 = {1155042889 ^ lvar267};
+   1. goto BT
+      -> UnconditionalJump[GOTO] #GY -> #BT
+      <- Immediate #GX -> #GY
+      <- Switch[238695317] #GX -> #GY
+===#Block BT(size=8, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar127 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks;
+   2. lvar265 = lvar127;
+   3. lvar128 = lvar265;
+   4. lvar171 = {489952325 ^ lvar267};
+   5. lvar129 = {lvar128 + lvar171};
+   6. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks = lvar129;
+   7. lvar267 = {135193130 ^ lvar267};
+      -> Immediate #BT -> #BU
+      <- Switch[198097132] #GX -> #BT
+      <- UnconditionalJump[GOTO] #GY -> #BT
+===#Block FE(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1002353288);
+   1. goto DD
+      -> UnconditionalJump[GOTO] #FE -> #DD
+      <- UnconditionalJump[GOTO] #DN -> #FE
+===#Block EJ(size=2, flags=10100)===
+   0. lvar267 = {1063713981 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #EJ -> #DD
+      <- UnconditionalJump[GOTO] #DR -> #EJ
+===#Block GZ(size=2, flags=10100)===
+   0. lvar267 = {1553658908 ^ lvar267};
+   1. goto AV
+      -> UnconditionalJump[GOTO] #GZ -> #AV
+      <- Switch[118875417] #AU -> #GZ
+===#Block AV(size=5, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar93 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks;
+   2. lvar162 = {1528052623 ^ lvar267};
+   3. if (lvar93 < lvar162)
+      goto GL
+   4. lvar267 = {1964840595 ^ lvar267};
+      -> Immediate #AV -> #AX
+      -> ConditionalJump[IF_ICMPLT] #AV -> #GL
+      <- UnconditionalJump[GOTO] #GZ -> #AV
+===#Block GL(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 7825525:
+      	 goto	#GM
+      case 352944777:
+      	 goto	#DD
+      case 449419710:
+      	 goto	#GL
+      case 1472821785:
+      	 goto	#DP
+      default:
+      	 goto	#DD
+   }
+      -> Immediate #GL -> #GM
+      -> DefaultSwitch #GL -> #DD
+      -> Switch[449419710] #GL -> #GL
+      -> Switch[352944777] #GL -> #DD
+      -> Switch[7825525] #GL -> #GM
+      -> Switch[1472821785] #GL -> #DP
+      <- ConditionalJump[IF_ICMPLT] #AV -> #GL
+      <- Switch[449419710] #GL -> #GL
+===#Block GM(size=2, flags=100)===
+   0. lvar267 = {1438310895 ^ lvar267};
+   1. goto DP
+      -> UnconditionalJump[GOTO] #GM -> #DP
+      <- Immediate #GL -> #GM
+      <- Switch[7825525] #GL -> #GM
+===#Block DP(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == 1970721552)
+      goto GV
+   1. goto FD
+      -> UnconditionalJump[GOTO] #DP -> #FD
+      -> ConditionalJump[IF_ICMPEQ] #DP -> #GV
+      <- UnconditionalJump[GOTO] #GM -> #DP
+      <- Switch[1472821785] #GL -> #DP
+===#Block GV(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 987974767);
+   1. goto AW
+      -> UnconditionalJump[GOTO] #GV -> #AW
+      <- ConditionalJump[IF_ICMPEQ] #DP -> #GV
+===#Block AW(size=8, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar94 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks;
+   2. lvar264 = lvar94;
+   3. lvar95 = lvar264;
+   4. lvar163 = {877499916 ^ lvar267};
+   5. lvar96 = {lvar95 + lvar163};
+   6. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks = lvar96;
+   7. goto DV
+      -> UnconditionalJump[GOTO] #AW -> #DV
+      <- UnconditionalJump[GOTO] #GV -> #AW
+===#Block DV(size=2, flags=10100)===
+   0. lvar267 = {1695628653 ^ lvar267};
+   1. goto CL
+      -> UnconditionalJump[GOTO] #DV -> #CL
+      <- UnconditionalJump[GOTO] #AW -> #DV
+===#Block CL(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267) == 228842838)
+      goto CK
+   1. throw nullconst;
+      -> TryCatch range: [CL...CK] -> HG ([Ljava/lang/IllegalAccessException;])
+      -> ConditionalJump[IF_ICMPEQ] #CL -> #CK
+      <- UnconditionalJump[GOTO] #DV -> #CL
+===#Block CK(size=1, flags=0)===
+   0. throw new java/lang/IllegalAccessException();
+      -> TryCatch range: [CL...CK] -> HG ([Ljava/lang/IllegalAccessException;])
+      <- ConditionalJump[IF_ICMPEQ] #CL -> #CK
+===#Block HG(size=1, flags=0)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.kktfnmestbvflzmw(lvar267)) {
+      case -1964680446:
+      	 goto	#HH
+      case 1542831361:
+      	 goto	#HI
+      default:
+      	 goto	#HJ
+   }
+      -> DefaultSwitch #HG -> #HJ
+      -> Switch[1542831361] #HG -> #HI
+      -> Switch[-1964680446] #HG -> #HH
+      <- TryCatch range: [CL...CK] -> HG ([Ljava/lang/IllegalAccessException;])
+      <- TryCatch range: [CL...CK] -> HG ([Ljava/lang/IllegalAccessException;])
+===#Block HH(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 307998459);
+   1. goto CM
+      -> UnconditionalJump[GOTO] #HH -> #CM
+      <- Switch[-1964680446] #HG -> #HH
+===#Block HI(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1752805947);
+   1. goto CM
+      -> UnconditionalJump[GOTO] #HI -> #CM
+      <- Switch[1542831361] #HG -> #HI
+===#Block CM(size=2, flags=0)===
+   0. _consume(catch());
+   1. goto EB
+      -> UnconditionalJump[GOTO] #CM -> #EB
+      <- UnconditionalJump[GOTO] #HI -> #CM
+      <- UnconditionalJump[GOTO] #HH -> #CM
+===#Block EB(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1446900725);
+   1. goto BU
+      -> UnconditionalJump[GOTO] #EB -> #BU
+      <- UnconditionalJump[GOTO] #CM -> #EB
+===#Block HJ(size=1, flags=0)===
+   0. throw new java/io/IOException("Error in hash");
+      <- DefaultSwitch #HG -> #HJ
+===#Block FD(size=2, flags=10100)===
+   0. lvar267 = {1828516583 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #FD -> #DD
+      <- UnconditionalJump[GOTO] #DP -> #FD
+===#Block AX(size=5, flags=0)===
+   0. lvar98 = lvar1;
+   1. lvar99 = lvar98.field_1690;
+   2. lvar100 = lvar99.field_1904;
+   3. if (lvar100 == nullconst)
+      goto GA
+   4. lvar267 = {1811009707 ^ lvar267};
+      -> Immediate #AX -> #AY
+      -> ConditionalJump[IFNULL] #AX -> #GA
+      <- Immediate #AV -> #AX
+===#Block GA(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1912614828);
+   1. goto DM
+      -> UnconditionalJump[GOTO] #GA -> #DM
+      <- ConditionalJump[IFNULL] #AX -> #GA
+===#Block DM(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == -532146798)
+      goto FK
+   1. goto DW
+      -> UnconditionalJump[GOTO] #DM -> #DW
+      -> ConditionalJump[IF_ICMPEQ] #DM -> #FK
+      <- UnconditionalJump[GOTO] #GA -> #DM
+===#Block FK(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 415559372);
+   1. goto AZ
+      -> UnconditionalJump[GOTO] #FK -> #AZ
+      <- ConditionalJump[IF_ICMPEQ] #DM -> #FK
+===#Block AZ(size=2, flags=0)===
+   0. // Frame: locals[0] [] stack[1] [net/minecraft/class_304]
+   1. lvar267 = {1065180458 ^ lvar267};
+      -> Immediate #AZ -> #BA
+      <- UnconditionalJump[GOTO] #FK -> #AZ
+===#Block DW(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1046161975);
+   1. goto DD
+      -> UnconditionalJump[GOTO] #DW -> #DD
+      <- UnconditionalJump[GOTO] #DM -> #DW
+===#Block AY(size=3, flags=0)===
+   0. lvar164 = {1173945780 ^ lvar267};
+   1. _consume(lvar100.method_23481(lvar164));
+   2. goto EW
+      -> UnconditionalJump[GOTO] #AY -> #EW
+      <- Immediate #AX -> #AY
+===#Block EW(size=2, flags=10100)===
+   0. lvar267 = {1703932757 ^ lvar267};
+   1. goto CU
+      -> UnconditionalJump[GOTO] #EW -> #CU
+      <- UnconditionalJump[GOTO] #AY -> #EW
+===#Block CU(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267) == 249990309)
+      goto CT
+   1. throw nullconst;
+      -> ConditionalJump[IF_ICMPEQ] #CU -> #CT
+      -> TryCatch range: [CU...CT] -> HS ([Ljava/lang/IllegalAccessException;])
+      <- UnconditionalJump[GOTO] #EW -> #CU
+===#Block CT(size=1, flags=0)===
+   0. throw new java/lang/IllegalAccessException();
+      -> TryCatch range: [CU...CT] -> HS ([Ljava/lang/IllegalAccessException;])
+      <- ConditionalJump[IF_ICMPEQ] #CU -> #CT
+===#Block HS(size=1, flags=0)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.kktfnmestbvflzmw(lvar267)) {
+      case -968908934:
+      	 goto	#HU
+      case 62420737:
+      	 goto	#HT
+      default:
+      	 goto	#HV
+   }
+      -> DefaultSwitch #HS -> #HV
+      -> Switch[-968908934] #HS -> #HU
+      -> Switch[62420737] #HS -> #HT
+      <- TryCatch range: [CU...CT] -> HS ([Ljava/lang/IllegalAccessException;])
+      <- TryCatch range: [CU...CT] -> HS ([Ljava/lang/IllegalAccessException;])
+===#Block HT(size=2, flags=10100)===
+   0. lvar267 = {840575103 ^ lvar267};
+   1. goto CV
+      -> UnconditionalJump[GOTO] #HT -> #CV
+      <- Switch[62420737] #HS -> #HT
+===#Block HU(size=2, flags=10100)===
+   0. lvar267 = {1252709744 ^ lvar267};
+   1. goto CV
+      -> UnconditionalJump[GOTO] #HU -> #CV
+      <- Switch[-968908934] #HS -> #HU
+===#Block CV(size=2, flags=0)===
+   0. _consume(catch());
+   1. goto EX
+      -> UnconditionalJump[GOTO] #CV -> #EX
+      <- UnconditionalJump[GOTO] #HU -> #CV
+      <- UnconditionalJump[GOTO] #HT -> #CV
+===#Block EX(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 62089401:
+      	 goto	#EY
+      case 816360904:
+      	 goto	#DD
+      case 1581679783:
+      	 goto	#EX
+      case 1843429629:
+      	 goto	#BA
+      default:
+      	 goto	#DD
+   }
+      -> Immediate #EX -> #EY
+      -> Switch[816360904] #EX -> #DD
+      -> Switch[1843429629] #EX -> #BA
+      -> DefaultSwitch #EX -> #DD
+      -> Switch[62089401] #EX -> #EY
+      -> Switch[1581679783] #EX -> #EX
+      <- UnconditionalJump[GOTO] #CV -> #EX
+      <- Switch[1581679783] #EX -> #EX
+===#Block EY(size=2, flags=100)===
+   0. lvar267 = {1776129995 ^ lvar267};
+   1. goto BA
+      -> UnconditionalJump[GOTO] #EY -> #BA
+      <- Immediate #EX -> #EY
+      <- Switch[62089401] #EX -> #EY
+===#Block BA(size=4, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar101 = {2075177302 ^ lvar267};
+   2. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStage = lvar101;
+   3. lvar267 = {407320638 ^ lvar267};
+      -> Immediate #BA -> #BB
+      <- Immediate #AZ -> #BA
+      <- Switch[1843429629] #EX -> #BA
+      <- UnconditionalJump[GOTO] #EY -> #BA
+===#Block BB(size=3, flags=0)===
+   0. lvar102 = {1677166954 ^ lvar267};
+   1. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStageTicks = lvar102;
+   2. lvar267 = {83983726 ^ lvar267};
+      -> Immediate #BB -> #BC
+      <- Immediate #BA -> #BB
+===#Block BC(size=5, flags=0)===
+   0. lvar103 = lvar0;
+   1. lvar165 = lvar1;
+   2. lvar189 = org.cobalt.internal.pathfinding.DuskPathfinder.rlskjxpqwt(org.cobalt.internal.pathfinding.DuskPathfinder.fvofzkljwzypmgi(), lvar267);
+   3. _consume(lvar103.etherwarpLog(lvar165, lvar189, 1314051846));
+   4. goto EQ
+      -> UnconditionalJump[GOTO] #BC -> #EQ
+      <- Immediate #BB -> #BC
+===#Block EQ(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 2001844983);
+   1. goto CO
+      -> UnconditionalJump[GOTO] #EQ -> #CO
+      <- UnconditionalJump[GOTO] #BC -> #EQ
+===#Block CO(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267) == 36976977)
+      goto CN
+   1. throw nullconst;
+      -> ConditionalJump[IF_ICMPEQ] #CO -> #CN
+      -> TryCatch range: [CO...CN] -> HK ([Ljava/io/IOException;])
+      <- UnconditionalJump[GOTO] #EQ -> #CO
+===#Block CN(size=1, flags=0)===
+   0. throw new java/io/IOException();
+      -> TryCatch range: [CO...CN] -> HK ([Ljava/io/IOException;])
+      <- ConditionalJump[IF_ICMPEQ] #CO -> #CN
+===#Block HK(size=1, flags=0)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.kktfnmestbvflzmw(lvar267)) {
+      case -1925548136:
+      	 goto	#HL
+      case -1735362197:
+      	 goto	#HM
+      default:
+      	 goto	#HN
+   }
+      -> Switch[-1925548136] #HK -> #HL
+      -> DefaultSwitch #HK -> #HN
+      -> Switch[-1735362197] #HK -> #HM
+      <- TryCatch range: [CO...CN] -> HK ([Ljava/io/IOException;])
+      <- TryCatch range: [CO...CN] -> HK ([Ljava/io/IOException;])
+===#Block HM(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1139039259);
+   1. goto CP
+      -> UnconditionalJump[GOTO] #HM -> #CP
+      <- Switch[-1735362197] #HK -> #HM
+===#Block HN(size=1, flags=0)===
+   0. throw new java/lang/IllegalAccessException("Error in hash");
+      <- DefaultSwitch #HK -> #HN
+===#Block HL(size=2, flags=10100)===
+   0. lvar267 = {558964165 ^ lvar267};
+   1. goto CP
+      -> UnconditionalJump[GOTO] #HL -> #CP
+      <- Switch[-1925548136] #HK -> #HL
+===#Block CP(size=2, flags=0)===
+   0. _consume(catch());
+   1. goto DY
+      -> UnconditionalJump[GOTO] #CP -> #DY
+      <- UnconditionalJump[GOTO] #HL -> #CP
+      <- UnconditionalJump[GOTO] #HM -> #CP
+===#Block DY(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 249393614:
+      	 goto	#DZ
+      case 1329495164:
+      	 goto	#BU
+      case 1779181065:
+      	 goto	#DY
+      case 1863345487:
+      	 goto	#DD
+      default:
+      	 goto	#DD
+   }
+      -> Switch[249393614] #DY -> #DZ
+      -> Immediate #DY -> #DZ
+      -> Switch[1329495164] #DY -> #BU
+      -> Switch[1863345487] #DY -> #DD
+      -> DefaultSwitch #DY -> #DD
+      -> Switch[1779181065] #DY -> #DY
+      <- UnconditionalJump[GOTO] #CP -> #DY
+      <- Switch[1779181065] #DY -> #DY
+===#Block DZ(size=2, flags=100)===
+   0. lvar267 = {634168664 ^ lvar267};
+   1. goto BU
+      -> UnconditionalJump[GOTO] #DZ -> #BU
+      <- Switch[249393614] #DY -> #DZ
+      <- Immediate #DY -> #DZ
+===#Block BU(size=3, flags=0)===
+   0. // Frame: locals[1] [null] stack[0] []
+   1. lvar97 = {356185711 ^ lvar267};
+   2. return lvar97;
+      <- UnconditionalJump[GOTO] #EB -> #BU
+      <- UnconditionalJump[GOTO] #EO -> #BU
+      <- Switch[1329495164] #DY -> #BU
+      <- UnconditionalJump[GOTO] #DZ -> #BU
+      <- Immediate #BT -> #BU
+      <- UnconditionalJump[GOTO] #EF -> #BU
+===#Block HV(size=1, flags=0)===
+   0. throw new java/lang/RuntimeException("Error in hash");
+      <- DefaultSwitch #HS -> #HV
+===#Block FC(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 539020391);
+   1. goto DD
+      -> UnconditionalJump[GOTO] #FC -> #DD
+      <- UnconditionalJump[GOTO] #DO -> #FC
+===#Block EM(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 123088514);
+   1. goto DD
+      -> UnconditionalJump[GOTO] #EM -> #DD
+      <- UnconditionalJump[GOTO] #DC -> #EM
+===#Block BX(size=4, flags=0)===
+   0. lvar134 = lvar0;
+   1. lvar135 = (org.cobalt.internal.pathfinding.DuskPathfinder)lvar134;
+   2. lvar29 = lvar135;
+   3. lvar267 = {1942371585 ^ lvar267};
+      -> Immediate #BX -> #BY
+      <- Immediate #P -> #BX
+===#Block BY(size=3, flags=0)===
+   0. lvar136 = {790523634 ^ lvar267};
+   1. lvar261 = lvar136;
+   2. lvar267 = {1657904937 ^ lvar267};
+      -> Immediate #BY -> #BZ
+      <- Immediate #BX -> #BY
+===#Block BZ(size=3, flags=0)===
+   0. lvar137 = {1305473499 ^ lvar267};
+   1. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpActive = lvar137;
+   2. lvar267 = {1151720545 ^ lvar267};
+      -> Immediate #BZ -> #CA
+      <- Immediate #BY -> #BZ
+===#Block CA(size=5, flags=0)===
+   0. lvar138 = lvar29;
+   1. lvar174 = lvar1;
+   2. lvar195 = org.cobalt.internal.pathfinding.DuskPathfinder.rlskjxpqwt(org.cobalt.internal.pathfinding.DuskPathfinder.fbscsdpgziedxfo(), lvar267);
+   3. _consume(lvar138.etherwarpLog(lvar174, lvar195, 1314051846));
+   4. lvar267 = {1225966967 ^ lvar267};
+      -> Immediate #CA -> #CB
+      <- Immediate #BZ -> #CA
+===#Block CB(size=2, flags=0)===
+   0. lvar139 = {1081665741 ^ lvar267};
+   1. return lvar139;
+      <- Immediate #CA -> #CB
+===#Block FJ(size=2, flags=10100)===
+   0. lvar267 = org.cobalt.internal.pathfinding.DuskPathfinder.scdcyjhvfzjlribx(lvar267, 1678434124);
+   1. goto DF
+      -> UnconditionalJump[GOTO] #FJ -> #DF
+      <- ConditionalJump[IF_ICMPEQ] #M -> #FJ
+===#Block DF(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar267) == -643621349)
+      goto FX
+   1. goto ED
+      -> UnconditionalJump[GOTO] #DF -> #ED
+      -> ConditionalJump[IF_ICMPEQ] #DF -> #FX
+      <- UnconditionalJump[GOTO] #FJ -> #DF
+===#Block FX(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 161386664:
+      	 goto	#CC
+      case 246807165:
+      	 goto	#FY
+      case 513855583:
+      	 goto	#DD
+      case 1371802078:
+      	 goto	#FX
+      default:
+      	 goto	#DD
+   }
+      -> Immediate #FX -> #FY
+      -> Switch[161386664] #FX -> #CC
+      -> Switch[513855583] #FX -> #DD
+      -> DefaultSwitch #FX -> #DD
+      -> Switch[246807165] #FX -> #FY
+      -> Switch[1371802078] #FX -> #FX
+      <- ConditionalJump[IF_ICMPEQ] #DF -> #FX
+      <- Switch[1371802078] #FX -> #FX
+===#Block FY(size=2, flags=100)===
+   0. lvar267 = {1955243726 ^ lvar267};
+   1. goto CC
+      -> UnconditionalJump[GOTO] #FY -> #CC
+      <- Immediate #FX -> #FY
+      <- Switch[246807165] #FX -> #FY
+===#Block CC(size=4, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar140 = {264160525 ^ lvar267};
+   2. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpActive = lvar140;
+   3. lvar267 = {1645473517 ^ lvar267};
+      -> Immediate #CC -> #CD
+      <- UnconditionalJump[GOTO] #FY -> #CC
+      <- Immediate #O -> #CC
+      <- Switch[161386664] #FX -> #CC
+===#Block CD(size=3, flags=0)===
+   0. lvar141 = nullconst;
+   1. org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpTarget = lvar141;
+   2. lvar267 = {1132659682 ^ lvar267};
+      -> Immediate #CD -> #CE
+      <- Immediate #CC -> #CD
+===#Block CE(size=4, flags=0)===
+   0. lvar142 = lvar0;
+   1. lvar175 = lvar1;
+   2. _consume(lvar142.resetInput(lvar175, 668432084));
+   3. lvar267 = {151290840 ^ lvar267};
+      -> Immediate #CE -> #CF
+      <- Immediate #CD -> #CE
+===#Block CF(size=6, flags=0)===
+   0. lvar143 = lvar0;
+   1. lvar176 = lvar1;
+   2. lvar196 = org.cobalt.internal.pathfinding.DuskPathfinder.etherwarpStage;
+   3. lvar197 = dynamic_invoke<java.lang.String>(java.lang.invoke.StringConcatFactory.makeConcatWithConstants("abort: not holding etherwarp item or cannot etherwarp (stage=).", lvar196));
+   4. _consume(lvar143.etherwarpLog(lvar176, lvar197, 1314051846));
+   5. lvar267 = {1816017825 ^ lvar267};
+      -> Immediate #CF -> #CG
+      <- Immediate #CE -> #CF
+===#Block CG(size=2, flags=0)===
+   0. lvar144 = {1259638907 ^ lvar267};
+   1. return lvar144;
+      <- Immediate #CF -> #CG
+===#Block ED(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 45314165:
+      	 goto	#DD
+      case 246807165:
+      	 goto	#EE
+      case 735042744:
+      	 goto	#ED
+      case 1883600594:
+      	 goto	#DD
+      default:
+      	 goto	#DD
+   }
+      -> Switch[735042744] #ED -> #ED
+      -> Immediate #ED -> #EE
+      -> Switch[1883600594] #ED -> #DD
+      -> DefaultSwitch #ED -> #DD
+      -> Switch[246807165] #ED -> #EE
+      <- Switch[735042744] #ED -> #ED
+      <- UnconditionalJump[GOTO] #DF -> #ED
+===#Block EE(size=2, flags=100)===
+   0. lvar267 = {426134342 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #EE -> #DD
+      <- Immediate #ED -> #EE
+      <- Switch[246807165] #ED -> #EE
+===#Block EU(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 101636046:
+      	 goto	#EV
+      case 413069106:
+      	 goto	#DD
+      case 699437790:
+      	 goto	#EU
+      case 1440589741:
+      	 goto	#DD
+      default:
+      	 goto	#DD
+   }
+      -> Switch[1440589741] #EU -> #DD
+      -> Switch[699437790] #EU -> #EU
+      -> Immediate #EU -> #EV
+      -> DefaultSwitch #EU -> #DD
+      -> Switch[101636046] #EU -> #EV
+      <- Switch[699437790] #EU -> #EU
+      <- UnconditionalJump[GOTO] #DL -> #EU
+===#Block EV(size=2, flags=100)===
+   0. lvar267 = {1312357619 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #EV -> #DD
+      <- Immediate #EU -> #EV
+      <- Switch[101636046] #EU -> #EV
+===#Block I(size=4, flags=0)===
+   0. lvar51 = org.cobalt.internal.pathfinding.OverlayRenderEngine.INSTANCE;
+   1. lvar146 = org.cobalt.internal.pathfinding.DuskPathfinder.rlskjxpqwt(org.cobalt.internal.pathfinding.DuskPathfinder.nneisrfliweteej(), lvar267);
+   2. _consume(lvar51.clearTag(lvar146, 1185715407));
+   3. lvar267 = {1098904315 ^ lvar267};
+      -> Immediate #I -> #J
+      <- Immediate #H -> #I
+===#Block J(size=2, flags=0)===
+   0. lvar52 = {969656153 ^ lvar267};
+   1. return lvar52;
+      <- Immediate #I -> #J
+===#Block ES(size=1, flags=10100)===
+   0. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar267)) {
+      case 12921733:
+      	 goto	#ET
+      case 29869722:
+      	 goto	#DD
+      case 217593424:
+      	 goto	#DD
+      case 1400736633:
+      	 goto	#ES
+      default:
+      	 goto	#DD
+   }
+      -> DefaultSwitch #ES -> #DD
+      -> Immediate #ES -> #ET
+      -> Switch[29869722] #ES -> #DD
+      -> Switch[1400736633] #ES -> #ES
+      -> Switch[12921733] #ES -> #ET
+      <- UnconditionalJump[GOTO] #DQ -> #ES
+      <- Switch[1400736633] #ES -> #ES
+===#Block ET(size=2, flags=100)===
+   0. lvar267 = {686447812 ^ lvar267};
+   1. goto DD
+      -> UnconditionalJump[GOTO] #ET -> #DD
+      <- Immediate #ES -> #ET
+      <- Switch[12921733] #ES -> #ET
+===#Block DD(size=1, flags=0)===
+   0. throw new java/lang/IllegalAccessException();
+      <- Switch[1686025891] #FF -> #DD
+      <- DefaultSwitch #FF -> #DD
+      <- UnconditionalJump[GOTO] #DX -> #DD
+      <- UnconditionalJump[GOTO] #EM -> #DD
+      <- DefaultSwitch #FH -> #DD
+      <- Switch[1824382484] #FH -> #DD
+      <- Switch[1669180669] #FP -> #DD
+      <- DefaultSwitch #FP -> #DD
+      <- UnconditionalJump[GOTO] #EP -> #DD
+      <- UnconditionalJump[GOTO] #EG -> #DD
+      <- UnconditionalJump[GOTO] #EJ -> #DD
+      <- DefaultSwitch #GJ -> #DD
+      <- Switch[778395067] #GJ -> #DD
+      <- UnconditionalJump[GOTO] #EC -> #DD
+      <- DefaultSwitch #GL -> #DD
+      <- UnconditionalJump[GOTO] #EZ -> #DD
+      <- Switch[352944777] #GL -> #DD
+      <- Switch[878854320] #GP -> #DD
+      <- DefaultSwitch #GP -> #DD
+      <- UnconditionalJump[GOTO] #ET -> #DD
+      <- DefaultSwitch #EK -> #DD
+      <- Switch[1256190147] #EK -> #DD
+      <- Switch[388832194] #GB -> #DD
+      <- DefaultSwitch #GB -> #DD
+      <- DefaultSwitch #FA -> #DD
+      <- Switch[1286297834] #GR -> #DD
+      <- Switch[422924265] #FA -> #DD
+      <- UnconditionalJump[GOTO] #FD -> #DD
+      <- DefaultSwitch #GR -> #DD
+      <- UnconditionalJump[GOTO] #DW -> #DD
+      <- Switch[1883600594] #ED -> #DD
+      <- DefaultSwitch #FV -> #DD
+      <- DefaultSwitch #ED -> #DD
+      <- Switch[378368871] #FM -> #DD
+      <- DefaultSwitch #FM -> #DD
+      <- DefaultSwitch #ES -> #DD
+      <- Switch[1097035903] #GX -> #DD
+      <- Switch[29869722] #ES -> #DD
+      <- DefaultSwitch #GX -> #DD
+      <- UnconditionalJump[GOTO] #EL -> #DD
+      <- Switch[704629599] #HA -> #DD
+      <- DefaultSwitch #FT -> #DD
+      <- DefaultSwitch #HA -> #DD
+      <- Switch[1489786833] #FT -> #DD
+      <- Switch[1527765696] #DT -> #DD
+      <- DefaultSwitch #DT -> #DD
+      <- UnconditionalJump[GOTO] #EV -> #DD
+      <- Switch[1440589741] #EU -> #DD
+      <- DefaultSwitch #EU -> #DD
+      <- Switch[1863345487] #DY -> #DD
+      <- DefaultSwitch #DY -> #DD
+      <- DefaultSwitch #EX -> #DD
+      <- UnconditionalJump[GOTO] #FB -> #DD
+      <- Switch[816360904] #EX -> #DD
+      <- UnconditionalJump[GOTO] #EE -> #DD
+      <- UnconditionalJump[GOTO] #FE -> #DD
+      <- DefaultSwitch #GF -> #DD
+      <- Switch[1096672956] #FV -> #DD
+      <- Switch[1279807875] #GF -> #DD
+      <- Switch[513855583] #FX -> #DD
+      <- DefaultSwitch #FX -> #DD
+      <- UnconditionalJump[GOTO] #FC -> #DD

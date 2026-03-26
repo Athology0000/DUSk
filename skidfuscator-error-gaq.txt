@@ -1,0 +1,256 @@
+handler=Block #AC, types=[Ljava/lang/RuntimeException;], range=[Block #AB, Block #AA]
+handler=Block #AF, types=[Ljava/lang/IllegalAccessException;], range=[Block #AE, Block #AD]
+handler=Block #AI, types=[Ljava/lang/IllegalAccessException;], range=[Block #AH, Block #AG]
+===#Block A(size=2, flags=1)===
+   0. synth(lvar0 = lvar0);
+   1. synth(lvar1 = lvar1);
+      -> Immediate #A -> #B
+===#Block B(size=3, flags=0)===
+   0. lvar2 = lvar1;
+   1. lvar3 = org.cobalt.internal.visual.FullBrightModule.cpfrkdinix(org.cobalt.internal.visual.FullBrightModule.jqjnurjnzcsfvjv(), lvar74);
+   2. _consume(kotlin.jvm.internal.Intrinsics.checkNotNullParameter(lvar2, lvar3));
+      -> Immediate #B -> #C
+      <- Immediate #A -> #B
+===#Block C(size=4, flags=0)===
+   0. lvar12 = net.minecraft.class_310.method_1551();
+   1. lvar4 = org.cobalt.internal.visual.FullBrightModule.cpfrkdinix(org.cobalt.internal.visual.FullBrightModule.fjvmilbjijoxxkg(), lvar74);
+   2. _consume(kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(lvar12, lvar4));
+   3. lvar9 = lvar12;
+      -> Immediate #C -> #D
+      <- Immediate #B -> #C
+===#Block D(size=5, flags=0)===
+   0. lvar13 = lvar9;
+   1. lvar14 = lvar13.field_1690;
+   2. lvar68 = org.cobalt.internal.visual.FullBrightModule.cpfrkdinix(org.cobalt.internal.visual.FullBrightModule.cbfykyfyhldicco(), lvar74);
+   3. _consume(kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(lvar14, lvar68));
+   4. lvar10 = lvar14;
+      -> Immediate #D -> #E
+      <- Immediate #C -> #D
+===#Block E(size=5, flags=0)===
+   0. lvar15 = org.cobalt.internal.visual.FullBrightModule.enabled;
+   1. lvar16 = lvar15.getValue(1188943410);
+   2. lvar17 = (java.lang.Boolean)lvar16;
+   3. lvar18 = lvar17.booleanValue();
+   4. if (lvar18 != {393607283 ^ lvar74})
+      goto AJ
+      -> Immediate #E -> #F
+      -> ConditionalJump[IF_ICMPNE] #E -> #AJ
+      <- Immediate #D -> #E
+===#Block AJ(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar74) == 1726781738)
+      goto K
+   1. goto AK
+      -> UnconditionalJump[GOTO] #AJ -> #AK
+      -> ConditionalJump[IF_ICMPEQ] #AJ -> #K
+      <- ConditionalJump[IF_ICMPNE] #E -> #AJ
+===#Block K(size=3, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar23 = org.cobalt.internal.visual.FullBrightModule.wasEnabled;
+   2. if (lvar23 != {849324133 ^ lvar74})
+      goto AN
+      -> Immediate #K -> #L
+      -> ConditionalJump[IF_ICMPNE] #K -> #AN
+      <- ConditionalJump[IF_ICMPEQ] #AJ -> #K
+===#Block AN(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar74) == -1051990421)
+      goto S
+   1. goto AK
+      -> UnconditionalJump[GOTO] #AN -> #AK
+      -> ConditionalJump[IF_ICMPEQ] #AN -> #S
+      <- ConditionalJump[IF_ICMPNE] #K -> #AN
+===#Block L(size=7, flags=0)===
+   0. lvar24 = lvar10;
+   1. lvar25 = lvar24.method_42473();
+   2. lvar26 = lvar25.method_41753();
+   3. lvar11 = lvar26;
+   4. lvar27 = lvar11;
+   5. lvar28 = lvar27 instanceof java.lang.Double;
+   6. if (lvar28 == {1959741485 ^ lvar74})
+      goto AO
+      -> Immediate #L -> #N
+      -> ConditionalJump[IF_ICMPEQ] #L -> #AO
+      <- Immediate #K -> #L
+===#Block AO(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar74) == -1641209912)
+      goto M
+   1. goto AK
+      -> UnconditionalJump[GOTO] #AO -> #AK
+      -> ConditionalJump[IF_ICMPEQ] #AO -> #M
+      <- ConditionalJump[IF_ICMPEQ] #L -> #AO
+===#Block M(size=2, flags=0)===
+   0. // Frame: locals[1] [java/lang/Object] stack[0] []
+   1. lvar45 = nullconst;
+      -> Immediate #M -> #O
+      <- ConditionalJump[IF_ICMPEQ] #AO -> #M
+===#Block N(size=3, flags=0)===
+   0. lvar44 = lvar11;
+   1. lvar45 = (java.lang.Double)lvar44;
+   2. goto AB
+      -> UnconditionalJump[GOTO] #N -> #AB
+      <- Immediate #L -> #N
+===#Block AB(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar74) == 90759827)
+      goto AA
+   1. throw nullconst;
+      -> ConditionalJump[IF_ICMPEQ] #AB -> #AA
+      -> TryCatch range: [AB...AA] -> AC ([Ljava/lang/RuntimeException;])
+      <- UnconditionalJump[GOTO] #N -> #AB
+===#Block AA(size=1, flags=0)===
+   0. throw new java/lang/RuntimeException();
+      -> TryCatch range: [AB...AA] -> AC ([Ljava/lang/RuntimeException;])
+      <- ConditionalJump[IF_ICMPEQ] #AB -> #AA
+===#Block AC(size=2, flags=0)===
+   0. _consume(catch());
+   1. goto O
+      -> UnconditionalJump[GOTO] #AC -> #O
+      <- TryCatch range: [AB...AA] -> AC ([Ljava/lang/RuntimeException;])
+      <- TryCatch range: [AB...AA] -> AC ([Ljava/lang/RuntimeException;])
+===#Block O(size=2, flags=0)===
+   0. // Frame: locals[0] [] stack[1] [java/lang/Double]
+   1. if (lvar45 != nullconst)
+      goto AL
+      -> ConditionalJump[IFNONNULL] #O -> #AL
+      -> Immediate #O -> #P
+      <- Immediate #M -> #O
+      <- UnconditionalJump[GOTO] #AC -> #O
+===#Block P(size=2, flags=0)===
+   0. lvar29 = 1.0D;
+   1. lvar45 = java.lang.Double.valueOf(lvar29);
+      -> Immediate #P -> #Q
+      <- Immediate #O -> #P
+===#Block AL(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar74) == -1151096653)
+      goto Q
+   1. goto AK
+      -> ConditionalJump[IF_ICMPEQ] #AL -> #Q
+      -> UnconditionalJump[GOTO] #AL -> #AK
+      <- ConditionalJump[IFNONNULL] #O -> #AL
+===#Block Q(size=2, flags=0)===
+   0. // Frame: locals[0] [] stack[1] [java/lang/Double]
+   1. org.cobalt.internal.visual.FullBrightModule.previousGamma = lvar45;
+      -> Immediate #Q -> #R
+      <- Immediate #P -> #Q
+      <- ConditionalJump[IF_ICMPEQ] #AL -> #Q
+===#Block R(size=2, flags=0)===
+   0. lvar31 = {1305487458 ^ lvar74};
+   1. org.cobalt.internal.visual.FullBrightModule.wasEnabled = lvar31;
+      -> Immediate #R -> #S
+      <- Immediate #Q -> #R
+===#Block S(size=7, flags=0)===
+   0. // Frame: locals[1] [null] stack[0] []
+   1. lvar32 = org.cobalt.internal.visual.FullBrightModule.mode;
+   2. lvar33 = lvar32.getValue(1188943410);
+   3. lvar34 = (java.lang.Number)lvar33;
+   4. lvar35 = lvar34.intValue();
+   5. svar76 = {lvar35 ^ lvar74};
+   6. switch (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(svar76)) {
+      case 45914943:
+      	 goto	#X
+      default:
+      	 goto	#V
+   }
+      -> Switch[45914943] #S -> #X
+      -> DefaultSwitch #S -> #V
+      <- Immediate #R -> #S
+      <- ConditionalJump[IF_ICMPEQ] #AN -> #S
+===#Block V(size=12, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar39 = lvar10;
+   2. lvar40 = lvar39.method_42473();
+   3. lvar57 = org.cobalt.internal.visual.FullBrightModule.gamma;
+   4. lvar58 = lvar57.getValue(1188943410);
+   5. lvar59 = (java.lang.Number)lvar58;
+   6. lvar60 = lvar59.doubleValue();
+   7. lvar69 = 0.0D;
+   8. lvar71 = 1.0D;
+   9. lvar62 = kotlin.ranges.RangesKt.coerceIn(lvar60, lvar69, lvar71);
+   10. lvar64 = java.lang.Double.valueOf(lvar62);
+   11. _consume(lvar40.method_41748(lvar64));
+      -> Immediate #V -> #W
+      <- DefaultSwitch #S -> #V
+===#Block W(size=3, flags=0)===
+   0. lvar41 = lvar0;
+   1. lvar65 = lvar9;
+   2. _consume(lvar41.applyNightVision(lvar65, 319653829));
+      -> Immediate #W -> #Z
+      <- Immediate #V -> #W
+===#Block X(size=4, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. lvar42 = lvar0;
+   2. lvar66 = lvar10;
+   3. _consume(lvar42.restoreGamma(lvar66, 915990145));
+      -> Immediate #X -> #Y
+      <- Switch[45914943] #S -> #X
+===#Block Y(size=4, flags=0)===
+   0. lvar43 = lvar0;
+   1. lvar67 = lvar9;
+   2. _consume(lvar43.applyNightVision(lvar67, 319653829));
+   3. goto AH
+      -> UnconditionalJump[GOTO] #Y -> #AH
+      <- Immediate #X -> #Y
+===#Block AH(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.rcggpkziuvbslwsv(lvar74) == 21083256)
+      goto AG
+   1. throw nullconst;
+      -> TryCatch range: [AH...AG] -> AI ([Ljava/lang/IllegalAccessException;])
+      -> ConditionalJump[IF_ICMPEQ] #AH -> #AG
+      <- UnconditionalJump[GOTO] #Y -> #AH
+===#Block AG(size=1, flags=0)===
+   0. throw new java/lang/IllegalAccessException();
+      -> TryCatch range: [AH...AG] -> AI ([Ljava/lang/IllegalAccessException;])
+      <- ConditionalJump[IF_ICMPEQ] #AH -> #AG
+===#Block AI(size=2, flags=0)===
+   0. _consume(catch());
+   1. goto Z
+      -> UnconditionalJump[GOTO] #AI -> #Z
+      <- TryCatch range: [AH...AG] -> AI ([Ljava/lang/IllegalAccessException;])
+      <- TryCatch range: [AH...AG] -> AI ([Ljava/lang/IllegalAccessException;])
+===#Block Z(size=2, flags=0)===
+   0. // Frame: locals[0] [] stack[0] []
+   1. return;
+      <- UnconditionalJump[GOTO] #AI -> #Z
+      <- UnconditionalJump[GOTO] #AF -> #Z
+      <- Immediate #W -> #Z
+===#Block F(size=2, flags=0)===
+   0. lvar19 = org.cobalt.internal.visual.FullBrightModule.wasEnabled;
+   1. if (lvar19 == {905562787 ^ lvar74})
+      goto AM
+      -> Immediate #F -> #G
+      -> ConditionalJump[IF_ICMPEQ] #F -> #AM
+      <- Immediate #E -> #F
+===#Block AM(size=2, flags=0)===
+   0. if (hnabmqvvhtanciqw.qhldkxwbfuycgtjm.evimvnuovhbvxdtv(lvar74) == 1168623913)
+      goto J
+   1. goto AK
+      -> UnconditionalJump[GOTO] #AM -> #AK
+      -> ConditionalJump[IF_ICMPEQ] #AM -> #J
+      <- ConditionalJump[IF_ICMPEQ] #F -> #AM
+===#Block AK(size=1, flags=0)===
+   0. throw new java/lang/RuntimeException();
+      <- UnconditionalJump[GOTO] #AO -> #AK
+      <- UnconditionalJump[GOTO] #AM -> #AK
+      <- UnconditionalJump[GOTO] #AL -> #AK
+      <- UnconditionalJump[GOTO] #AJ -> #AK
+      <- UnconditionalJump[GOTO] #AN -> #AK
+===#Block G(size=3, flags=0)===
+   0. lvar20 = lvar0;
+   1. lvar46 = lvar10;
+   2. _consume(lvar20.restoreGamma(lvar46, 915990145));
+      -> Immediate #G -> #H
+      <- Immediate #F -> #G
+===#Block H(size=3, flags=0)===
+   0. lvar21 = lvar0;
+   1. lvar47 = lvar9;
+   2. _consume(lvar21.removeNightVision(lvar47, 736230686));
+      -> Immediate #H -> #I
+      <- Immediate #G -> #H
+===#Block I(size=2, flags=0)===
+   0. lvar22 = {599212571 ^ lvar74};
+   1. org.cobalt.internal.visual.FullBrightModule.wasEnabled = lvar22;
+      -> Immediate #I -> #J
+      <- Immediate #H -> #I
+===#Block J(size=2, flags=0)===
+   0. // Frame: locals[2] [net/minecraft/class_310, net/minecraft/class_315] stack[0] []
+   1. return;
+      <- Immediate #I -> #J
+      <- ConditionalJump[IF_ICMPEQ] #AM -> #J
