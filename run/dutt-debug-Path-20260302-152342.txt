@@ -1,8 +1,0 @@
-2026-03-02 15:23:42.301 [Dutt][Path] Session start
-2026-03-02 15:23:42.302 [Dutt][Path] Started -> 2421 132 -875 from 2423 133 -878
-2026-03-02 15:23:42.701 [Dutt][Path] Session start
-2026-03-02 15:23:42.701 [Dutt][Path] Started -> 2419 132 -873 from 2424 133 -877
-2026-03-02 15:23:43.048 [Dutt][Path] Repath shortcut: front=minecraft:air @ 2422 133 -875
-2026-03-02 15:23:43.050 [Dutt][Path] Repath shortcut: ok (nodes=5).
-2026-03-02 15:23:43.352 [Dutt][Path] Ended: Target in range. at 2421 132 -875
-2026-03-02 15:23:43.353 [Dutt][Path] Session end

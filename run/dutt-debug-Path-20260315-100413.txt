@@ -1,4 +1,0 @@
-2026-03-15 10:04:13.102 [Dutt][Path] Session start
-2026-03-15 10:04:13.102 [Dutt][Path] Started -> 2483 86 -158 from 2477 88 -173 (segment nodes=6)
-2026-03-15 10:04:13.744 [Dutt][Path] Repath blocked: front=minecraft:air @ 2477 88 -172
-2026-03-15 10:04:13.751 [Dutt][Path] Repath blocked: ok (nodes=6).

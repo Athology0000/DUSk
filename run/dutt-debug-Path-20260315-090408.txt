@@ -1,7 +1,0 @@
-2026-03-15 09:04:08.875 [Dutt][Path] Session start
-2026-03-15 09:04:08.875 [Dutt][Path] Started -> 2471 83 -164 from 2476 88 -178 (segment nodes=6)
-2026-03-15 09:04:09.724 [Dutt][Path] Repath checkpoint: front=minecraft:air @ 2473 88 -175
-2026-03-15 09:04:09.725 [Dutt][Path] Repath checkpoint: ok (nodes=6).
-2026-03-15 09:04:10.075 [Dutt][Path] Failed: no path found.
-2026-03-15 09:04:10.177 [Dutt][Path] Failed: no path found.
-2026-03-15 09:04:10.279 [Dutt][Path] Failed: no path found.

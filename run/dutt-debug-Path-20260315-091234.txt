@@ -1,5 +1,0 @@
-2026-03-15 09:12:34.572 [Dutt][Path] Session start
-2026-03-15 09:12:34.578 [Dutt][Path] Started -> 2479 90 -167 from 2478 88 -169 (segment nodes=4)
-2026-03-15 09:12:34.994 [Dutt][Path] Stuck: no movement for 9 ticks at 2478 88 -169 target=2479 90 -167
-2026-03-15 09:12:34.997 [Dutt][Path] Repath stuck: front=minecraft:birch_leaves @ 2478 88 -168
-2026-03-15 09:12:34.998 [Dutt][Path] Repath stuck: no path.

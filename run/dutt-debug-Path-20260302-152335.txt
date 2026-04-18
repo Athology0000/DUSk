@@ -1,6 +1,0 @@
-2026-03-02 15:23:35.246 [Dutt][Path] Session start
-2026-03-02 15:23:35.246 [Dutt][Path] Started -> 2422 134 -885 from 2420 135 -893
-2026-03-02 15:23:36.099 [Dutt][Path] Repath checkpoint: front=minecraft:air @ 2422 135 -889
-2026-03-02 15:23:36.100 [Dutt][Path] Repath checkpoint: ok (nodes=4).
-2026-03-02 15:23:36.545 [Dutt][Path] Ended: Target in range. at 2422 135 -888
-2026-03-02 15:23:36.546 [Dutt][Path] Session end

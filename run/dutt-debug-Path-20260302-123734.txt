@@ -1,4 +1,0 @@
-2026-03-02 12:37:34.223 [Dutt][Path] Session start
-2026-03-02 12:37:34.224 [Dutt][Path] Started -> 2234 132 -938 from 2231 132 -939
-2026-03-02 12:37:35.223 [Dutt][Path] Ended: Arrived. at 2233 132 -937
-2026-03-02 12:37:35.224 [Dutt][Path] Session end

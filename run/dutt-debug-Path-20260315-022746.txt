@@ -1,4 +1,0 @@
-2026-03-15 02:27:46.573 [Dutt][Path] Session start
-2026-03-15 02:27:46.574 [Dutt][Path] Started -> 2506 80 -199 from 2482 78 -194 (segment nodes=6)
-2026-03-15 02:27:50.560 [Dutt][Path] Ended: Combat repath. at 2482 78 -194
-2026-03-15 02:27:50.560 [Dutt][Path] Session end

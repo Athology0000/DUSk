@@ -1,8 +1,0 @@
-2026-03-15 10:04:20.245 [Dutt][Path] Session start
-2026-03-15 10:04:20.245 [Dutt][Path] Started -> 2488 86 -157 from 2486 88 -156 (segment nodes=3)
-2026-03-15 10:04:20.757 [Dutt][Path] Session start
-2026-03-15 10:04:20.757 [Dutt][Path] Started -> 2489 89 -161 from 2486 88 -157 (segment nodes=6)
-2026-03-15 10:04:22.093 [Dutt][Path] Repath checkpoint: front=minecraft:air @ 2480 88 -159
-2026-03-15 10:04:22.096 [Dutt][Path] Repath checkpoint: ok (nodes=6).
-2026-03-15 10:04:28.542 [Dutt][Path] Ended: Combat repath. at 2478 88 -160
-2026-03-15 10:04:28.543 [Dutt][Path] Session end

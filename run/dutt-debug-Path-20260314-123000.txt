@@ -1,8 +1,0 @@
-2026-03-14 12:30:00.988 [Dutt][Path] Session start
-2026-03-14 12:30:00.988 [Dutt][Path] Started -> 2678 114 -747 from 2676 115 -719 (segment nodes=6)
-2026-03-14 12:30:05.082 [Dutt][Path] Repath checkpoint: front=minecraft:air @ 2672 116 -737
-2026-03-14 12:30:05.084 [Dutt][Path] Repath checkpoint: ok (nodes=6).
-2026-03-14 12:30:08.386 [Dutt][Path] Repath resume: front=minecraft:air @ 2677 114 -747
-2026-03-14 12:30:08.388 [Dutt][Path] Repath resume: ok (nodes=2).
-2026-03-14 12:30:08.532 [Dutt][Path] Ended: Arrived. at 2676 114 -748
-2026-03-14 12:30:08.533 [Dutt][Path] Session end

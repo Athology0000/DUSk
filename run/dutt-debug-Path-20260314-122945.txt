@@ -1,7 +1,0 @@
-2026-03-14 12:29:45.193 [Dutt][Path] Session start
-2026-03-14 12:29:45.194 [Dutt][Path] Started -> 2678 114 -747 from 2676 115 -719 (segment nodes=6)
-2026-03-14 12:29:49.431 [Dutt][Path] Stuck: no progress, repath.
-2026-03-14 12:29:49.431 [Dutt][Path] Repath progress: front=minecraft:air @ 2672 116 -735
-2026-03-14 12:29:49.433 [Dutt][Path] Repath progress: ok (nodes=6).
-2026-03-14 12:29:52.329 [Dutt][Path] Ended: Arrived. at 2677 114 -745
-2026-03-14 12:29:52.330 [Dutt][Path] Session end

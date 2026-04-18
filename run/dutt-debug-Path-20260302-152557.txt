@@ -1,9 +1,0 @@
-2026-03-02 15:25:57.309 [Dutt][Path] Session start
-2026-03-02 15:25:57.310 [Dutt][Path] Started -> 2369 112 -855 from 2365 119 -860
-2026-03-02 15:25:57.348 [Dutt][Path] Repath shortcut: front=minecraft:air @ 2367 119 -856
-2026-03-02 15:26:00.534 [Dutt][Path] Repath shortcut: ok (nodes=3).
-2026-03-02 15:26:00.549 [Dutt][Path] Stuck: target behind, repath.
-2026-03-02 15:26:00.550 [Dutt][Path] Repath behind: front=minecraft:air @ 2367 118 -853
-2026-03-02 15:26:03.611 [Dutt][Path] Repath behind: ok (nodes=3).
-2026-03-02 15:26:04.152 [Dutt][Path] Ended: Arrived. at 2368 118 -855
-2026-03-02 15:26:04.153 [Dutt][Path] Session end

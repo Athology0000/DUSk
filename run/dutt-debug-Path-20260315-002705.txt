@@ -1,6 +1,0 @@
-2026-03-15 00:27:05.868 [Dutt][Path] Session start
-2026-03-15 00:27:05.869 [Dutt][Path] Started -> 2375 80 -648 from 2319 75 -749 (segment nodes=6)
-2026-03-15 00:27:08.212 [Dutt][Path] Repath checkpoint: front=minecraft:air @ 2313 67 -744
-2026-03-15 00:27:08.216 [Dutt][Path] Repath checkpoint: ok (nodes=6).
-2026-03-15 00:27:09.114 [Dutt][Path] Ended: Combat macro stopped. at 2313 67 -745
-2026-03-15 00:27:09.114 [Dutt][Path] Session end

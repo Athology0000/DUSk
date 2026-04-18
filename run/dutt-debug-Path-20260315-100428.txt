@@ -1,4 +1,0 @@
-2026-03-15 10:04:28.546 [Dutt][Path] Session start
-2026-03-15 10:04:28.547 [Dutt][Path] Started -> 2489 84 -160 from 2478 88 -160 (segment nodes=6)
-2026-03-15 10:04:28.844 [Dutt][Path] Ended: Combat macro stopped. at 2478 88 -160
-2026-03-15 10:04:28.845 [Dutt][Path] Session end

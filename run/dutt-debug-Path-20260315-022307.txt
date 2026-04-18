@@ -1,4 +1,0 @@
-2026-03-15 02:23:07.146 [Dutt][Path] Session start
-2026-03-15 02:23:07.147 [Dutt][Path] Started -> 2483 78 -221 from 2492 79 -228 (segment nodes=4)
-2026-03-15 02:23:07.788 [Dutt][Path] Repath distance: front=minecraft:leaf_litter @ 2492 79 -224
-2026-03-15 02:23:07.790 [Dutt][Path] Repath distance: ok (nodes=5).

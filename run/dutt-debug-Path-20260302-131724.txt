@@ -1,6 +1,0 @@
-2026-03-02 13:17:24.244 [Dutt][Path] Session start
-2026-03-02 13:17:24.245 [Dutt][Path] Started -> 2348 117 -900 from 2350 125 -903
-2026-03-02 13:17:24.838 [Dutt][Path] Repath passed: front=minecraft:air @ 2348 125 -906
-2026-03-02 13:17:24.840 [Dutt][Path] Repath passed: ok (nodes=8).
-2026-03-02 13:17:25.834 [Dutt][Path] Repath passed: front=minecraft:short_grass @ 2347 125 -905
-2026-03-02 13:17:25.839 [Dutt][Path] Repath passed: ok (nodes=10).

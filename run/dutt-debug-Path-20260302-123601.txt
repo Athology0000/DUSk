@@ -1,6 +1,0 @@
-2026-03-02 12:36:01.321 [Dutt][Path] Session start
-2026-03-02 12:36:01.325 [Dutt][Path] Started -> 2229 132 -939 from 2228 133 -932
-2026-03-02 12:36:02.342 [Dutt][Path] Repath checkpoint: front=minecraft:tall_grass @ 2230 133 -935
-2026-03-02 12:36:02.347 [Dutt][Path] Repath checkpoint: ok (nodes=4).
-2026-03-02 12:36:02.745 [Dutt][Path] Ended: Target in range. at 2230 133 -936
-2026-03-02 12:36:02.746 [Dutt][Path] Session end

@@ -1,2 +1,0 @@
-2026-03-15 09:04:13.828 [Dutt][Path] Session start
-2026-03-15 09:04:13.828 [Dutt][Path] Started -> 2476 91 -164 from 2476 88 -168 (segment nodes=6)

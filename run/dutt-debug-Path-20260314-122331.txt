@@ -1,8 +1,0 @@
-2026-03-14 12:23:31.881 [Dutt][Path] Session start
-2026-03-14 12:23:31.881 [Dutt][Path] Started -> 2679 111 -751 from 2677 116 -727 (segment nodes=6)
-2026-03-14 12:23:34.230 [Dutt][Path] Repath distance: front=minecraft:wildflowers @ 2674 116 -738
-2026-03-14 12:23:34.231 [Dutt][Path] Repath distance: ok (nodes=6).
-2026-03-14 12:23:37.235 [Dutt][Path] Repath checkpoint: front=minecraft:air @ 2676 114 -749
-2026-03-14 12:23:37.236 [Dutt][Path] Repath checkpoint: ok (nodes=3).
-2026-03-14 12:23:38.584 [Dutt][Path] Ended: Arrived. at 2678 112 -752
-2026-03-14 12:23:38.585 [Dutt][Path] Session end

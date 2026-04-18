@@ -1,4 +1,0 @@
-2026-03-02 13:17:28.992 [Dutt][Path] Session start
-2026-03-02 13:17:28.992 [Dutt][Path] Started -> 2344 117 -902 from 2346 125 -902
-2026-03-02 13:17:29.438 [Dutt][Path] Repath shortcut: front=minecraft:wildflowers @ 2347 125 -903
-2026-03-02 13:17:29.445 [Dutt][Path] Repath shortcut: ok (nodes=8).

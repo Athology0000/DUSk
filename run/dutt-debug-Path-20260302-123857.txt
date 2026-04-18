@@ -1,8 +1,0 @@
-2026-03-02 12:38:57.548 [Dutt][Path] Session start
-2026-03-02 12:38:57.548 [Dutt][Path] Started -> 2232 135 -900 from 2234 135 -898
-2026-03-02 12:38:57.848 [Dutt][Path] Ended: Target in range. at 2233 135 -899
-2026-03-02 12:38:57.848 [Dutt][Path] Session end
-2026-03-02 12:38:57.948 [Dutt][Path] Session start
-2026-03-02 12:38:57.949 [Dutt][Path] Started -> 2236 135 -894 from 2233 135 -899
-2026-03-02 12:38:58.483 [Dutt][Path] Ended: Target in range. at 2235 135 -898
-2026-03-02 12:38:58.483 [Dutt][Path] Session end

@@ -1,4 +1,0 @@
-2026-03-02 13:17:39.137 [Dutt][Path] Session start
-2026-03-02 13:17:39.138 [Dutt][Path] Started -> 2348 125 -896 from 2346 125 -902
-2026-03-02 13:17:40.338 [Dutt][Path] Ended: Combat macro stopped. at 2346 125 -902
-2026-03-02 13:17:40.339 [Dutt][Path] Session end

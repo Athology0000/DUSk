@@ -1,8 +1,0 @@
-2026-03-02 13:17:33.695 [Dutt][Path] Session start
-2026-03-02 13:17:33.696 [Dutt][Path] Started -> 2343 116 -901 from 2345 125 -903
-2026-03-02 13:17:33.887 [Dutt][Path] Repath passed: front=minecraft:air @ 2347 125 -902
-2026-03-02 13:17:33.895 [Dutt][Path] Repath passed: ok (nodes=8).
-2026-03-02 13:17:38.023 [Dutt][Path] Repath passed: front=minecraft:air @ 2346 125 -903
-2026-03-02 13:17:38.031 [Dutt][Path] Repath passed: ok (nodes=8).
-2026-03-02 13:17:39.094 [Dutt][Path] Ended: Combat macro stopped. at 2346 125 -902
-2026-03-02 13:17:39.094 [Dutt][Path] Session end

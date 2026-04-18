@@ -1,6 +1,0 @@
-2026-03-02 15:26:49.877 [Dutt][Path] Session start
-2026-03-02 15:26:49.882 [Dutt][Path] Started -> 2384 104 -856 from 2367 119 -855
-2026-03-02 15:26:50.310 [Dutt][Path] Repath blocked: front=minecraft:air @ 2367 119 -856
-2026-03-02 15:26:53.531 [Dutt][Path] Repath blocked: ok (nodes=7).
-2026-03-02 15:26:56.521 [Dutt][Path] Ended: Combat macro stopped. at 2369 119 -857
-2026-03-02 15:26:56.521 [Dutt][Path] Session end

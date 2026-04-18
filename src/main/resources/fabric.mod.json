@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "cobalt",
+  "version": "${version}",
+  "name": "Dutt Client",
+  "description": "Core mod that loads and manages external modules through a shared API for Dutt Client",
+  "authors": [
+    "QuiteBoring",
+    "Twiston",
+    "oblongboot"
+  ],
+  "contact": {
+    "homepage": "https://cobalt.quiteboring.dev/",
+    "sources": "https://github.com/CobaltScripts/Cobalt"
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/cobalt/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "org.cobalt.Cobalt"
+      }
+    ],
+    "preLaunch": [
+      "org.cobalt.PreLaunch"
+    ]
+  },
+  "mixins": [
+    "cobalt.mixins.json"
+  ],
+  "depends": {
+    "fabric-language-kotlin": ">=$fabricKotlinVersion",
+    "fabricloader": ">=$fabricLoaderVersion",
+    "minecraft": "~$minecraftVersion",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

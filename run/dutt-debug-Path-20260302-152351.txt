@@ -1,6 +1,0 @@
-2026-03-02 15:23:51.698 [Dutt][Path] Session start
-2026-03-02 15:23:51.699 [Dutt][Path] Started -> 2400 118 -873 from 2406 129 -873
-2026-03-02 15:23:51.852 [Dutt][Path] Session start
-2026-03-02 15:23:51.853 [Dutt][Path] Started -> 2400 118 -873 from 2406 129 -872
-2026-03-02 15:23:53.448 [Dutt][Path] Repath checkpoint: front=minecraft:air @ 2402 120 -870
-2026-03-02 15:23:53.449 [Dutt][Path] Repath checkpoint: ok (nodes=3).
