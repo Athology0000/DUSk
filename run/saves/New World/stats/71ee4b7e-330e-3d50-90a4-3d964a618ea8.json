@@ -1,0 +1,24 @@
+{
+  "stats": {
+    "minecraft:custom": {
+      "minecraft:sprint_one_cm": 12570,
+      "minecraft:time_since_rest": 1918,
+      "minecraft:walk_one_cm": 1966,
+      "minecraft:total_world_time": 2374,
+      "minecraft:fly_one_cm": 13443,
+      "minecraft:mob_kills": 1,
+      "minecraft:sneak_time": 2,
+      "minecraft:play_time": 1918,
+      "minecraft:damage_dealt": 160,
+      "minecraft:jump": 36,
+      "minecraft:time_since_death": 1918
+    },
+    "minecraft:picked_up": {
+      "minecraft:string": 2
+    },
+    "minecraft:killed": {
+      "minecraft:spider": 1
+    }
+  },
+  "DataVersion": 4671
+}

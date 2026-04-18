@@ -1,0 +1,57 @@
+2026-02-27 19:59:04.285 [Dusk][Path] Session start
+2026-02-27 19:59:04.289 [Dusk][Path] Started -> 1507 76 -847 from 1603 72 -835
+2026-02-27 19:59:05.941 [Dusk][Path] Repath distance: front=minecraft:short_grass @ 1596 72 -837
+2026-02-27 19:59:05.951 [Dusk][Path] Repath distance: ok (nodes=30).
+2026-02-27 19:59:07.237 [Dusk][Path] Repath checkpoint: front=minecraft:air @ 1590 72 -840
+2026-02-27 19:59:07.244 [Dusk][Path] Repath checkpoint: ok (nodes=26).
+2026-02-27 19:59:08.043 [Dusk][Path] Repath shortcut: front=minecraft:air @ 1586 72 -843
+2026-02-27 19:59:08.050 [Dusk][Path] Repath shortcut: ok (nodes=24).
+2026-02-27 19:59:09.037 [Dusk][Path] Repath shortcut: front=minecraft:air @ 1581 72 -845
+2026-02-27 19:59:09.046 [Dusk][Path] Repath shortcut: ok (nodes=22).
+2026-02-27 19:59:10.585 [Dusk][Path] Repath distance: front=minecraft:air @ 1573 72 -847
+2026-02-27 19:59:10.589 [Dusk][Path] Repath distance: ok (nodes=20).
+2026-02-27 19:59:12.340 [Dusk][Path] Stuck: no movement for 16 ticks at 1573 72 -847 target=1507 76 -847
+2026-02-27 19:59:13.036 [Dusk][Path] Repath shortcut: front=minecraft:air @ 1570 74 -847
+2026-02-27 19:59:13.042 [Dusk][Path] Repath shortcut: ok (nodes=20).
+2026-02-27 19:59:13.092 [Dusk][Path] Repath blocked: front=minecraft:air @ 1570 74 -847
+2026-02-27 19:59:13.096 [Dusk][Path] Repath blocked: no change.
+2026-02-27 19:59:14.042 [Dusk][Path] Repath shortcut: front=minecraft:air @ 1564 72 -847
+2026-02-27 19:59:14.045 [Dusk][Path] Repath shortcut: ok (nodes=17).
+2026-02-27 19:59:15.637 [Dusk][Path] Repath checkpoint: front=minecraft:stone @ 1555 71 -847
+2026-02-27 19:59:15.640 [Dusk][Path] Repath checkpoint: ok (nodes=14).
+2026-02-27 19:59:16.788 [Dusk][Path] Repath distance: front=minecraft:air @ 1551 73 -847
+2026-02-27 19:59:16.791 [Dusk][Path] Repath distance: ok (nodes=11).
+2026-02-27 19:59:16.890 [Dusk][Path] Repath distance: front=minecraft:air @ 1551 73 -847
+2026-02-27 19:59:16.893 [Dusk][Path] Repath distance: ok (nodes=11).
+2026-02-27 19:59:17.886 [Dusk][Path] Stuck: below path at 1546 73 -847, recovery toward 1531 75 -847
+2026-02-27 19:59:17.888 [Dusk][Path] Recovery: pathing to checkpoint 1531 75 -847
+2026-02-27 19:59:20.692 [Dusk][Path] Repath recovery-complete: front=minecraft:stone @ 1531 74 -847
+2026-02-27 19:59:20.694 [Dusk][Path] Repath recovery-complete: ok (nodes=8).
+2026-02-27 19:59:22.540 [Dusk][Path] Repath distance: front=minecraft:air @ 1523 76 -847
+2026-02-27 19:59:22.542 [Dusk][Path] Repath distance: ok (nodes=5).
+2026-02-27 19:59:22.641 [Dusk][Path] Repath distance: front=minecraft:air @ 1523 76 -847
+2026-02-27 19:59:22.643 [Dusk][Path] Repath distance: ok (nodes=5).
+2026-02-27 19:59:23.791 [Dusk][Path] Repath distance: front=minecraft:air @ 1524 76 -846
+2026-02-27 19:59:23.793 [Dusk][Path] Repath distance: ok (nodes=5).
+2026-02-27 19:59:29.191 [Dusk][Path] Repath distance: front=minecraft:air @ 1523 76 -847
+2026-02-27 19:59:29.193 [Dusk][Path] Repath distance: ok (nodes=5).
+2026-02-27 19:59:30.688 [Dusk][Path] Repath distance: front=minecraft:air @ 1524 76 -846
+2026-02-27 19:59:30.690 [Dusk][Path] Repath distance: ok (nodes=5).
+2026-02-27 19:59:34.736 [Dusk][Path] Repath distance: front=minecraft:air @ 1523 76 -847
+2026-02-27 19:59:34.738 [Dusk][Path] Repath distance: ok (nodes=5).
+2026-02-27 19:59:36.884 [Dusk][Path] Repath distance: front=minecraft:air @ 1523 76 -847
+2026-02-27 19:59:36.886 [Dusk][Path] Repath distance: ok (nodes=5).
+2026-02-27 19:59:36.986 [Dusk][Path] Repath distance: front=minecraft:air @ 1522 76 -847
+2026-02-27 19:59:36.988 [Dusk][Path] Repath distance: ok (nodes=5).
+2026-02-27 19:59:37.090 [Dusk][Path] Repath distance: front=minecraft:air @ 1522 76 -847
+2026-02-27 19:59:37.092 [Dusk][Path] Repath distance: ok (nodes=5).
+2026-02-27 19:59:38.837 [Dusk][Path] Repath distance: front=minecraft:air @ 1523 76 -848
+2026-02-27 19:59:38.839 [Dusk][Path] Repath distance: ok (nodes=5).
+2026-02-27 19:59:40.445 [Dusk][Path] Stuck: target behind, repath.
+2026-02-27 19:59:40.446 [Dusk][Path] Repath behind: front=minecraft:air @ 1524 76 -850
+2026-02-27 19:59:40.448 [Dusk][Path] Repath behind: ok (nodes=6).
+2026-02-27 19:59:42.036 [Dusk][Path] Repath shortcut: front=minecraft:air @ 1515 76 -847
+2026-02-27 19:59:42.037 [Dusk][Path] Repath shortcut: ok (nodes=5).
+2026-02-27 19:59:53.585 [Dusk][Path] Stuck: no movement for 16 ticks at 1513 76 -847 target=1507 76 -847
+2026-02-27 19:59:54.889 [Dusk][Path] Ended: Arrived. at 1508 76 -847
+2026-02-27 19:59:54.889 [Dusk][Path] Session end

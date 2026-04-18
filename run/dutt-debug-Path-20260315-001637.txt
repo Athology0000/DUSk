@@ -1,0 +1,10 @@
+2026-03-15 00:16:37.974 [Dutt][Path] Session start
+2026-03-15 00:16:37.974 [Dutt][Path] Started -> 2616 126 -560 from 2607 102 -508 (segment nodes=6)
+2026-03-15 00:16:39.409 [Dutt][Path] Repath checkpoint: front=minecraft:grass_block @ 2610 98 -511
+2026-03-15 00:16:39.417 [Dutt][Path] Repath checkpoint: ok (nodes=6).
+2026-03-15 00:16:41.909 [Dutt][Path] Repath resume: front=minecraft:dirt @ 2611 98 -515
+2026-03-15 00:16:42.790 [Dutt][Path] Repath resume: ok (nodes=6).
+2026-03-15 00:16:44.909 [Dutt][Path] Repath passed: front=minecraft:dirt @ 2611 98 -515
+2026-03-15 00:16:44.910 [Dutt][Path] Repath passed: ok (nodes=6).
+2026-03-15 00:16:47.358 [Dutt][Path] Ended: Combat macro stopped. at 2612 98 -516
+2026-03-15 00:16:47.359 [Dutt][Path] Session end

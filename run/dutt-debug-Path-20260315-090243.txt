@@ -1,0 +1,12 @@
+2026-03-15 09:02:43.514 [Dutt][Path] Session start
+2026-03-15 09:02:43.518 [Dutt][Path] Started -> 2471 78 -186 from 2482 81 -243 (segment nodes=6)
+2026-03-15 09:02:44.647 [Dutt][Path] Repath distance: front=minecraft:air @ 2481 79 -241
+2026-03-15 09:02:44.672 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 09:02:46.845 [Dutt][Path] Repath distance: front=minecraft:short_grass @ 2475 77 -232
+2026-03-15 09:02:46.850 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 09:02:49.301 [Dutt][Path] Repath resume: front=minecraft:leaf_litter @ 2473 75 -220
+2026-03-15 09:02:49.313 [Dutt][Path] Repath resume: ok (nodes=6).
+2026-03-15 09:02:51.899 [Dutt][Path] Repath resume: front=minecraft:air @ 2465 72 -211
+2026-03-15 09:02:52.617 [Dutt][Path] Repath resume: ok (nodes=6).
+2026-03-15 09:02:52.628 [Dutt][Path] Ended: No target found. at 2465 72 -211
+2026-03-15 09:02:52.628 [Dutt][Path] Session end

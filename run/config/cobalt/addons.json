@@ -1,0 +1,516 @@
+[
+  {
+    "addon": "cobalt",
+    "modules": [
+      {
+        "name": "Watermark",
+        "settings": {},
+        "hudElements": [
+          {
+            "id": "watermark",
+            "enabled": true,
+            "anchor": "TOP_LEFT",
+            "offsetX": 1453.0,
+            "offsetY": 868.0,
+            "scale": 3.0,
+            "settings": {
+              "Text": "DUTT",
+              "Color": {
+                "mode": "rainbow",
+                "speed": 1.0,
+                "saturation": 1.0,
+                "brightness": 1.0,
+                "opacity": 1.0
+              },
+              "Shadow": true,
+              "Background": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "Inventory HUD",
+        "settings": {},
+        "hudElements": [
+          {
+            "id": "inventory-hud",
+            "enabled": true,
+            "anchor": "BOTTOM_CENTER",
+            "offsetX": -691.67993,
+            "offsetY": 509.07996,
+            "scale": 1.45,
+            "settings": {
+              "Background": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "Mining",
+        "settings": {
+          "Enabled": false,
+          "Auto HOTM": true,
+          "Block Strength": 1.995,
+          "Block Type": 9,
+          "Auto Detect Block": true,
+          "Detected Block": "Unknown",
+          "Ping Delay Min": 0.5,
+          "Ping Delay Max": 2.0,
+          "Mining Speed": "0",
+          "HOTM Mult": "1.00",
+          "Mining Gems": false,
+          "Precision Active": false,
+          "Speed Boost Active": false,
+          "Front Loaded Active": false,
+          "Skymall Active": false,
+          "Mining Umber/Tungsten": false,
+          "Ping": "0",
+          "Look Ticks": "0",
+          "Scrape Stats": false,
+          "Scrape HOTM": false,
+          "Export HOTM": false
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Fairy",
+        "settings": {
+          "Enabled": true,
+          "Render Routes": true,
+          "Route Obstructions": true,
+          "Grotto Scanner": false,
+          "Grotto Scanner Boxes": true,
+          "Grotto Scanner Tracers": true
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Routes",
+        "settings": {
+          "Enabled": false,
+          "Route Builder": "",
+          "Route Name": "default",
+          "Add X": "",
+          "Add Y": "",
+          "Add Z": "",
+          "Points": "0",
+          "Status": "Idle",
+          "Render Route": true,
+          "Record on Right Click": true,
+          "Loop Route": true,
+          "Start From Nearest": false,
+          "Point Type": 0,
+          "Vein Occupancy Radius": 6.0,
+          "Point Picker": false,
+          "Add Point": false,
+          "Add Coord Point": false,
+          "Remove Last": false,
+          "Clear Route": false,
+          "Save Route": false,
+          "Load Route": false,
+          "Start Route": false,
+          "Path Closest Vein": false,
+          "Stop Route": false
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Mining Macro",
+        "settings": {
+          "Enabled": false,
+          "Macro": "",
+          "Use Mining Type": false,
+          "Block Type": 1,
+          "Use Detected Block": true,
+          "Scan Radius": 32.0,
+          "Scan Vertical": 8.0,
+          "Scan Per Tick": 400.0,
+          "Max Vein Blocks": 256.0,
+          "Mine Range": 4.5,
+          "Require LOS": true,
+          "Instant Transmission": true,
+          "Warp Min Dist": 10.0,
+          "Warp Aim Tol": 6.0,
+          "Warp Cooldown": 24.0,
+          "Use Pathfinding": true,
+          "Vein Direction": false,
+          "Skip Occupied Veins": true,
+          "Occupied Radius": 6.0
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Commission Macro",
+        "settings": {
+          "Enabled": false,
+          "How It Works": "",
+          "Status": "Idle",
+          "Commission": "None",
+          "Area": "Unknown"
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Commission HUD",
+        "settings": {},
+        "hudElements": [
+          {
+            "id": "commission-hud",
+            "enabled": true,
+            "anchor": "TOP_LEFT",
+            "offsetX": 395.0,
+            "offsetY": 312.0,
+            "scale": 1.0875,
+            "settings": {
+              "Background": true,
+              "Only When Active": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "Vein Direction Setter",
+        "settings": {
+          "Vein Flow": "",
+          "Right Click Vein Directions": false,
+          "Render Vein Flows": true,
+          "Pending Start": "-",
+          "Pure Coal": "Not set",
+          "Pure Iron": "Not set",
+          "Pure Gold": "Not set",
+          "Pure Lapis": "Not set",
+          "Pure Redstone": "Not set",
+          "Pure Emerald": "Not set",
+          "Pure Diamond": "Not set",
+          "Pure Quartz": "Not set",
+          "Mithril (Gray)": "Not set",
+          "Mithril (Prismarine)": "Not set",
+          "Mithril (Blue Wool)": "Not set",
+          "Titanium": "Not set",
+          "Ruby Gemstone": "Not set",
+          "Amber Gemstone": "Not set",
+          "Amethyst Gemstone": "Not set",
+          "Jade Gemstone": "Not set",
+          "Sapphire Gemstone": "Not set",
+          "Opal Gemstone": "Not set",
+          "Topaz Gemstone": "Not set",
+          "Jasper Gemstone": "Not set",
+          "Onyx Gemstone": "Not set",
+          "Aquamarine Gemstone": "Not set",
+          "Citrine Gemstone": "Not set",
+          "Peridot Gemstone": "Not set",
+          "Umber": "Not set",
+          "Tungsten": "Not set",
+          "Glacite": "Not set",
+          "Sulphur": "Not set",
+          "Clear All": false,
+          "Cancel Pending": false
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Auto Lantern",
+        "settings": {
+          "Enabled": false,
+          "Auto Lantern": "",
+          "Require Macro": true,
+          "Cooldown": 80.0,
+          "Reuse Distance": 14.0,
+          "Buff Active": "Unknown"
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Combat Macro",
+        "settings": {
+          "Enabled": false,
+          "Target": "",
+          "Target Name": "Zombie",
+          "Crypt Zombie Slayer": false,
+          "Slayer Status": "Off",
+          "Slayer Type": 0,
+          "Slayer Tier": 1.0,
+          "Auto Warp": true,
+          "Location": 0,
+          "Walkback Route": "",
+          "Search Range": 32.0,
+          "Min CPS": 6.0,
+          "Max CPS": 10.0,
+          "Attack Range": 3.2,
+          "Chase Stop Buffer": 1.1,
+          "Stay Near Start": true,
+          "Start Area Radius": 24.0,
+          "Auto Heal": true,
+          "Wand Of Atonement": false,
+          "Zombie Sword": false,
+          "Overflux": false,
+          "Ragnarok": false,
+          "Sword Of Bad Health": false,
+          "Heal At Health": 10.0,
+          "Stuck Ticks": 80.0,
+          "Warp Hub On Stuck": true,
+          "Require LOS": true,
+          "Aim Tolerance": 15.0,
+          "Min Attack Cooldown": 0.2,
+          "Stuck Repath Tries": 2.0,
+          "Auto Learn Last Kill": true,
+          "Whitelist Only": true,
+          "Learned Whitelist": "ice walker, zombie",
+          "Last Kill": "Zombie"
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Combat HUD",
+        "settings": {},
+        "hudElements": [
+          {
+            "id": "combat-hud",
+            "enabled": true,
+            "anchor": "TOP_LEFT",
+            "offsetX": 901.0,
+            "offsetY": 601.0,
+            "scale": 1.0875,
+            "settings": {
+              "Background": true,
+              "Only When Active": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dungeons",
+        "settings": {
+          "Bonzo Helper": false,
+          "Explosion Delay": 8.0,
+          "S-Tap Duration": 4.0,
+          "Adaptive Timing": true,
+          "Experimental Mode": false,
+          "Bonzo Stats": "No data",
+          "Bonzo Suggestion": "",
+          "Reset Bonzo Stats": false,
+          "Auto Superboom": false,
+          "Superboom Switch Delay": 4.0,
+          "Superboom Return Delay": 8.0,
+          "Superboom Target Blocks": true,
+          "Cracked Bricks": true,
+          "Smooth Stone Slabs": true,
+          "Stone Brick Stairs": true,
+          "Allow Normal TNT": false,
+          "Superboom Debug": true
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Etherwarp",
+        "settings": {
+          "Enabled": true,
+          "Render Mode": 0,
+          "Can Warp Color": -16711936,
+          "Cannot Warp Color": -65536,
+          "Outline Width": 2.2,
+          "Fill Opacity": 0.35
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Left Click Etherwarp",
+        "settings": {
+          "Enabled": false,
+          "Sneak Delay": 50.0,
+          "Processing Time": 100.0,
+          "Adaptive Ping": true
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Pathfinding",
+        "settings": {
+          "Enabled": true,
+          "Target": "",
+          "Target X": "2315",
+          "Target Y": "67",
+          "Target Z": "-749",
+          "Target Block": "player",
+          "Cache HUD": true,
+          "Cache Radius": 4.0,
+          "Cache Cell Size": 8.0,
+          "Cache Grid": false,
+          "Debug File Logs": true,
+          "Start": false,
+          "Stop": false
+        },
+        "hudElements": [
+          {
+            "id": "path-cache-hud",
+            "enabled": true,
+            "anchor": "TOP_RIGHT",
+            "offsetX": 2259.0,
+            "offsetY": 1081.0,
+            "scale": 3.0,
+            "settings": {}
+          }
+        ]
+      },
+      {
+        "name": "Full Bright",
+        "settings": {
+          "Enabled": false,
+          "Gamma": 1.0,
+          "Mode": 0
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Dark Mode",
+        "settings": {
+          "Enabled": false,
+          "Tint Color": -1653050,
+          "Intensity": 1.0,
+          "Blend Mode": 1,
+          "Vignette": 1.0,
+          "Saturation": 2.0,
+          "Contrast": 0.0,
+          "Chromatic Aberration": 0.00515,
+          "Brightness": 5.0
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Freecam",
+        "settings": {
+          "Enabled": false,
+          "Horizontal Speed": 0.8,
+          "Vertical Speed": 0.65,
+          "Sprint Multiplier": 1.75,
+          "Force First Person": true
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Orbit Freecam",
+        "settings": {
+          "Enabled": false,
+          "Radius": 5.0,
+          "Height": 1.2,
+          "Speed": 18.0,
+          "Bob Amount": 0.25,
+          "Bob Speed": 0.8,
+          "Force First Person": true
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Block Overlay",
+        "settings": {
+          "Enabled": true,
+          "Overlay Color": -1,
+          "Opacity": 0.02,
+          "Color Mode": 2
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Block Outline",
+        "settings": {
+          "Enabled": false,
+          "Blur Radius": 1.6,
+          "Threshold": 0.735,
+          "Outline Color": -14848,
+          "Outline": true,
+          "Color Mode": 2
+        },
+        "hudElements": []
+      },
+      {
+        "name": "QoL",
+        "settings": {
+          "Enabled": true,
+          "Command Hotkeys": "",
+          "Add Hotkey": false,
+          "Command Hotkey 1": {
+            "keyCode": 88,
+            "command": "time set day"
+          }
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Rotations",
+        "settings": {
+          "Bezier Shape": "",
+          "Curve In": 0.06,
+          "Curve Out": 0.94,
+          "Min Scale": 0.18,
+          "Snap Threshold": 0.25,
+          "Combat Macro": "",
+          "Combat Yaw Step": {
+            "start": 8.0,
+            "end": 12.0
+          },
+          "Combat Pitch Step": {
+            "start": 6.0,
+            "end": 10.0
+          },
+          "Routes": "",
+          "Route Yaw Step": {
+            "start": 7.8,
+            "end": 16.2
+          },
+          "Route Pitch Step": {
+            "start": 5.0,
+            "end": 9.0
+          },
+          "Mining Macro": "",
+          "Mining Max Speed": {
+            "start": 80.0,
+            "end": 120.0
+          },
+          "Mining Max Accel": {
+            "start": 180.0,
+            "end": 260.0
+          },
+          "Mining Speed Scale": {
+            "start": 0.7,
+            "end": 1.0
+          },
+          "Mining Accel Scale": {
+            "start": 0.6,
+            "end": 1.0
+          },
+          "Mining Pitch Step": {
+            "start": 2.5,
+            "end": 4.5
+          },
+          "Warp": "",
+          "Warp Speed Scale": {
+            "start": 0.8,
+            "end": 1.2
+          },
+          "Warp Accel Scale": {
+            "start": 0.7,
+            "end": 1.1
+          }
+        },
+        "hudElements": []
+      },
+      {
+        "name": "Liquid Hotbar",
+        "settings": {
+          "Enabled": true
+        },
+        "hudElements": [
+          {
+            "id": "liquid-hotbar",
+            "enabled": true,
+            "anchor": "BOTTOM_CENTER",
+            "offsetX": 0.0,
+            "offsetY": 0.0,
+            "scale": 1.0,
+            "settings": {}
+          }
+        ]
+      }
+    ]
+  }
+]

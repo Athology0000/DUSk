@@ -1,0 +1,22 @@
+2026-03-02 12:39:14.818 [Dutt][Path] Session start
+2026-03-02 12:39:14.818 [Dutt][Path] Started -> 2223 135 -885 from 2232 135 -890
+2026-03-02 12:39:15.422 [Dutt][Path] Repath distance: front=minecraft:air @ 2231 135 -890
+2026-03-02 12:39:15.422 [Dutt][Path] Repath distance: ok (nodes=3).
+2026-03-02 12:39:15.522 [Dutt][Path] Repath distance: front=minecraft:air @ 2231 135 -890
+2026-03-02 12:39:15.523 [Dutt][Path] Repath distance: ok (nodes=3).
+2026-03-02 12:39:15.622 [Dutt][Path] Repath distance: front=minecraft:air @ 2231 135 -890
+2026-03-02 12:39:15.623 [Dutt][Path] Repath distance: ok (nodes=3).
+2026-03-02 12:39:15.722 [Dutt][Path] Repath distance: front=minecraft:air @ 2231 135 -890
+2026-03-02 12:39:15.722 [Dutt][Path] Repath distance: ok (nodes=3).
+2026-03-02 12:39:15.823 [Dutt][Path] Repath distance: front=minecraft:air @ 2231 135 -890
+2026-03-02 12:39:15.824 [Dutt][Path] Repath distance: ok (nodes=3).
+2026-03-02 12:39:15.923 [Dutt][Path] Repath distance: front=minecraft:air @ 2232 135 -891
+2026-03-02 12:39:15.924 [Dutt][Path] Repath distance: ok (nodes=3).
+2026-03-02 12:39:16.022 [Dutt][Path] Repath distance: front=minecraft:air @ 2232 135 -891
+2026-03-02 12:39:16.023 [Dutt][Path] Repath distance: ok (nodes=3).
+2026-03-02 12:39:16.123 [Dutt][Path] Repath distance: front=minecraft:air @ 2232 135 -891
+2026-03-02 12:39:16.124 [Dutt][Path] Repath distance: ok (nodes=3).
+2026-03-02 12:39:16.223 [Dutt][Path] Repath distance: front=minecraft:air @ 2232 135 -891
+2026-03-02 12:39:16.224 [Dutt][Path] Repath distance: ok (nodes=3).
+2026-03-02 12:39:16.475 [Dutt][Path] Repath distance: front=minecraft:short_grass @ 2232 135 -889
+2026-03-02 12:39:16.476 [Dutt][Path] Repath distance: ok (nodes=3).

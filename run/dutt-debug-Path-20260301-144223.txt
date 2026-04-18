@@ -1,0 +1,9 @@
+2026-03-01 14:42:23.460 [Dutt][Path] Session start
+2026-03-01 14:42:23.461 [Dutt][Path] Started -> 2495 126 -943 from 2492 125 -944
+2026-03-01 14:42:23.461 t=451157 [Dutt][Path] pos:2492.90,125.00,-943.69 blk:2492,125,-944
+2026-03-01 14:42:23.462 [Dutt][Path] Recovery: navmesh anchor 2493 125 -944
+2026-03-01 14:42:23.511 t=451158 [Dutt][Path] pos:2492.90,125.00,-943.69 blk:2492,125,-944
+2026-03-01 14:42:23.511 [Dutt][Path] Recovery: rejoined main path at index 3/4.
+2026-03-01 14:42:23.561 t=451159 [Dutt][Path] pos:2492.90,125.00,-943.69 blk:2492,125,-944
+2026-03-01 14:42:23.607 [Dutt][Path] Ended: Target in range. at 2493 125 -944
+2026-03-01 14:42:23.607 [Dutt][Path] Session end

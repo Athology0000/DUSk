@@ -1,0 +1,20 @@
+2026-02-27 21:41:54.349 [Dusk][Path] Session start
+2026-02-27 21:41:54.355 [Dusk][Path] Started -> 1407 76 -848 from 1620 66 -788
+2026-02-27 21:41:55.747 [Dusk][Path] Repath shortcut: front=minecraft:andesite @ 1615 66 -791
+2026-02-27 21:41:55.991 [Dusk][Path] Repath shortcut: ok (nodes=45).
+2026-02-27 21:41:57.896 [Dusk][Path] Stuck: below path at 1612 64 -790 (waiting for stuck recovery).
+2026-02-27 21:41:59.248 [Dusk][Path] Stuck: no movement for 16 ticks at 1612 63 -790 target=1407 76 -848
+2026-02-27 21:41:59.249 [Dusk][Path] Repath stuck: front=minecraft:sandstone @ 1612 63 -791
+2026-02-27 21:41:59.250 [Dusk][Path] Repath stuck: no path.
+2026-02-27 21:41:59.251 [Dusk][Path] Recovery: no path.
+2026-02-27 21:41:59.709 [Dusk][Path] Repath stuck-nearby: ok (nearby start).
+2026-02-27 21:42:01.543 [Dusk][Path] Stuck: below path at 1609 61 -790 (waiting for stuck recovery).
+2026-02-27 21:42:02.545 [Dusk][Path] Stuck: below path at 1608 61 -790 (waiting for stuck recovery).
+2026-02-27 21:42:05.416 [Dusk][Path] Stuck: no movement for 16 ticks at 1608 60 -790 target=1407 76 -848
+2026-02-27 21:42:05.417 [Dusk][Path] Repath stuck: front=minecraft:sand @ 1608 60 -791
+2026-02-27 21:42:05.417 [Dusk][Path] Repath stuck: no path.
+2026-02-27 21:42:05.418 [Dusk][Path] Recovery: no path.
+2026-02-27 21:42:05.419 [Dusk][Path] Repath stuck-nearby: no nearby candidates.
+2026-02-27 21:42:05.422 [Dusk][Path] Failed: trapped in hole at 1608 60 -790 target=1407 76 -848
+2026-02-27 21:42:05.423 [Dusk][Path] Ended: Stuck in a hole. at 1608 60 -790
+2026-02-27 21:42:05.424 [Dusk][Path] Session end

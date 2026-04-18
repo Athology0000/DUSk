@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.obf.passes.NativeLiftingPassTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-04-11T23:07:18.360Z" hostname="DESKTOP-4IRTSCE" time="0.005">
+  <properties/>
+  <testcase name="cSourceIsGeneratedForNonTrivialMethod()" classname="com.obf.passes.NativeLiftingPassTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,21 @@
+2026-02-28 09:06:19.278 [Dusk][Path] Session start
+2026-02-28 09:06:19.279 [Dusk][Path] Started -> 1469 77 -848 from 1620 66 -788
+2026-02-28 09:06:19.377 [Dusk][Path] Recovery: navmesh anchor 1615 68 -791
+2026-02-28 09:06:22.827 [Dusk][Path] Stuck: no movement for 16 ticks at 1616 66 -789 target=1469 77 -848
+2026-02-28 09:06:23.576 [Dusk][Path] Repath recovery-complete: front=minecraft:air @ 1616 68 -791
+2026-02-28 09:06:23.595 [Dusk][Path] Repath recovery-complete: ok (nodes=36).
+2026-02-28 09:06:23.627 [Dusk][Path] Repath blocked: front=minecraft:air @ 1616 68 -792
+2026-02-28 09:06:23.650 [Dusk][Path] Repath blocked: ok (nodes=35).
+2026-02-28 09:06:25.276 [Dusk][Path] Repath shortcut: front=minecraft:stone @ 1610 69 -796
+2026-02-28 09:06:25.301 [Dusk][Path] Repath shortcut: ok (nodes=32).
+2026-02-28 09:06:26.970 [Dusk][Path] Recovery: navmesh anchor 1605 70 -795
+2026-02-28 09:06:27.175 [Dusk][Path] Repath recovery-complete: front=minecraft:stone @ 1605 69 -795
+2026-02-28 09:06:27.195 [Dusk][Path] Repath recovery-complete: ok (nodes=32).
+2026-02-28 09:06:27.520 [Dusk][Path] Recovery: navmesh anchor 1602 72 -799
+2026-02-28 09:06:30.075 [Dusk][Path] Stuck: no movement for 16 ticks at 1604 70 -795 target=1469 77 -848
+2026-02-28 09:06:31.619 [Dusk][Path] Stuck: no movement for 16 ticks at 1604 71 -797 target=1469 77 -848
+2026-02-28 09:06:37.124 [Dusk][Path] Repath recovery-complete: front=minecraft:air @ 1603 72 -799
+2026-02-28 09:06:37.126 [Dusk][Path] Repath recovery-complete: no path.
+2026-02-28 09:06:37.126 [Dusk][Path] Failed: repath (recovery-complete) found no path.
+2026-02-28 09:06:37.127 [Dusk][Path] Ended: Lost path. at 1603 72 -798
+2026-02-28 09:06:37.127 [Dusk][Path] Session end

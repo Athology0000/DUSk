@@ -1,0 +1,50 @@
+2026-03-02 15:24:26.651 [Dutt][Path] Session start
+2026-03-02 15:24:26.652 [Dutt][Path] Started -> 2407 130 -876 from 2412 119 -865
+2026-03-02 15:24:27.696 [Dutt][Path] Stuck: below path at 2412 119 -865 (waiting for stuck recovery).
+2026-03-02 15:24:28.055 [Dutt][Path] Stuck: no movement for 16 ticks at 2412 119 -865 target=2407 130 -876
+2026-03-02 15:24:29.401 [Dutt][Path] Failed: no path found.
+2026-03-02 15:24:29.452 [Dutt][Path] Stuck: below path at 2411 120 -865 (waiting for stuck recovery).
+2026-03-02 15:24:30.400 [Dutt][Path] Stuck: no progress, repath.
+2026-03-02 15:24:30.402 [Dutt][Path] Repath progress: front=minecraft:grass_block @ 2412 120 -866
+2026-03-02 15:24:30.403 [Dutt][Path] Repath progress: no path.
+2026-03-02 15:24:30.451 [Dutt][Path] Stuck: below path at 2412 120 -865 (waiting for stuck recovery).
+2026-03-02 15:24:31.447 [Dutt][Path] Stuck: below path at 2411 120 -865 (waiting for stuck recovery).
+2026-03-02 15:24:32.247 [Dutt][Path] Stuck: no progress, repath.
+2026-03-02 15:24:32.248 [Dutt][Path] Repath progress: front=minecraft:dirt @ 2411 120 -866
+2026-03-02 15:24:32.248 [Dutt][Path] Repath progress: no path.
+2026-03-02 15:24:32.449 [Dutt][Path] Stuck: below path at 2411 120 -865 (waiting for stuck recovery).
+2026-03-02 15:24:33.452 [Dutt][Path] Stuck: below path at 2411 120 -865 (waiting for stuck recovery).
+2026-03-02 15:24:33.801 [Dutt][Path] Stuck: no progress, repath.
+2026-03-02 15:24:33.802 [Dutt][Path] Repath progress: front=minecraft:grass_block @ 2410 120 -864
+2026-03-02 15:24:33.802 [Dutt][Path] Repath progress: no path.
+2026-03-02 15:24:34.445 [Dutt][Path] Stuck: below path at 2411 120 -864 (waiting for stuck recovery).
+2026-03-02 15:24:35.444 [Dutt][Path] Stuck: below path at 2411 120 -865 (waiting for stuck recovery).
+2026-03-02 15:24:35.445 [Dutt][Path] Stuck: no progress, repath.
+2026-03-02 15:24:35.445 [Dutt][Path] Repath progress: front=minecraft:grass_block @ 2410 120 -865
+2026-03-02 15:24:35.445 [Dutt][Path] Repath progress: no path.
+2026-03-02 15:24:36.450 [Dutt][Path] Stuck: below path at 2411 120 -864 (waiting for stuck recovery).
+2026-03-02 15:24:36.801 [Dutt][Path] Failed: no path found.
+2026-03-02 15:24:36.995 [Dutt][Path] Stuck: no progress, repath.
+2026-03-02 15:24:36.996 [Dutt][Path] Repath progress: front=minecraft:grass_block @ 2410 120 -864
+2026-03-02 15:24:36.996 [Dutt][Path] Repath progress: no path.
+2026-03-02 15:24:37.446 [Dutt][Path] Stuck: below path at 2411 120 -865 (waiting for stuck recovery).
+2026-03-02 15:24:38.449 [Dutt][Path] Stuck: below path at 2411 120 -864 (waiting for stuck recovery).
+2026-03-02 15:24:38.846 [Dutt][Path] Stuck: no progress, repath.
+2026-03-02 15:24:38.846 [Dutt][Path] Repath progress: front=minecraft:dirt @ 2411 120 -866
+2026-03-02 15:24:38.847 [Dutt][Path] Repath progress: no path.
+2026-03-02 15:24:39.452 [Dutt][Path] Stuck: below path at 2411 120 -864 (waiting for stuck recovery).
+2026-03-02 15:24:39.553 [Dutt][Path] Failed: no path found.
+2026-03-02 15:24:40.459 [Dutt][Path] Stuck: below path at 2411 120 -864 (waiting for stuck recovery).
+2026-03-02 15:24:40.700 [Dutt][Path] Stuck: no progress, repath.
+2026-03-02 15:24:40.700 [Dutt][Path] Repath progress: front=minecraft:dirt @ 2411 120 -866
+2026-03-02 15:24:40.701 [Dutt][Path] Repath progress: no path.
+2026-03-02 15:24:41.446 [Dutt][Path] Stuck: below path at 2411 120 -864 (waiting for stuck recovery).
+2026-03-02 15:24:42.303 [Dutt][Path] Failed: no path found.
+2026-03-02 15:24:42.446 [Dutt][Path] Stuck: below path at 2411 120 -865 (waiting for stuck recovery).
+2026-03-02 15:24:42.546 [Dutt][Path] Stuck: no progress, repath.
+2026-03-02 15:24:42.547 [Dutt][Path] Repath progress: front=minecraft:dirt @ 2411 120 -866
+2026-03-02 15:24:42.547 [Dutt][Path] Repath progress: no path.
+2026-03-02 15:24:43.447 [Dutt][Path] Stuck: below path at 2411 120 -865 (waiting for stuck recovery).
+2026-03-02 15:24:44.254 [Dutt][Path] Failed: no path found.
+2026-03-02 15:24:45.544 [Dutt][Path] Ended: Combat macro stopped. at 2411 120 -864
+2026-03-02 15:24:45.545 [Dutt][Path] Session end

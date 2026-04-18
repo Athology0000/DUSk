@@ -1,0 +1,11 @@
+2026-03-15 09:03:39.384 [Dutt][Path] Session start
+2026-03-15 09:03:39.384 [Dutt][Path] Started -> 2471 78 -186 from 2494 88 -198 (segment nodes=6)
+2026-03-15 09:03:39.398 [Dutt][Path] Stuck: target behind, repath.
+2026-03-15 09:03:39.399 [Dutt][Path] Repath distance: front=minecraft:air @ 2503 89 -198
+2026-03-15 09:03:40.035 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 09:03:40.049 [Dutt][Path] Repath distance: front=minecraft:air @ 2505 89 -192
+2026-03-15 09:03:40.653 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 09:03:40.664 [Dutt][Path] Repath distance: front=minecraft:air @ 2504 89 -191
+2026-03-15 09:03:40.666 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 09:03:42.099 [Dutt][Path] Ended: No target found. at 2495 89 -195
+2026-03-15 09:03:42.099 [Dutt][Path] Session end

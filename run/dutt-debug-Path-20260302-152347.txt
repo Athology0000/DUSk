@@ -1,0 +1,14 @@
+2026-03-02 15:23:47.101 [Dutt][Path] Session start
+2026-03-02 15:23:47.102 [Dutt][Path] Started -> 2410 130 -872 from 2414 131 -872
+2026-03-02 15:23:47.245 [Dutt][Path] Ended: Target in range. at 2413 131 -872
+2026-03-02 15:23:47.245 [Dutt][Path] Session end
+2026-03-02 15:23:47.396 [Dutt][Path] Session start
+2026-03-02 15:23:47.397 [Dutt][Path] Started -> 2409 130 -872 from 2413 131 -872
+2026-03-02 15:23:47.695 [Dutt][Path] Session start
+2026-03-02 15:23:47.695 [Dutt][Path] Started -> 2407 129 -872 from 2413 131 -872
+2026-03-02 15:23:47.995 [Dutt][Path] Session start
+2026-03-02 15:23:47.998 [Dutt][Path] Started -> 2406 129 -872 from 2413 131 -873
+2026-03-02 15:23:48.546 [Dutt][Path] Repath checkpoint: front=minecraft:air @ 2409 130 -872
+2026-03-02 15:23:48.547 [Dutt][Path] Repath checkpoint: ok (nodes=3).
+2026-03-02 15:23:48.750 [Dutt][Path] Ended: Target in range. at 2409 130 -872
+2026-03-02 15:23:48.750 [Dutt][Path] Session end

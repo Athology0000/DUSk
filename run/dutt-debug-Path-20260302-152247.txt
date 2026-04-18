@@ -1,0 +1,13 @@
+2026-03-02 15:22:47.195 [Dutt][Path] Session start
+2026-03-02 15:22:47.203 [Dutt][Path] Started -> 2341 125 -900 from 2361 124 -897
+2026-03-02 15:22:48.052 [Dutt][Path] Repath shortcut: front=minecraft:grass_block @ 2358 124 -898
+2026-03-02 15:22:48.068 [Dutt][Path] Repath shortcut: ok (nodes=6).
+2026-03-02 15:22:49.048 [Dutt][Path] Repath shortcut: front=minecraft:grass_block @ 2356 124 -901
+2026-03-02 15:22:49.054 [Dutt][Path] Repath shortcut: ok (nodes=5).
+2026-03-02 15:22:51.050 [Dutt][Path] Repath shortcut: front=minecraft:air @ 2349 125 -901
+2026-03-02 15:22:51.052 [Dutt][Path] Repath shortcut: ok (nodes=4).
+2026-03-02 15:22:52.395 [Dutt][Path] Repath checkpoint: front=minecraft:short_grass @ 2345 125 -901
+2026-03-02 15:22:52.397 [Dutt][Path] Repath checkpoint: ok (nodes=3).
+2026-03-02 15:22:53.951 [Dutt][Path] Stuck: no progress, repath.
+2026-03-02 15:22:53.952 [Dutt][Path] Repath progress: front=minecraft:air @ 2347 125 -902
+2026-03-02 15:22:53.954 [Dutt][Path] Repath progress: ok (nodes=3).

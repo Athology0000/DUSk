@@ -1,0 +1,5 @@
+2026-03-02 15:23:49.350 [Dutt][Path] Session start
+2026-03-02 15:23:49.351 [Dutt][Path] Started -> 2405 128 -872 from 2409 130 -872
+2026-03-02 15:23:50.000 [Dutt][Path] Failed: target not walkable.
+2026-03-02 15:23:50.447 [Dutt][Path] Ended: Target in range. at 2406 129 -873
+2026-03-02 15:23:50.448 [Dutt][Path] Session end

@@ -1,0 +1,22 @@
+2026-03-15 02:27:59.490 [Dutt][Path] Session start
+2026-03-15 02:27:59.491 [Dutt][Path] Started -> 2503 80 -190 from 2472 79 -186 (segment nodes=6)
+2026-03-15 02:27:59.585 [Dutt][Path] Ended: No target found. at 2471 79 -186
+2026-03-15 02:27:59.586 [Dutt][Path] Session end
+2026-03-15 02:27:59.892 [Dutt][Path] Session start
+2026-03-15 02:27:59.892 [Dutt][Path] Started -> 2503 80 -189 from 2471 78 -186 (segment nodes=6)
+2026-03-15 02:28:00.490 [Dutt][Path] Repath distance: front=minecraft:air @ 2470 78 -186
+2026-03-15 02:28:00.491 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 02:28:00.984 [Dutt][Path] Repath distance: front=minecraft:air @ 2470 78 -186
+2026-03-15 02:28:00.985 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 02:28:01.489 [Dutt][Path] Repath distance: front=minecraft:air @ 2470 78 -186
+2026-03-15 02:28:01.490 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 02:28:01.987 [Dutt][Path] Repath distance: front=minecraft:air @ 2470 78 -186
+2026-03-15 02:28:01.988 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 02:28:02.493 [Dutt][Path] Repath distance: front=minecraft:air @ 2470 78 -186
+2026-03-15 02:28:02.494 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 02:28:02.985 [Dutt][Path] Repath distance: front=minecraft:air @ 2470 78 -186
+2026-03-15 02:28:02.988 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 02:28:03.486 [Dutt][Path] Repath distance: front=minecraft:air @ 2470 78 -186
+2026-03-15 02:28:03.487 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-15 02:28:03.982 [Dutt][Path] Ended: Combat repath. at 2471 78 -186
+2026-03-15 02:28:03.983 [Dutt][Path] Session end

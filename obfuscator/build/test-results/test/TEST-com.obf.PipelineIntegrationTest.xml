@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.obf.PipelineIntegrationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-04-11T23:07:18.254Z" hostname="DESKTOP-4IRTSCE" time="0.092">
+  <properties/>
+  <testcase name="pipelineProducesNonEmptyOutputJar()" classname="com.obf.PipelineIntegrationTest" time="0.067"/>
+  <testcase name="pipelineRewritesFabricEntrypointClassesReferencedInMetadata()" classname="com.obf.PipelineIntegrationTest" time="0.008"/>
+  <system-out><![CDATA[[*] Loaded 1 classes
+[*] Running NameObfuscationPass...
+[+] NameObfuscationPass complete
+[*] Running StringEncryptionPass...
+[+] StringEncryptionPass complete
+[*] Running ControlFlowPass...
+[+] ControlFlowPass complete
+[*] Running AntiDecompilerPass...
+[+] AntiDecompilerPass complete
+[*] Running NativeLiftingPass...
+[+] NativeLiftingPass complete
+[*] Running StubReplacementPass...
+[+] StubReplacementPass complete
+[*] Running ClassEncryptionPass...
+[+] ClassEncryptionPass complete
+[+] Done -> C:\Users\aeare\AppData\Local\Temp\junit12606701046298040726\output.jar
+[*] Loaded 1 classes
+[*] Running NameObfuscationPass...
+[+] NameObfuscationPass complete
+[+] Done -> C:\Users\aeare\AppData\Local\Temp\junit1961201833274698237\fabric-output.jar
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

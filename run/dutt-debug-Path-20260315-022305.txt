@@ -1,0 +1,6 @@
+2026-03-15 02:23:05.562 [Dutt][Path] Session start
+2026-03-15 02:23:05.565 [Dutt][Path] Started -> 2484 79 -223 from 2492 79 -233 (segment nodes=3)
+2026-03-15 02:23:06.291 [Dutt][Path] Repath distance: front=minecraft:air @ 2492 79 -232
+2026-03-15 02:23:06.292 [Dutt][Path] Repath distance: ok (nodes=3).
+2026-03-15 02:23:06.794 [Dutt][Path] Repath distance: front=minecraft:air @ 2492 79 -229
+2026-03-15 02:23:06.799 [Dutt][Path] Repath distance: ok (nodes=5).

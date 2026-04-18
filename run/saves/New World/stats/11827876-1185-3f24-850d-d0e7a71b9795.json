@@ -1,0 +1,33 @@
+{
+  "stats": {
+    "minecraft:killed": {
+      "minecraft:skeleton": 2,
+      "minecraft:chicken": 2,
+      "minecraft:rabbit": 5,
+      "minecraft:sheep": 9,
+      "minecraft:wolf": 1,
+      "minecraft:bat": 1,
+      "minecraft:spider": 1
+    },
+    "minecraft:custom": {
+      "minecraft:sprint_one_cm": 77208,
+      "minecraft:time_since_rest": 24000,
+      "minecraft:walk_one_cm": 9654,
+      "minecraft:total_world_time": 24025,
+      "minecraft:fly_one_cm": 203217,
+      "minecraft:mob_kills": 21,
+      "minecraft:play_time": 24000,
+      "minecraft:damage_dealt": 1660,
+      "minecraft:jump": 129,
+      "minecraft:time_since_death": 24000
+    },
+    "minecraft:picked_up": {
+      "minecraft:white_wool": 6,
+      "minecraft:feather": 2,
+      "minecraft:chicken": 1,
+      "minecraft:mutton": 7,
+      "minecraft:bone": 1
+    }
+  },
+  "DataVersion": 4671
+}

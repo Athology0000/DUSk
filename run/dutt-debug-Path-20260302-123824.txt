@@ -1,0 +1,6 @@
+2026-03-02 12:38:24.926 [Dutt][Path] Session start
+2026-03-02 12:38:24.926 [Dutt][Path] Started -> 2237 135 -901 from 2237 135 -905
+2026-03-02 12:38:24.927 [Dutt][Path] Repath blocked: front=minecraft:dandelion @ 2237 135 -904
+2026-03-02 12:38:24.927 [Dutt][Path] Repath blocked: ok (nodes=3).
+2026-03-02 12:38:25.326 [Dutt][Path] Ended: Target in range. at 2237 135 -904
+2026-03-02 12:38:25.327 [Dutt][Path] Session end

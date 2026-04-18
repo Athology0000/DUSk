@@ -1,0 +1,16 @@
+2026-03-02 12:36:03.088 [Dutt][Path] Session start
+2026-03-02 12:36:03.089 [Dutt][Path] Started -> 2229 132 -940 from 2230 133 -937
+2026-03-02 12:36:03.089 [Dutt][Path] Repath blocked: front=minecraft:tall_grass @ 2230 133 -938
+2026-03-02 12:36:03.091 [Dutt][Path] Repath blocked: ok (nodes=4).
+2026-03-02 12:36:03.340 [Dutt][Path] Ended: Target in range. at 2230 133 -937
+2026-03-02 12:36:03.341 [Dutt][Path] Session end
+2026-03-02 12:36:03.392 [Dutt][Path] Session start
+2026-03-02 12:36:03.392 [Dutt][Path] Started -> 2229 132 -941 from 2230 133 -938
+2026-03-02 12:36:03.393 [Dutt][Path] Repath blocked: front=minecraft:air @ 2230 133 -939
+2026-03-02 12:36:03.396 [Dutt][Path] Repath blocked: ok (nodes=3).
+2026-03-02 12:36:03.537 [Dutt][Path] Ended: Target in range. at 2230 132 -938
+2026-03-02 12:36:03.538 [Dutt][Path] Session end
+2026-03-02 12:36:03.588 [Dutt][Path] Session start
+2026-03-02 12:36:03.588 [Dutt][Path] Started -> 2229 132 -941 from 2230 132 -938
+2026-03-02 12:36:03.739 [Dutt][Path] Session start
+2026-03-02 12:36:03.739 [Dutt][Path] Started -> 2229 131 -943 from 2230 132 -938

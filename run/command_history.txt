@@ -1,0 +1,50 @@
+/cb setposhere
+/cb
+/cb setposhere
+/cb pathstart
+/cb
+/cb setposhere
+/cb pathstart
+/cb
+/dutt
+/cb
+/time set day
+/cb
+/cb setposhere
+/cb pathstart
+/cb
+/weather clear
+/cb
+/cb setposhere
+/cb pathstart
+/cb
+/sb
+/cb
+/weather clear
+/cb
+/cbv
+/cb
+/setupoptimisedmansion
+/setupoptimisedmansion nebula json
+/cb
+/weather clear
+/cb
+/cv
+/cb
+/cbv
+/cb
+/setupoptimisedmansion nebula json
+/cb
+/setupoptimisedmansion nebula json
+/cb
+/time set day
+/cb
+/time set night
+/time set day
+/cb
+/time set night
+/cb
+/time set day
+/cb
+/cbv
+/cb

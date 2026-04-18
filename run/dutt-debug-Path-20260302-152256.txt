@@ -1,0 +1,34 @@
+2026-03-02 15:22:56.045 [Dutt][Path] Session start
+2026-03-02 15:22:56.046 [Dutt][Path] Started -> 2340 126 -898 from 2343 125 -899
+2026-03-02 15:22:56.449 [Dutt][Path] Session start
+2026-03-02 15:22:56.449 [Dutt][Path] Started -> 2337 126 -898 from 2341 126 -899
+2026-03-02 15:22:56.450 [Dutt][Path] Repath blocked: front=minecraft:air @ 2340 126 -899
+2026-03-02 15:22:56.452 [Dutt][Path] Repath blocked: ok (nodes=4).
+2026-03-02 15:22:56.895 [Dutt][Path] Ended: Target in range. at 2339 126 -899
+2026-03-02 15:22:56.896 [Dutt][Path] Session end
+2026-03-02 15:22:56.978 [Dutt][Path] Session start
+2026-03-02 15:22:56.979 [Dutt][Path] Started -> 2341 113 -897 from 2339 126 -899
+2026-03-02 15:22:57.048 [Dutt][Path] Repath shortcut: front=minecraft:air @ 2338 126 -899
+2026-03-02 15:22:57.049 [Dutt][Path] Repath shortcut: ok (nodes=12).
+2026-03-02 15:22:58.048 [Dutt][Path] Repath passed: front=minecraft:air @ 2337 126 -904
+2026-03-02 15:22:58.064 [Dutt][Path] Repath passed: ok (nodes=12).
+2026-03-02 15:22:59.046 [Dutt][Path] Repath passed: front=minecraft:air @ 2335 126 -906
+2026-03-02 15:22:59.055 [Dutt][Path] Repath passed: ok (nodes=11).
+2026-03-02 15:23:01.052 [Dutt][Path] Repath shortcut: front=minecraft:wildflowers @ 2337 126 -903
+2026-03-02 15:23:01.066 [Dutt][Path] Repath shortcut: ok (nodes=11).
+2026-03-02 15:23:01.801 [Dutt][Path] Repath distance: front=minecraft:air @ 2337 126 -900
+2026-03-02 15:23:01.818 [Dutt][Path] Repath distance: ok (nodes=12).
+2026-03-02 15:23:02.794 [Dutt][Path] Repath passed: front=minecraft:air @ 2335 126 -905
+2026-03-02 15:23:02.806 [Dutt][Path] Repath passed: ok (nodes=11).
+2026-03-02 15:23:03.801 [Dutt][Path] Repath passed: front=minecraft:air @ 2336 126 -906
+2026-03-02 15:23:03.811 [Dutt][Path] Repath passed: ok (nodes=11).
+2026-03-02 15:23:04.795 [Dutt][Path] Repath passed: front=minecraft:air @ 2336 126 -906
+2026-03-02 15:23:04.795 [Dutt][Path] Repath passed: ok (nodes=11).
+2026-03-02 15:23:05.801 [Dutt][Path] Repath passed: front=minecraft:air @ 2336 126 -905
+2026-03-02 15:23:05.811 [Dutt][Path] Repath passed: ok (nodes=11).
+2026-03-02 15:23:06.794 [Dutt][Path] Repath passed: front=minecraft:air @ 2336 126 -905
+2026-03-02 15:23:06.816 [Dutt][Path] Repath passed: ok (nodes=11).
+2026-03-02 15:23:07.800 [Dutt][Path] Repath passed: front=minecraft:air @ 2336 126 -906
+2026-03-02 15:23:07.812 [Dutt][Path] Repath passed: ok (nodes=11).
+2026-03-02 15:23:08.797 [Dutt][Path] Repath passed: front=minecraft:air @ 2336 126 -905
+2026-03-02 15:23:08.797 [Dutt][Path] Repath passed: ok (nodes=11).

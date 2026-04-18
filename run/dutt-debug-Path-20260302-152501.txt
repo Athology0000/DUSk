@@ -1,0 +1,6 @@
+2026-03-02 15:25:01.503 [Dutt][Path] Session start
+2026-03-02 15:25:01.503 [Dutt][Path] Started -> 2351 125 -872 from 2353 122 -871
+2026-03-02 15:25:01.504 [Dutt][Path] Repath blocked: front=minecraft:grass_block @ 2354 122 -871
+2026-03-02 15:25:01.505 [Dutt][Path] Repath blocked: ok (nodes=6).
+2026-03-02 15:25:02.196 [Dutt][Path] Ended: Target in range. at 2353 122 -871
+2026-03-02 15:25:02.196 [Dutt][Path] Session end

@@ -1,0 +1,12 @@
+2026-03-14 12:30:08.599 [Dutt][Path] Session start
+2026-03-14 12:30:08.599 [Dutt][Path] Started -> 2677 115 -718 from 2677 114 -748 (segment nodes=6)
+2026-03-14 12:30:11.036 [Dutt][Path] Repath distance: front=minecraft:air @ 2677 116 -740
+2026-03-14 12:30:11.041 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-14 12:30:12.582 [Dutt][Path] Repath distance: front=minecraft:air @ 2672 116 -736
+2026-03-14 12:30:12.585 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-14 12:30:14.084 [Dutt][Path] Repath distance: front=minecraft:air @ 2672 116 -729
+2026-03-14 12:30:14.085 [Dutt][Path] Repath distance: ok (nodes=6).
+2026-03-14 12:31:43.732 [Dutt][Path] Repath resume: front=minecraft:air @ 2673 115 -722
+2026-03-14 12:31:43.737 [Dutt][Path] Repath resume: ok (nodes=4).
+2026-03-14 12:31:45.730 [Dutt][Path] Ended: Arrived. at 2676 115 -719
+2026-03-14 12:31:45.731 [Dutt][Path] Session end

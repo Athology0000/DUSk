@@ -1,0 +1,12 @@
+2026-03-15 02:14:27.166 [Dutt][Path] Session start
+2026-03-15 02:14:27.167 [Dutt][Path] Started -> 2477 77 -237 from 2478 77 -237 (segment nodes=2)
+2026-03-15 02:14:27.167 [Dutt][Path] Ended: Arrived. at 2478 77 -237
+2026-03-15 02:14:27.168 [Dutt][Path] Session end
+2026-03-15 02:14:27.273 [Dutt][Path] Session start
+2026-03-15 02:14:27.274 [Dutt][Path] Started -> 2476 78 -240 from 2478 77 -237 (segment nodes=3)
+2026-03-15 02:14:27.317 [Dutt][Path] Ended: Target in range. at 2478 77 -237
+2026-03-15 02:14:27.317 [Dutt][Path] Session end
+2026-03-15 02:14:27.375 [Dutt][Path] Session start
+2026-03-15 02:14:27.376 [Dutt][Path] Started -> 2497 80 -239 from 2478 77 -237 (segment nodes=6)
+2026-03-15 02:14:30.369 [Dutt][Path] Ended: Combat macro stopped. at 2483 78 -239
+2026-03-15 02:14:30.370 [Dutt][Path] Session end

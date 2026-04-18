@@ -1,0 +1,30 @@
+{
+  "stats": {
+    "minecraft:killed": {
+      "minecraft:donkey": 1,
+      "minecraft:zombie": 2,
+      "minecraft:rabbit": 1,
+      "minecraft:spider": 1
+    },
+    "minecraft:picked_up": {
+      "minecraft:rabbit_hide": 1
+    },
+    "minecraft:dropped": {
+      "minecraft:gunpowder": 2
+    },
+    "minecraft:custom": {
+      "minecraft:sprint_one_cm": 32941,
+      "minecraft:time_since_rest": 3387,
+      "minecraft:walk_one_cm": 3991,
+      "minecraft:total_world_time": 3387,
+      "minecraft:fly_one_cm": 3047,
+      "minecraft:mob_kills": 5,
+      "minecraft:play_time": 3387,
+      "minecraft:damage_dealt": 1088,
+      "minecraft:jump": 26,
+      "minecraft:time_since_death": 3387,
+      "minecraft:drop": 2
+    }
+  },
+  "DataVersion": 4671
+}

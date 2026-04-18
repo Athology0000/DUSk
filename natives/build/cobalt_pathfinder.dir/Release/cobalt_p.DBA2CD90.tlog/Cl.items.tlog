@@ -1,0 +1,8 @@
+C:\Users\aeare\Desktop\duskv2\Cobalt\natives\src\pathfinder_jni.cpp;C:\Users\aeare\Desktop\duskv2\Cobalt\natives\build\cobalt_pathfinder.dir\Release\pathfinder_jni.obj
+C:\Users\aeare\Desktop\duskv2\Cobalt\natives\src\engine\PathfinderEngine.cpp;C:\Users\aeare\Desktop\duskv2\Cobalt\natives\build\cobalt_pathfinder.dir\Release\PathfinderEngine.obj
+C:\Users\aeare\Desktop\duskv2\Cobalt\natives\src\engine\AStarPlanner.cpp;C:\Users\aeare\Desktop\duskv2\Cobalt\natives\build\cobalt_pathfinder.dir\Release\AStarPlanner.obj
+C:\Users\aeare\Desktop\duskv2\Cobalt\natives\src\engine\PathExecutor.cpp;C:\Users\aeare\Desktop\duskv2\Cobalt\natives\build\cobalt_pathfinder.dir\Release\PathExecutor.obj
+C:\Users\aeare\Desktop\duskv2\Cobalt\natives\src\engine\MovementExpander.cpp;C:\Users\aeare\Desktop\duskv2\Cobalt\natives\build\cobalt_pathfinder.dir\Release\MovementExpander.obj
+C:\Users\aeare\Desktop\duskv2\Cobalt\natives\src\engine\WorldAccessor.cpp;C:\Users\aeare\Desktop\duskv2\Cobalt\natives\build\cobalt_pathfinder.dir\Release\WorldAccessor.obj
+C:\Users\aeare\Desktop\duskv2\Cobalt\natives\src\engine\RotationController.cpp;C:\Users\aeare\Desktop\duskv2\Cobalt\natives\build\cobalt_pathfinder.dir\Release\RotationController.obj
+C:\Users\aeare\Desktop\duskv2\Cobalt\natives\src\engine\StuckDetector.cpp;C:\Users\aeare\Desktop\duskv2\Cobalt\natives\build\cobalt_pathfinder.dir\Release\StuckDetector.obj

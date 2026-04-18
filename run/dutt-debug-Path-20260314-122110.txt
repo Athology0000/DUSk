@@ -1,0 +1,7 @@
+2026-03-14 12:21:10.676 [Dutt][Path] Session start
+2026-03-14 12:21:10.686 [Dutt][Path] Started -> 2647 111 -749 from 2670 119 -737 (segment nodes=6)
+2026-03-14 12:21:11.092 [Dutt][Path] Repath distance: front=minecraft:air @ 2672 120 -733
+2026-03-14 12:21:11.095 [Dutt][Path] Repath distance: no valid start.
+2026-03-14 12:21:11.096 [Dutt][Path] Failed: repath (distance) found no valid start.
+2026-03-14 12:21:11.096 [Dutt][Path] Ended: Lost path. at 2673 120 -733
+2026-03-14 12:21:11.097 [Dutt][Path] Session end

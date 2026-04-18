@@ -1,0 +1,4 @@
+2026-03-15 02:13:54.366 [Dutt][Path] Session start
+2026-03-15 02:13:54.367 [Dutt][Path] Started -> 2503 79 -243 from 2495 80 -245 (segment nodes=4)
+2026-03-15 02:13:55.372 [Dutt][Path] Repath checkpoint: front=minecraft:short_grass @ 2500 80 -243
+2026-03-15 02:13:55.373 [Dutt][Path] Repath checkpoint: ok (nodes=3).

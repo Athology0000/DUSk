@@ -1,0 +1,40 @@
+2026-02-28 09:04:44.268 [Dusk][Path] Session start
+2026-02-28 09:04:44.276 [Dusk][Path] Started -> 1469 77 -848 from 1620 66 -788
+2026-02-28 09:04:44.291 [Dusk][Path] Recovery: navmesh anchor 1615 68 -791
+2026-02-28 09:04:47.927 [Dusk][Path] Stuck: no movement for 16 ticks at 1616 66 -789 target=1469 77 -848
+2026-02-28 09:04:48.676 [Dusk][Path] Repath recovery-complete: front=minecraft:air @ 1616 68 -791
+2026-02-28 09:04:48.756 [Dusk][Path] Repath recovery-complete: ok (nodes=36).
+2026-02-28 09:04:48.765 [Dusk][Path] Repath blocked: front=minecraft:air @ 1616 68 -792
+2026-02-28 09:04:48.801 [Dusk][Path] Repath blocked: ok (nodes=35).
+2026-02-28 09:04:50.272 [Dusk][Path] Repath shortcut: front=minecraft:stone @ 1611 69 -796
+2026-02-28 09:04:50.293 [Dusk][Path] Repath shortcut: ok (nodes=33).
+2026-02-28 09:04:51.227 [Dusk][Path] Recovery: navmesh anchor 1609 70 -796
+2026-02-28 09:04:52.426 [Dusk][Path] Repath recovery-complete: front=minecraft:air @ 1608 69 -795
+2026-02-28 09:04:52.446 [Dusk][Path] Repath recovery-complete: ok (nodes=31).
+2026-02-28 09:04:54.275 [Dusk][Path] Repath shortcut: front=minecraft:stone @ 1605 71 -798
+2026-02-28 09:04:54.295 [Dusk][Path] Repath shortcut: ok (nodes=29).
+2026-02-28 09:04:55.273 [Dusk][Path] Repath shortcut: front=minecraft:air @ 1604 72 -802
+2026-02-28 09:04:55.294 [Dusk][Path] Repath shortcut: ok (nodes=28).
+2026-02-28 09:04:55.376 [Dusk][Path] Repath distance: front=minecraft:air @ 1604 72 -802
+2026-02-28 09:04:55.377 [Dusk][Path] Repath distance: ok (nodes=28).
+2026-02-28 09:04:56.274 [Dusk][Path] Repath shortcut: front=minecraft:air @ 1601 72 -806
+2026-02-28 09:04:56.295 [Dusk][Path] Repath shortcut: ok (nodes=32).
+2026-02-28 09:04:57.075 [Dusk][Path] Recovery: navmesh anchor 1594 70 -813
+2026-02-28 09:04:58.075 [Dusk][Path] Repath recovery-complete: front=minecraft:air @ 1595 70 -813
+2026-02-28 09:04:58.090 [Dusk][Path] Repath recovery-complete: ok (nodes=28).
+2026-02-28 09:04:59.126 [Dusk][Path] Recovery: navmesh anchor 1587 69 -821
+2026-02-28 09:05:02.325 [Dusk][Path] Repath recovery-complete: front=minecraft:air @ 1587 69 -820
+2026-02-28 09:05:02.337 [Dusk][Path] Repath recovery-complete: ok (nodes=26).
+2026-02-28 09:05:03.271 [Dusk][Path] Repath shortcut: front=minecraft:air @ 1585 69 -826
+2026-02-28 09:05:03.286 [Dusk][Path] Repath shortcut: ok (nodes=24).
+2026-02-28 09:05:03.328 [Dusk][Path] Recovery: navmesh anchor 1582 69 -829
+2026-02-28 09:05:24.976 [Dusk][Path] Repath recovery-complete: front=minecraft:air @ 1582 69 -829
+2026-02-28 09:05:24.987 [Dusk][Path] Repath recovery-complete: ok (nodes=24).
+2026-02-28 09:05:25.975 [Dusk][Path] Recovery: navmesh anchor 1578 70 -834
+2026-02-28 09:05:27.677 [Dusk][Path] Repath recovery-complete: front=minecraft:air @ 1579 70 -834
+2026-02-28 09:05:27.689 [Dusk][Path] Repath recovery-complete: ok (nodes=24).
+2026-02-28 09:05:28.270 [Dusk][Path] Repath shortcut: front=minecraft:air @ 1577 70 -836
+2026-02-28 09:05:28.280 [Dusk][Path] Repath shortcut: ok (nodes=23).
+2026-02-28 09:05:28.376 [Dusk][Path] Recovery: navmesh anchor 1572 71 -839
+2026-02-28 09:06:04.078 [Dusk][Path] Ended: Stopped. at 1576 70 -837
+2026-02-28 09:06:04.079 [Dusk][Path] Session end

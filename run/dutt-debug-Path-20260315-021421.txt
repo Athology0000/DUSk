@@ -1,0 +1,14 @@
+2026-03-15 02:14:21.522 [Dutt][Path] Session start
+2026-03-15 02:14:21.522 [Dutt][Path] Started -> 2490 79 -221 from 2490 79 -219 (segment nodes=2)
+2026-03-15 02:14:21.523 [Dutt][Path] Ended: Arrived. at 2490 79 -219
+2026-03-15 02:14:21.523 [Dutt][Path] Session end
+2026-03-15 02:14:21.572 [Dutt][Path] Session start
+2026-03-15 02:14:21.572 [Dutt][Path] Started -> 2488 79 -221 from 2490 79 -220 (segment nodes=3)
+2026-03-15 02:14:21.723 [Dutt][Path] Ended: Target in range. at 2490 79 -220
+2026-03-15 02:14:21.724 [Dutt][Path] Session end
+2026-03-15 02:14:21.820 [Dutt][Path] Session start
+2026-03-15 02:14:21.821 [Dutt][Path] Started -> 2483 78 -230 from 2490 79 -220 (segment nodes=5)
+2026-03-15 02:14:22.772 [Dutt][Path] Repath checkpoint: front=minecraft:air @ 2485 79 -223
+2026-03-15 02:14:22.773 [Dutt][Path] Repath checkpoint: ok (nodes=3).
+2026-03-15 02:14:24.366 [Dutt][Path] Ended: Arrived. at 2483 78 -228
+2026-03-15 02:14:24.367 [Dutt][Path] Session end

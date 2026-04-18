@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.obf.passes.NameObfuscationPassTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-04-11T23:07:18.353Z" hostname="DESKTOP-4IRTSCE" time="0.007">
+  <properties/>
+  <testcase name="nativeClassIsPreserved()" classname="com.obf.passes.NameObfuscationPassTest" time="0.0"/>
+  <testcase name="methodNameIsPreservedForCompatibility()" classname="com.obf.passes.NameObfuscationPassTest" time="0.0"/>
+  <testcase name="fabricEntrypointClassIsRewrittenInMetadata()" classname="com.obf.passes.NameObfuscationPassTest" time="0.0"/>
+  <testcase name="aggressiveModeRenamesPublicFieldsForInternalJavaClass()" classname="com.obf.passes.NameObfuscationPassTest" time="0.001"/>
+  <testcase name="classNameIsMangled()" classname="com.obf.passes.NameObfuscationPassTest" time="0.001"/>
+  <testcase name="kotlinMetadataReferencedClassIsPreserved()" classname="com.obf.passes.NameObfuscationPassTest" time="0.0"/>
+  <testcase name="privateMembersAreMangledForInternalJavaClass()" classname="com.obf.passes.NameObfuscationPassTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

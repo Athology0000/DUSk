@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.obf.pipeline.JarReaderTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-04-11T23:07:18.367Z" hostname="DESKTOP-4IRTSCE" time="0.033">
+  <properties/>
+  <testcase name="readsClassesFromJar()" classname="com.obf.pipeline.JarReaderTest" time="0.03"/>
+  <testcase name="readsNonClassEntriesAsRawBytes()" classname="com.obf.pipeline.JarReaderTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

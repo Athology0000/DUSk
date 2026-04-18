@@ -1,0 +1,10 @@
+2026-03-02 13:11:54.174 [Dutt][Path] Session start
+2026-03-02 13:11:54.174 [Dutt][Path] Started -> 2311 126 -905 from 2308 128 -904
+2026-03-02 13:11:54.175 [Dutt][Path] Repath blocked: front=minecraft:air @ 2309 128 -904
+2026-03-02 13:11:54.175 [Dutt][Path] Repath blocked: ok (nodes=4).
+2026-03-02 13:11:54.474 [Dutt][Path] Ended: Target in range. at 2309 127 -904
+2026-03-02 13:11:54.474 [Dutt][Path] Session end
+2026-03-02 13:11:54.824 [Dutt][Path] Session start
+2026-03-02 13:11:54.825 [Dutt][Path] Started -> 2312 126 -904 from 2309 126 -904
+2026-03-02 13:11:55.117 [Dutt][Path] Ended: Target in range. at 2310 126 -904
+2026-03-02 13:11:55.117 [Dutt][Path] Session end

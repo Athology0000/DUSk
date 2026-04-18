@@ -1,0 +1,28 @@
+{
+  "stats": {
+    "minecraft:killed": {
+      "minecraft:donkey": 2,
+      "minecraft:skeleton": 1,
+      "minecraft:rabbit": 2
+    },
+    "minecraft:picked_up": {
+      "minecraft:leather": 2
+    },
+    "minecraft:custom": {
+      "minecraft:time_since_rest": 10297,
+      "minecraft:walk_one_cm": 7339,
+      "minecraft:leave_game": 1,
+      "minecraft:mob_kills": 5,
+      "minecraft:play_time": 10297,
+      "minecraft:damage_dealt": 790,
+      "minecraft:jump": 31,
+      "minecraft:time_since_death": 10297,
+      "minecraft:sprint_one_cm": 27358,
+      "minecraft:total_world_time": 10410,
+      "minecraft:fly_one_cm": 87348,
+      "minecraft:crouch_one_cm": 46,
+      "minecraft:sneak_time": 68
+    }
+  },
+  "DataVersion": 4671
+}

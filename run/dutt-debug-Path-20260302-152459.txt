@@ -1,0 +1,6 @@
+2026-03-02 15:24:59.655 [Dutt][Path] Session start
+2026-03-02 15:24:59.656 [Dutt][Path] Started -> 2348 125 -872 from 2350 123 -871
+2026-03-02 15:24:59.656 [Dutt][Path] Repath blocked: front=minecraft:air @ 2349 123 -871
+2026-03-02 15:24:59.660 [Dutt][Path] Repath blocked: ok (nodes=7).
+2026-03-02 15:25:00.648 [Dutt][Path] Repath passed: front=minecraft:dirt @ 2354 121 -872
+2026-03-02 15:25:00.652 [Dutt][Path] Repath passed: ok (nodes=7).

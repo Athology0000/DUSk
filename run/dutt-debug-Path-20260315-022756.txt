@@ -1,0 +1,5 @@
+2026-03-15 02:27:56.737 [Dutt][Path] Session start
+2026-03-15 02:27:56.737 [Dutt][Path] Started -> 2505 80 -195 from 2479 79 -190 (segment nodes=6)
+2026-03-15 02:27:57.183 [Dutt][Path] Stuck: target behind, repath.
+2026-03-15 02:27:57.184 [Dutt][Path] Repath behind: front=minecraft:air @ 2477 79 -189
+2026-03-15 02:27:57.187 [Dutt][Path] Repath behind: ok (nodes=6).

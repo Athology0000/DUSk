@@ -1,0 +1,11 @@
+2026-03-15 02:27:40.068 [Dutt][Path] Session start
+2026-03-15 02:27:40.068 [Dutt][Path] Started -> 2503 80 -199 from 2483 78 -196 (segment nodes=6)
+2026-03-15 02:27:40.974 [Dutt][Path] Session start
+2026-03-15 02:27:40.975 [Dutt][Path] Started -> 2506 80 -198 from 2483 79 -195 (segment nodes=6)
+2026-03-15 02:27:41.459 [Dutt][Path] Stuck: target behind, repath.
+2026-03-15 02:27:41.960 [Dutt][Path] Stuck: target behind, repath.
+2026-03-15 02:27:41.961 [Dutt][Path] Repath behind: front=minecraft:air @ 2481 78 -195
+2026-03-15 02:27:41.969 [Dutt][Path] Repath behind: ok (nodes=6).
+2026-03-15 02:27:42.515 [Dutt][Path] Stuck: target behind, repath.
+2026-03-15 02:27:46.565 [Dutt][Path] Ended: Combat repath. at 2482 78 -194
+2026-03-15 02:27:46.566 [Dutt][Path] Session end

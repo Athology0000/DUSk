@@ -1,0 +1,14 @@
+2026-03-02 15:23:30.251 [Dutt][Path] Session start
+2026-03-02 15:23:30.251 [Dutt][Path] Started -> 2424 134 -897 from 2420 135 -895
+2026-03-02 15:23:30.495 [Dutt][Path] Ended: Target in range. at 2421 135 -896
+2026-03-02 15:23:30.496 [Dutt][Path] Session end
+2026-03-02 15:23:30.600 [Dutt][Path] Session start
+2026-03-02 15:23:30.601 [Dutt][Path] Started -> 2421 135 -887 from 2421 135 -896
+2026-03-02 15:23:30.699 [Dutt][Path] Repath distance: front=minecraft:air @ 2421 135 -895
+2026-03-02 15:23:30.700 [Dutt][Path] Repath distance: ok (nodes=2).
+2026-03-02 15:23:32.252 [Dutt][Path] Stuck: no progress, repath.
+2026-03-02 15:23:32.254 [Dutt][Path] Repath progress: front=minecraft:dandelion @ 2420 135 -897
+2026-03-02 15:23:32.256 [Dutt][Path] Repath progress: ok (nodes=3).
+2026-03-02 15:23:34.352 [Dutt][Path] Stuck: no progress, repath.
+2026-03-02 15:23:34.352 [Dutt][Path] Repath progress: front=minecraft:air @ 2420 135 -896
+2026-03-02 15:23:34.353 [Dutt][Path] Repath progress: ok (nodes=3).

@@ -1,0 +1,18 @@
+2026-03-02 13:17:11.140 [Dutt][Path] Session start
+2026-03-02 13:17:11.140 [Dutt][Path] Started -> 2350 117 -899 from 2349 125 -905
+2026-03-02 13:17:12.139 [Dutt][Path] Repath passed: front=minecraft:air @ 2349 125 -901
+2026-03-02 13:17:12.154 [Dutt][Path] Repath passed: ok (nodes=8).
+2026-03-02 13:17:13.942 [Dutt][Path] Repath passed: front=minecraft:air @ 2350 125 -902
+2026-03-02 13:17:13.942 [Dutt][Path] Repath passed: ok (nodes=8).
+2026-03-02 13:17:15.534 [Dutt][Path] Repath passed: front=minecraft:air @ 2350 125 -902
+2026-03-02 13:17:15.540 [Dutt][Path] Repath passed: ok (nodes=8).
+2026-03-02 13:17:17.242 [Dutt][Path] Repath passed: front=minecraft:air @ 2350 125 -902
+2026-03-02 13:17:17.243 [Dutt][Path] Repath passed: ok (nodes=8).
+2026-03-02 13:17:18.887 [Dutt][Path] Repath passed: front=minecraft:air @ 2350 125 -902
+2026-03-02 13:17:18.893 [Dutt][Path] Repath passed: ok (nodes=8).
+2026-03-02 13:17:20.585 [Dutt][Path] Repath passed: front=minecraft:air @ 2350 125 -902
+2026-03-02 13:17:20.585 [Dutt][Path] Repath passed: ok (nodes=8).
+2026-03-02 13:17:22.286 [Dutt][Path] Repath passed: front=minecraft:air @ 2351 125 -902
+2026-03-02 13:17:22.290 [Dutt][Path] Repath passed: ok (nodes=7).
+2026-03-02 13:17:23.288 [Dutt][Path] Repath passed: front=minecraft:air @ 2351 125 -899
+2026-03-02 13:17:23.296 [Dutt][Path] Repath passed: ok (nodes=8).

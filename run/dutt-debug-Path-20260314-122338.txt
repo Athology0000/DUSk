@@ -1,0 +1,14 @@
+2026-03-14 12:23:38.651 [Dutt][Path] Session start
+2026-03-14 12:23:38.652 [Dutt][Path] Started -> 2677 116 -726 from 2678 112 -752 (segment nodes=6)
+2026-03-14 12:23:40.683 [Dutt][Path] Repath checkpoint: front=minecraft:dandelion @ 2679 114 -747
+2026-03-14 12:23:40.697 [Dutt][Path] Repath checkpoint: ok (nodes=6).
+2026-03-14 12:23:51.131 [Dutt][Path] Repath resume: front=minecraft:air @ 2679 116 -741
+2026-03-14 12:23:51.136 [Dutt][Path] Repath resume: ok (nodes=6).
+2026-03-14 12:23:51.631 [Dutt][Path] Repath distance: front=minecraft:grass_block @ 2679 116 -740
+2026-03-14 12:23:51.633 [Dutt][Path] Repath distance: ok (nodes=4).
+2026-03-14 12:23:53.884 [Dutt][Path] Repath distance: front=minecraft:air @ 2677 116 -733
+2026-03-14 12:23:53.886 [Dutt][Path] Repath distance: ok (nodes=2).
+2026-03-14 12:23:55.335 [Dutt][Path] Repath distance: front=minecraft:air @ 2677 116 -727
+2026-03-14 12:23:55.336 [Dutt][Path] Repath distance: ok (nodes=2).
+2026-03-14 12:23:55.428 [Dutt][Path] Ended: Arrived. at 2677 116 -728
+2026-03-14 12:23:55.429 [Dutt][Path] Session end

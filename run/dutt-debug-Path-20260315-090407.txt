@@ -1,0 +1,7 @@
+2026-03-15 09:04:07.431 [Dutt][Path] Session start
+2026-03-15 09:04:07.431 [Dutt][Path] Started -> 2467 87 -163 from 2481 88 -183 (segment nodes=6)
+2026-03-15 09:04:08.373 [Dutt][Path] Failed: no path found.
+2026-03-15 09:04:08.474 [Dutt][Path] Failed: no path found.
+2026-03-15 09:04:08.577 [Dutt][Path] Failed: no path found.
+2026-03-15 09:04:08.690 [Dutt][Path] Failed: no path found.
+2026-03-15 09:04:08.778 [Dutt][Path] Failed: no path found.

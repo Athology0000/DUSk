@@ -1,0 +1,19 @@
+{
+  "stats": {
+    "minecraft:dropped": {
+      "minecraft:leaf_litter": 3
+    },
+    "minecraft:custom": {
+      "minecraft:sprint_one_cm": 983,
+      "minecraft:time_since_rest": 4287,
+      "minecraft:walk_one_cm": 499,
+      "minecraft:total_world_time": 10273,
+      "minecraft:fly_one_cm": 90303,
+      "minecraft:play_time": 4287,
+      "minecraft:jump": 10,
+      "minecraft:time_since_death": 4287,
+      "minecraft:drop": 3
+    }
+  },
+  "DataVersion": 4671
+}

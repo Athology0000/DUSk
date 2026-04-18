@@ -1,0 +1,6 @@
+2026-03-15 02:27:50.561 [Dutt][Path] Session start
+2026-03-15 02:27:50.561 [Dutt][Path] Started -> 2507 80 -200 from 2482 78 -194 (segment nodes=6)
+2026-03-15 02:27:55.637 [Dutt][Path] Stuck: target behind, repath.
+2026-03-15 02:27:55.637 [Dutt][Path] Repath behind: front=minecraft:leaf_litter @ 2481 79 -192
+2026-03-15 02:27:55.647 [Dutt][Path] Repath behind: ok (nodes=6).
+2026-03-15 02:27:56.338 [Dutt][Path] Stuck: target behind, repath.
