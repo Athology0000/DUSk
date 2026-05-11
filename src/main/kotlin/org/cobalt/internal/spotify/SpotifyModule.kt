@@ -13,10 +13,13 @@ import org.cobalt.api.module.Module
 import org.cobalt.api.module.setting.impl.CheckboxSetting
 import org.cobalt.api.module.setting.impl.ModeSetting
 import org.cobalt.api.module.setting.impl.TextSetting
+import org.cobalt.api.ui.theme.ThemeGradient
 import org.cobalt.api.ui.theme.ThemeSurface
 import org.cobalt.api.util.ui.NVGRenderer
 import org.cobalt.api.util.ui.helper.Gradient
 import org.cobalt.api.util.ui.helper.Image
+import org.cobalt.render.HudGlassBlurRenderer
+import org.cobalt.render.HudGlowRenderer
 
 object SpotifyModule : Module("Spotify") {
 
@@ -61,6 +64,8 @@ object SpotifyModule : Module("Spotify") {
 
     private val color1 get() = if (autoColorSetting.value) artDominantC1 else manualColor1
     private val color2 get() = if (autoColorSetting.value) artDominantC2 else manualColor2
+    private val chromeColor1 get() = if (autoColorSetting.value) artDominantC1 else ThemeGradient.colors().first
+    private val chromeColor2 get() = if (autoColorSetting.value) artDominantC2 else ThemeGradient.colors().second
     private val isGlassMode get() = styleModeSetting.value == STYLE_GLASS
     private val isCompactMode get() = styleModeSetting.value == STYLE_COMPACT
     private val currentHudWidth get() = if (isCompactMode) COMPACT_W else W
@@ -125,6 +130,8 @@ object SpotifyModule : Module("Spotify") {
     private const val COMPACT_ART    = 46f
     private const val ART_FRAME      = ART      // ART_PAD = 0
     private const val CORNER         = 10f
+    private const val GLASS_BLUR_STRENGTH = 14.0f
+    private const val SHADER_GLOW_SIZE = 11f
     private const val PAD            = 8f
     private const val TEXT_X         = PAD + ART_FRAME + 8f  // 76f
     private const val BTN_W          = 32f
@@ -147,6 +154,9 @@ object SpotifyModule : Module("Spotify") {
         anchor  = HudAnchor.BOTTOM_LEFT
         offsetX = 10f
         offsetY = 10f
+        blurBackground = true
+        blurStrength = GLASS_BLUR_STRENGTH.toDouble()
+        managedBlurBackground = false
 
         width  { currentHudWidth }
         height { currentHudHeight }
@@ -160,6 +170,14 @@ object SpotifyModule : Module("Spotify") {
         setting(particlesSetting)
         setting(showTimeSetting)
         setting(waveformSetting)
+
+        preRender { screenX, screenY, scale ->
+            renderHudBlur(screenX, screenY, scale)
+        }
+
+        postRender { screenX, screenY, scale ->
+            renderHudGlow(screenX, screenY, scale)
+        }
 
         render { x, y, scale ->
             // HudModuleManager only calls this when mc.screen == null, so controls are hidden.
@@ -182,6 +200,8 @@ object SpotifyModule : Module("Spotify") {
         val (sx, sy) = spotifyHud.getScreenPosition(sw, sh)
         val s       = spotifyHud.scale
 
+        renderHudBlur(sx, sy, s)
+
         NVGRenderer.beginFrame(sw, sh)
         NVGRenderer.push()
         NVGRenderer.translate(sx, sy)
@@ -189,6 +209,7 @@ object SpotifyModule : Module("Spotify") {
         renderHudContent(0f, 0f, sx, sy, s, showControls = true)
         NVGRenderer.pop()
         NVGRenderer.endFrame()
+        renderHudGlow(sx, sy, s)
     }
 
     // -- MouseEvent - control button clicks when any screen is open ------------
@@ -243,6 +264,35 @@ object SpotifyModule : Module("Spotify") {
 
     // -- Core HUD render -------------------------------------------------------
 
+    private fun renderHudBlur(screenX: Float, screenY: Float, scale: Float) {
+        if (isGlassMode && spotifyHud.isBlurBackgroundEnabled()) {
+            HudGlassBlurRenderer.renderBlurRect(
+                screenX,
+                screenY,
+                currentHudWidth * scale,
+                currentHudHeight * scale,
+                CORNER * scale,
+                spotifyHud.getBlurStrength(),
+            )
+        }
+    }
+
+    private fun renderHudGlow(screenX: Float, screenY: Float, scale: Float) {
+        if (glowSetting.value) {
+            HudGlowRenderer.renderGlowRect(
+                screenX,
+                screenY,
+                currentHudWidth * scale,
+                currentHudHeight * scale,
+                CORNER * scale,
+                SHADER_GLOW_SIZE * scale,
+                chromeColor1,
+                chromeColor2,
+                if (isGlassMode) 0.72f else 0.58f,
+            )
+        }
+    }
+
     private fun renderHudContent(
         x: Float, y: Float,
         screenX: Float, screenY: Float, scale: Float,
@@ -261,10 +311,12 @@ object SpotifyModule : Module("Spotify") {
 
         val c1 = color1
         val c2 = color2
+        val chromeC1 = chromeColor1
+        val chromeC2 = chromeColor2
         val track = SpotifyPoller.current
 
         refreshArtCache(now)
-        drawBackground(x, y, hudWidth, hudHeight, now, c1, c2)
+        drawBackground(x, y, hudWidth, hudHeight, now, chromeC1, chromeC2)
         drawAlbumArt(x, y, track, now, artSize)
 
         val textColor = 0xFFFFFFFF.toInt()
@@ -390,27 +442,15 @@ object SpotifyModule : Module("Spotify") {
         val twoPi = (Math.PI * 2).toFloat()
         val glassMode = isGlassMode
 
-        if (glowSetting.value) {
-            val pulse = 0.4f + 0.6f * cos((now % 4000L).toFloat() / 4000f * twoPi)
-            val outerMax = if (glassMode) 0x1A else 0x28
-            val innerMax = if (glassMode) 0x24 else 0x40
-            val a2 = (outerMax * pulse).toInt().coerceIn(0, outerMax)
-            val a1 = (innerMax * pulse).toInt().coerceIn(0, innerMax)
-            NVGRenderer.hollowRect(x - 3f, y - 3f, w + 6f, h + 6f, 2.5f,
-                (a2 shl 24) or (c1 and 0x00FFFFFF), CORNER + 3f)
-            NVGRenderer.hollowRect(x - 1.5f, y - 1.5f, w + 3f, h + 3f, 1.5f,
-                (a1 shl 24) or (c1 and 0x00FFFFFF), CORNER + 1.5f)
-        }
-
         val angle  = (now % 10000L).toFloat() / 10000f * twoPi
         val shiftX = cos(angle) * (w * 0.42f)
 
         if (glassMode) {
-            NVGRenderer.rect(x, y, w, h, ThemeSurface.panelGlass(), CORNER)
-            NVGRenderer.gradientRect(x, y, w, h * 0.56f, ThemeSurface.overlay(0x34), ThemeSurface.withAlpha(ThemeSurface.inset(), 0x08), Gradient.TopToBottom, CORNER)
-            NVGRenderer.gradientRect(x, y + h * 0.46f, w, h * 0.54f, 0x04000000, 0x26000000, Gradient.TopToBottom, CORNER)
-            NVGRenderer.hollowRect(x, y, w, h, 1f, 0x44FFFFFF, CORNER)
-            NVGRenderer.hollowRect(x + 1f, y + 1f, w - 2f, h - 2f, 1f, 0x16FFFFFF, CORNER - 1f)
+            NVGRenderer.rect(x, y, w, h, ThemeSurface.panel(0x34), CORNER)
+            NVGRenderer.gradientRect(x, y, w, h * 0.56f, ThemeSurface.overlay(0x18), 0x00000000, Gradient.TopToBottom, CORNER)
+            NVGRenderer.gradientRect(x, y + h * 0.52f, w, h * 0.48f, 0x00000000, ThemeSurface.inset(0x16), Gradient.TopToBottom, CORNER)
+            NVGRenderer.hollowRect(x, y, w, h, 1f, ThemeSurface.overlay(0x42), CORNER)
+            NVGRenderer.hollowRect(x + 1f, y + 1f, w - 2f, h - 2f, 1f, ThemeSurface.overlay(0x16), CORNER - 1f)
             NVGRenderer.hollowGradientRectShifted(
                 x, y, w, h, 1.2f,
                 withAlpha(c1, 0x54), withAlpha(c2, 0x34),
@@ -448,7 +488,14 @@ object SpotifyModule : Module("Spotify") {
                 NVGRenderer.rect(artX, artY, artSize, artSize, if (isGlassMode) 0x38000000 else 0x55000000, 6f)
             }
         } else {
-            NVGRenderer.rect(artX, artY, artSize, artSize, if (isGlassMode) 0x66141824 else 0xFF141824.toInt(), 6f)
+            NVGRenderer.rect(
+                artX,
+                artY,
+                artSize,
+                artSize,
+                if (isGlassMode) 0x66141824 else 0xFF141824.toInt(),
+                6f
+            )
             val noteW = NVGRenderer.textWidth("\u266A", 22f)
             NVGRenderer.text("\u266A", artX + artSize / 2f - noteW / 2f, artY + artSize / 2f - 11f, 22f, 0x33FFFFFF)
         }

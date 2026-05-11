@@ -76,6 +76,16 @@ class HudElementBuilder(
 
   /** Maximum allowed render scale for this HUD element. */
   var maxScale: Float = 3.0f
+
+  /** Whether this HUD starts with shader background blur enabled. */
+  var blurBackground: Boolean = false
+
+  /** Default blur strength for this HUD when shader blur is enabled. */
+  var blurStrength: Double = 14.0
+
+  /** Whether HudModuleManager should draw the shared blur pass for this HUD. */
+  var managedBlurBackground: Boolean = true
+
   private var preRenderLambda: ((Float, Float, Float) -> Unit)? = null
   private var renderLambda: ((Float, Float, Float) -> Unit)? = null
   private var postRenderLambda: ((Float, Float, Float) -> Unit)? = null
@@ -139,10 +149,20 @@ class HudElementBuilder(
     val capturedScale = scale
     val capturedMinScale = minScale
     val capturedMaxScale = maxScale
+    val capturedBlurBackground = blurBackground
+    val capturedBlurStrength = blurStrength
+    val capturedManagedBlurBackground = managedBlurBackground
     val capturedPreRender = preRenderLambda
     val capturedPostRender = postRenderLambda
 
-    return object : HudElement(id, name, description) {
+    return object : HudElement(
+      id,
+      name,
+      description,
+      capturedBlurBackground,
+      capturedBlurStrength,
+      capturedManagedBlurBackground,
+    ) {
       override val defaultAnchor = capturedAnchor
       override val defaultOffsetX = capturedOffsetX
       override val defaultOffsetY = capturedOffsetY

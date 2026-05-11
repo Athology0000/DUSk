@@ -124,6 +124,12 @@ object LeftClickEtherwarpModule : Module("Left Click Etherwarp") {
       return
     }
 
+    if (!EtherwarpLogic.tryConsumeTeleportUseThisTick()) {
+      releaseKeys()
+      sequenceActive = false
+      return
+    }
+
     useKey.setDown(true)
 
     TickScheduler.schedule(1) {

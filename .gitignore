@@ -3695,3 +3695,4 @@ rsa-main/src/main/resources/rsa.mixins.json
 .gradle-user-home/wrapper/dists/gradle-9.3.0-bin/79n14ral3mx1ozqr3csh2u872/gradle-9.3.0/NOTICE
 .gradle-user-home/wrapper/dists/gradle-9.3.0-bin/79n14ral3mx1ozqr3csh2u872/gradle-9.3.0/README
 gradle.properties
+/.gradle-user-home

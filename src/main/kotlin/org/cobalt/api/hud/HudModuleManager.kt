@@ -5,6 +5,7 @@ import org.cobalt.api.event.annotation.SubscribeEvent
 import org.cobalt.api.event.impl.render.NvgEvent
 import org.cobalt.api.module.ModuleManager
 import org.cobalt.api.util.ui.NVGRenderer
+import org.cobalt.render.HudGlassBlurRenderer
 
 object HudModuleManager {
 
@@ -32,6 +33,7 @@ object HudModuleManager {
 
     enabledElements.forEach { element ->
       val (screenX, screenY) = element.getScreenPosition(screenWidth, screenHeight)
+      renderElementBlur(element, screenX, screenY)
       element.renderPre(screenX, screenY, element.scale)
     }
 
@@ -52,5 +54,20 @@ object HudModuleManager {
       val (screenX, screenY) = element.getScreenPosition(screenWidth, screenHeight)
       element.renderPost(screenX, screenY, element.scale)
     }
+  }
+
+  private fun renderElementBlur(element: HudElement, screenX: Float, screenY: Float) {
+    if (!element.usesManagedBlurBackground()) return
+    if (!element.isBlurBackgroundEnabled()) return
+
+    val padding = 2f * element.scale
+    HudGlassBlurRenderer.renderBlurRect(
+      screenX - padding,
+      screenY - padding,
+      element.getScaledWidth() + padding * 2f,
+      element.getScaledHeight() + padding * 2f,
+      10f * element.scale,
+      element.getBlurStrength(),
+    )
   }
 }

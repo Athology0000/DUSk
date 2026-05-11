@@ -2429,10 +2429,11 @@ object CombatMacroModule : Module("Combat Macro") {
     }
   }
 
-  private fun useHotbarUtilityItem(player: Player, keywords: Array<String>): Boolean {
+  private fun useHotbarUtilityItem(player: Player, keywords: Array<String>, teleportUse: Boolean = false): Boolean {
     if (pendingOverfluxLookDownTicks > 0) return false
     val slot = findHotbarSlotByKeywords(player, keywords)
     if (slot !in 0..8) return false
+    if (teleportUse && !EtherwarpLogic.tryConsumeTeleportUseThisTick()) return false
 
     val previousSlot = player.inventory.selectedSlot
     if (previousSlot != slot) {
@@ -3410,7 +3411,7 @@ object CombatMacroModule : Module("Combat Macro") {
       findHotbarSlotByKeywords(player, EMAN_LASER_AOTV_KEYWORDS) in 0..8
     if (shouldAotvUp) {
       // Look up and use AOTV to teleport ~11 blocks upward.
-      useHotbarUtilityItem(player, EMAN_LASER_AOTV_KEYWORDS)
+      useHotbarUtilityItem(player, EMAN_LASER_AOTV_KEYWORDS, teleportUse = true)
     } else {
       // Fallback: jump continuously to dodge beams.
       MovementManager.setForcedMovement(
@@ -3445,7 +3446,7 @@ object CombatMacroModule : Module("Combat Macro") {
             val beaconTop = net.minecraft.world.phys.Vec3(pos.x + 0.5, pos.y + 1.0, pos.z + 0.5)
             val rotation = AngleUtils.getRotation(player.eyePosition, beaconTop)
             RotationExecutor.rotateTo(rotation, rotationStrategy)
-            useHotbarUtilityItem(player, EMAN_LASER_AOTV_KEYWORDS)
+            useHotbarUtilityItem(player, EMAN_LASER_AOTV_KEYWORDS, teleportUse = true)
             return
           }
         }

@@ -29,12 +29,14 @@ import org.cobalt.api.module.setting.impl.ModeSetting
 import org.cobalt.api.module.setting.impl.TextSetting
 import org.cobalt.api.pathfinder.jni.ActionType
 import org.cobalt.api.pathfinder.jni.NativePathfinder
+import org.cobalt.api.pathfinder.jni.PathExecutorState
 import org.cobalt.api.pathfinder.jni.PathStatus
 import org.cobalt.api.pathfinder.minecraft.MinecraftPathingRules
 import org.cobalt.api.ui.theme.ThemeManager
 import org.cobalt.api.util.ChatUtils
 import org.cobalt.api.util.player.MovementManager
 import org.cobalt.api.util.ui.NVGRenderer
+import org.cobalt.internal.etherwarp.EtherwarpLogic
 import kotlin.math.sqrt
 import kotlin.math.max
 
@@ -47,7 +49,6 @@ object PathfindingModule : Module("Pathfinding") {
   private var moduleOwnsPath = false
   private var cachedSpline: PathSplineRenderer.SplineResult? = null
   private var lastNodesRef: List<Vec3>? = null
-  private var lastRenderCursor: Int = -1
 
   private val localRouteWaypoints = mutableListOf<RouteWaypoint>()
   private val localKillWaypoints  = mutableListOf<KillWaypoint>()
@@ -67,7 +68,8 @@ object PathfindingModule : Module("Pathfinding") {
   private val COLOR_JUMP_FILL   = OverlayRenderEngine.Color(0, 200, 255, 70)
   private val COLOR_JUMP_OUTLINE = OverlayRenderEngine.Color(0, 200, 255, 255)
   private val COLOR_JUMP_AIR_OUTLINE = OverlayRenderEngine.Color(140, 210, 255, 220)
-  private val COLOR_NODE_DOT    = OverlayRenderEngine.Color(0, 200, 255, 180)   // cyan semi-transparent
+  private val COLOR_LOOKAHEAD_SPLINE = OverlayRenderEngine.Color(210, 55, 255, 230)
+  private val COLOR_LOOKAHEAD_POINT = OverlayRenderEngine.Color(0, 240, 255, 235)
 
   val enabled = CheckboxSetting(
     "Enabled",
@@ -358,7 +360,7 @@ object PathfindingModule : Module("Pathfinding") {
     killCountInfo.value  = "${localKillWaypoints.size} points"
     statusInfo.value = if (!NativePathfinder.isInitialized) "Not initialized" else {
       val s = NativePathfinder.status
-      if (!moduleOwnsPath) "${s.name} (idle)" else s.name
+      if (!moduleOwnsPath) "${s.name} (idle)" else "${s.name} | ${PathExecutorState.executionDebugLine}"
     }
 
     // Patrol state machine - runs independently of moduleOwnsPath,
@@ -428,7 +430,9 @@ object PathfindingModule : Module("Pathfinding") {
         if (player != null) {
           val prevSlot = player.inventory.selectedSlot
           player.inventory.selectedSlot = aotvSlot.value
-          mc.gameMode?.useItem(player, InteractionHand.MAIN_HAND)
+          if (EtherwarpLogic.tryConsumeTeleportUseThisTick()) {
+            mc.gameMode?.useItem(player, InteractionHand.MAIN_HAND)
+          }
           player.inventory.selectedSlot = prevSlot
         }
       }
@@ -474,22 +478,59 @@ object PathfindingModule : Module("Pathfinding") {
       } else {
         OverlayRenderEngine.clearTag("path-spline")
       }
-      OverlayRenderEngine.clearTag("path-nodes")
-      val r = NODE_DOT_RADIUS
-      for (node in nodes) {
-        val cx = node.x + 0.5
-        val cy = node.y + NODE_DOT_EYE_HEIGHT
-        val cz = node.z + 0.5
-        OverlayRenderEngine.addBox(
+    }
+
+    renderLookaheadSpline(level)
+  }
+
+  private fun renderLookaheadSpline(level: net.minecraft.world.level.Level) {
+    OverlayRenderEngine.clearTag("lookahead-spline")
+    OverlayRenderEngine.clearTag("lookahead-target")
+    OverlayRenderEngine.clearTag("lookahead-ray")
+
+    val spline = PathExecutorState.lookaheadSplinePoints
+    if (spline.size >= 2) {
+      for (i in 0 until spline.size - 1) {
+        val a = spline[i]
+        val b = spline[i + 1]
+        OverlayRenderEngine.addLine(
           level,
-          cx - r, cy - r, cz - r,
-          cx + r, cy + r, cz + r,
-          COLOR_NODE_DOT, null,
-          lineWidth = 1.0f, durationTicks = 60, tag = "path-nodes", forceRender = true
+          a.x, a.y, a.z,
+          b.x, b.y, b.z,
+          COLOR_LOOKAHEAD_SPLINE,
+          1.6f,
+          durationTicks = 2,
+          tag = "lookahead-spline",
+          forceRender = true
         )
       }
     }
 
+    val marker = PathExecutorState.currentLookaheadSplinePoint ?: return
+    val r = LOOKAHEAD_POINT_RADIUS
+    OverlayRenderEngine.addBox(
+      level,
+      marker.x - r, marker.y - r, marker.z - r,
+      marker.x + r, marker.y + r, marker.z + r,
+      COLOR_LOOKAHEAD_POINT,
+      COLOR_LOOKAHEAD_SPLINE,
+      lineWidth = 1.4f,
+      durationTicks = 2,
+      tag = "lookahead-target",
+      forceRender = true
+    )
+
+    val eye = mc.player?.eyePosition ?: return
+    OverlayRenderEngine.addLine(
+      level,
+      eye.x, eye.y, eye.z,
+      marker.x, marker.y, marker.z,
+      COLOR_LOOKAHEAD_SPLINE.withAlpha(190),
+      1.2f,
+      durationTicks = 2,
+      tag = "lookahead-ray",
+      forceRender = true
+    )
   }
 
   private fun renderJumpGuides(level: net.minecraft.world.level.Level, playerPos: Vec3, nodes: List<Vec3>) {
@@ -652,7 +693,9 @@ object PathfindingModule : Module("Pathfinding") {
     cachedSpline = null
     lastNodesRef = null
     OverlayRenderEngine.clearTag("path-spline")
-    OverlayRenderEngine.clearTag("path-nodes")
+    OverlayRenderEngine.clearTag("lookahead-spline")
+    OverlayRenderEngine.clearTag("lookahead-target")
+    OverlayRenderEngine.clearTag("lookahead-ray")
   }
 
   private fun buildSubRoute(
@@ -803,7 +846,5 @@ object PathfindingModule : Module("Pathfinding") {
   private const val JUMP_GUIDE_MAX_RISE = 1.25
   private const val JUMP_GUIDE_MAX_DISTANCE_SQ = 144.0
   private const val MAX_JUMP_GUIDES = 3
-  private const val NODE_DOT_RADIUS = 0.08
-  // Matches PathCommand.GUIDE_LOOK_HEIGHT so the dots show where the camera guide aims.
-  private const val NODE_DOT_EYE_HEIGHT = 1.62
+  private const val LOOKAHEAD_POINT_RADIUS = 0.11
 }

@@ -12,10 +12,12 @@ import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket
 import net.minecraft.network.protocol.game.ClientboundSoundPacket
 import net.minecraft.sounds.SoundEvents
+import net.minecraft.tags.FluidTags
 import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.entity.Mob
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.entity.projectile.FishingHook
+import net.minecraft.world.item.AxeItem
 import net.minecraft.world.item.FishingRodItem
 import net.minecraft.world.level.ClipContext
 import net.minecraft.world.phys.AABB
@@ -29,6 +31,7 @@ import org.cobalt.api.event.impl.client.TickEvent
 import org.cobalt.api.event.impl.render.WorldRenderEvent
 import org.cobalt.api.module.Module
 import org.cobalt.api.module.ModuleCategory
+import org.cobalt.api.module.setting.impl.ActionSetting
 import org.cobalt.api.module.setting.impl.CheckboxSetting
 import org.cobalt.api.module.setting.impl.InfoSetting
 import org.cobalt.api.module.setting.impl.InfoType
@@ -79,13 +82,41 @@ object FishingMacroModule : Module("Fishing Macro") {
     HYPERION_DOWN("Hyperion Down Spam"),
   }
 
-  private enum class FishingType(val label: String) {
+  enum class FishingType(val label: String) {
     NORMAL("Normal"),
     BARN("Barn"),
     TROPHY("Trophy"),
     WORM("Worm"),
     STRIDERSURFER("Stridersurfer"),
   }
+
+  private fun fishingRuntime(gameTick: Long): FishingRuntime {
+    return FishingRuntime(
+      gameTick = gameTick,
+
+      reactionDelayTicks = reactionDelayTicksSetting.value.toLong(),
+      recastDelayTicks = recastDelayTicksSetting.value.toLong(),
+      castSettleTicks = castSettleTicksSetting.value.toLong(),
+      hookTimeoutTicks = hookTimeoutTicksSetting.value.toLong(),
+
+      minimumTrophyWaitTicks = (minimumTrophyWaitTimeSetting.value * 20.0).toInt(),
+      catchGoldenFish = catchGoldenFishSetting.value,
+      goldenFishPredictionDistance = goldenFishPredictionDistanceSetting.value,
+
+      sneakWhileFishing = sneakWhileFishingSetting.value,
+      killSeaCreatures = killSeaCreaturesSetting.value,
+    )
+  }
+
+  private fun activeFishingProfile(): FishingTypeProfile {
+    return FishingTypeRegistry.get(fishingType())
+  }
+  private enum class SurfWeaponMode(val label: String) {
+    SOUL_WHIP("Flay / Soul Whip Right Click"),
+    AXE("Axe Left Click"),
+  }
+
+  private data class SurfAim(val rotation: Rotation, val target: Vec3?)
 
   private val mc = Minecraft.getInstance()
 
@@ -139,7 +170,7 @@ object FishingMacroModule : Module("Fishing Macro") {
     "Catch Golden Fish",
     "Enable golden fish helper controls for trophy fishing.",
     false,
-  )
+  ).inGroup(TROPHY_GROUP)
 
   private val goldenFishPredictionDistanceSetting = SliderSetting(
     "Golden Fish Prediction Distance",
@@ -148,7 +179,7 @@ object FishingMacroModule : Module("Fishing Macro") {
     0.1,
     3.0,
     0.1,
-  )
+  ).inGroup(TROPHY_GROUP)
 
   private val minimumTrophyWaitTimeSetting = SliderSetting(
     "Minimum Wait Time",
@@ -343,6 +374,93 @@ object FishingMacroModule : Module("Fishing Macro") {
     DEFAULT_LAVA_BURST_KEYWORDS,
   ).inGroup(COMBAT_GROUP)
 
+  private val surfStriderThresholdSetting = SliderSetting(
+    "Surfstrider Kill Count",
+    "Number of live Surfstriders to hook before the macro starts killing them.",
+    5.0,
+    1.0,
+    30.0,
+    1.0,
+  ).inGroup(SURF_GROUP)
+
+  private val surfWeaponModeSetting = ModeSetting(
+    "Surf Weapon",
+    "Weapon behavior used once the Surfstrider count is reached.",
+    SurfWeaponMode.SOUL_WHIP.ordinal,
+    SurfWeaponMode.entries.map { it.label }.toTypedArray(),
+  ).inGroup(SURF_GROUP)
+
+  private val surfSpotXSetting = TextSetting(
+    "Surf Spot X",
+    "Saved fishing-spot X position the macro walks to before casting.",
+    "-694.50",
+  ).inGroup(SURF_GROUP)
+
+  private val surfSpotYSetting = TextSetting(
+    "Surf Spot Y",
+    "Saved fishing-spot Y position.",
+    "121.00",
+  ).inGroup(SURF_GROUP)
+
+  private val surfSpotZSetting = TextSetting(
+    "Surf Spot Z",
+    "Saved fishing-spot Z position.",
+    "80.00",
+  ).inGroup(SURF_GROUP)
+
+  private val surfYawSetting = TextSetting(
+    "Surf Cast Yaw",
+    "Saved yaw used when casting for Surfstriders.",
+    "",
+  ).inGroup(SURF_GROUP)
+
+  private val surfPitchSetting = TextSetting(
+    "Surf Cast Pitch",
+    "Saved pitch used when casting for Surfstriders.",
+    "",
+  ).inGroup(SURF_GROUP)
+
+  private val surfLookBlockXSetting = TextSetting(
+    "Surf Look Block X",
+    "Saved block X that the Surf cast aims at.",
+    "",
+  ).inGroup(SURF_GROUP)
+
+  private val surfLookBlockYSetting = TextSetting(
+    "Surf Look Block Y",
+    "Saved block Y that the Surf cast aims at.",
+    "",
+  ).inGroup(SURF_GROUP)
+
+  private val surfLookBlockZSetting = TextSetting(
+    "Surf Look Block Z",
+    "Saved block Z that the Surf cast aims at.",
+    "",
+  ).inGroup(SURF_GROUP)
+
+  private val saveSurfSpotSetting = ActionSetting(
+    "Save Surf Spot",
+    "Stores your current yaw, pitch, and the block you are looking at for Surf casting.",
+    "Save Current Aim",
+  ) {
+    val player = mc.player ?: return@ActionSetting
+    surfYawSetting.value = "%.2f".format(Locale.US, AngleUtils.normalizeAngle(player.yRot))
+    surfPitchSetting.value = "%.2f".format(Locale.US, player.xRot.coerceIn(-89.9f, 89.9f))
+
+    val lookedBlock = findLookedSurfBlock(player)
+    if (lookedBlock == null) {
+      ChatUtils.sendMessage("Saved Surf yaw/pitch, but no looked block was found.")
+      return@ActionSetting
+    }
+
+    surfLookBlockXSetting.value = lookedBlock.x.toString()
+    surfLookBlockYSetting.value = lookedBlock.y.toString()
+    surfLookBlockZSetting.value = lookedBlock.z.toString()
+    ChatUtils.sendMessage(
+      "Saved Surf aim yaw=${surfYawSetting.value}, pitch=${surfPitchSetting.value}, block=${lookedBlock.x}, ${lookedBlock.y}, ${lookedBlock.z}.",
+    )
+  }.inGroup(SURF_GROUP)
+
   private val hotspotNavModeSetting = ModeSetting(
     "Hotspot Nav",
     "Navigate to a fishing hotspot before casting.",
@@ -531,6 +649,17 @@ object FishingMacroModule : Module("Fishing Macro") {
       hyperionDownMinRangeSetting,
       lavaBurstSetting,
       lavaBurstKeywordsSetting,
+      surfStriderThresholdSetting,
+      surfWeaponModeSetting,
+      surfSpotXSetting,
+      surfSpotYSetting,
+      surfSpotZSetting,
+      surfYawSetting,
+      surfPitchSetting,
+      surfLookBlockXSetting,
+      surfLookBlockYSetting,
+      surfLookBlockZSetting,
+      saveSurfSpotSetting,
       hotspotNavModeSetting,
       useEtherwarpNavSetting,
       navTimeoutTicksSetting,
@@ -585,7 +714,7 @@ object FishingMacroModule : Module("Fishing Macro") {
       return
     }
 
-    val rodSlot = resolveRodSlot(player)
+    val rodSlot = resolveActiveRodSlot(player)
     if (rodSlot !in 0..8) {
       setState(State.MISSING_ROD)
       if (lastMissingRodNoticeTick < 0L || level.gameTime - lastMissingRodNoticeTick >= MISSING_ROD_NOTICE_TICKS) {
@@ -664,6 +793,15 @@ object FishingMacroModule : Module("Fishing Macro") {
       return
     }
 
+    if (isSurfMode()) {
+      if (handleSurfNavigationBeforeCast(player, level.gameTime)) {
+        return
+      }
+      if (tryStartSurfCast(player, rodSlot, level.gameTime)) {
+        return
+      }
+    }
+
     if (hotspotNavModeSetting.value != 0) {
       val hotspotPos = FishingHotspotModule.nearestHotspotPos(player.position())
       if (hotspotPos != null) {
@@ -715,7 +853,7 @@ object FishingMacroModule : Module("Fishing Macro") {
     val player = mc.player ?: return
     val hook = resolveOwnedHook(player) ?: return
     if (hook.tickCount < MIN_SPLASH_HOOK_AGE_TICKS) return
-    if (!canReelForFishingType(hook)) return
+    if (!shouldAcceptSplashForActiveType(hook, mc.level?.gameTime ?: return)) return
 
     val dx = packet.x - hook.x
     val dy = packet.y - hook.y
@@ -749,10 +887,10 @@ object FishingMacroModule : Module("Fishing Macro") {
   private fun renderSoulWhipArc(event: WorldRenderEvent.Last) {
     if (!soulWhipArcSetting.value) return
     val player = mc.player ?: return
-    val soulWhipArc = state == State.KILLING && combatMethodSetting.value == CombatMethod.SOUL_WHIP.ordinal
+    val soulWhipArc = state == State.KILLING && activeCombatMethod() == CombatMethod.SOUL_WHIP
     val destination =
       if (soulWhipArc) {
-        findSeaCreatureTarget(player)?.position()?.add(0.0, 0.65, 0.0)
+        findActiveCombatTarget(player)?.position()?.add(0.0, 0.65, 0.0)
       } else {
         resolveOwnedHook(player)?.position()?.add(0.0, 0.12, 0.0)
       } ?: return
@@ -829,13 +967,13 @@ object FishingMacroModule : Module("Fishing Macro") {
   }
 
   private fun handleSwitchingToWeapon(player: Player, rodSlot: Int, gameTick: Long) {
-    val target = findSeaCreatureTarget(player)
+    val target = findActiveCombatTarget(player)
     if (target == null) {
       beginSwitchBack(rodSlot, gameTick)
       return
     }
 
-    val weaponSlot = resolveWeaponSlot(player, rodSlot)
+    val weaponSlot = resolveActiveWeaponSlot(player, rodSlot)
     if (weaponSlot !in 0..8) {
       warnMissingWeapon(gameTick)
       beginSwitchBack(rodSlot, gameTick)
@@ -846,7 +984,7 @@ object FishingMacroModule : Module("Fishing Macro") {
       InventoryUtils.holdHotbarSlot(weaponSlot)
     }
 
-    RotationExecutor.rotateTo(combatAimRotation(player, target, combatMethod(target)), combatRotationStrategy)
+    RotationExecutor.rotateTo(combatAimRotation(player, target, activeCombatMethod(target)), combatRotationStrategy)
 
     if (gameTick < nextActionTick) {
       setState(State.SWITCHING_TO_WEAPON)
@@ -855,25 +993,25 @@ object FishingMacroModule : Module("Fishing Macro") {
 
     killStartTick = gameTick
     lastAttackTick = gameTick - attackIntervalTicksSetting.value.toLong()
-    if (combatMethod() == CombatMethod.HYPERION_DOWN) {
+    if (activeCombatMethod() == CombatMethod.HYPERION_DOWN) {
       hyperionDownClicksRemaining = hyperionDownClicksSetting.value.toInt()
     }
     setState(State.KILLING)
   }
 
   private fun handleKilling(player: Player, rodSlot: Int, gameTick: Long) {
-    if (combatMethod() == CombatMethod.HYPERION_DOWN) {
+    if (activeCombatMethod() == CombatMethod.HYPERION_DOWN) {
       tickHyperionDown(player, rodSlot, gameTick)
       return
     }
 
-    val target = findSeaCreatureTarget(player)
+    val target = findActiveCombatTarget(player)
     if (target == null || gameTick - killStartTick >= killTimeoutTicksSetting.value.toLong()) {
       beginSwitchBack(rodSlot, gameTick)
       return
     }
 
-    val method = combatMethod(target)
+    val method = activeCombatMethod(target)
     val rotation = combatAimRotation(player, target, method)
     RotationExecutor.rotateTo(rotation, combatRotationStrategy)
 
@@ -920,7 +1058,7 @@ object FishingMacroModule : Module("Fishing Macro") {
   }
 
   private fun tickHyperionDown(player: Player, rodSlot: Int, gameTick: Long) {
-    val target = findSeaCreatureTarget(player, anchor = null)
+    val target = findActiveCombatTarget(player, anchor = null)
     if (target == null || gameTick - killStartTick >= killTimeoutTicksSetting.value.toLong()) {
       beginSwitchBack(rodSlot, gameTick)
       return
@@ -970,12 +1108,16 @@ object FishingMacroModule : Module("Fishing Macro") {
       return false
     }
 
-    val target = findSeaCreatureTarget(player) ?: run {
+    val target = findActiveCombatTarget(player) ?: run {
       combatAnchorPos = null
       return false
     }
 
-    val weaponSlot = resolveWeaponSlot(player, rodSlot)
+    if (isSurfMode() && countSurfstriders(player) < surfStriderThresholdSetting.value.toInt().coerceIn(1, 30)) {
+      return false
+    }
+
+    val weaponSlot = resolveActiveWeaponSlot(player, rodSlot)
     if (weaponSlot !in 0..8) {
       warnMissingWeapon(gameTick)
       combatAnchorPos = null
@@ -983,7 +1125,7 @@ object FishingMacroModule : Module("Fishing Macro") {
     }
 
     InventoryUtils.holdHotbarSlot(weaponSlot)
-    RotationExecutor.rotateTo(combatAimRotation(player, target, combatMethod(target)), combatRotationStrategy)
+    RotationExecutor.rotateTo(combatAimRotation(player, target, activeCombatMethod(target)), combatRotationStrategy)
     nextActionTick = gameTick + weaponSwapDelayTicksSetting.value.toLong()
     setState(State.SWITCHING_TO_WEAPON)
     return true
@@ -1033,18 +1175,122 @@ object FishingMacroModule : Module("Fishing Macro") {
     return -1
   }
 
-  private fun resolveWeaponSlot(player: Player, rodSlot: Int): Int {
-    val configured = weaponSlotSetting.value.toInt() - 1
+  private fun resolveActiveRodSlot(player: Player): Int {
+    if (!isSurfMode()) return resolveRodSlot(player)
+
+    val configured = rodSlotSetting.value.toInt() - 1
     if (configured in 0..8) {
-      return if (configured != rodSlot && !player.inventory.getItem(configured).isEmpty) configured else -1
+      return if (isFishingRod(player, configured)) configured else -1
     }
 
-    if (rememberedWeaponSlot in 0..8 && rememberedWeaponSlot != rodSlot && !player.inventory.getItem(rememberedWeaponSlot).isEmpty) {
+    for (slot in 0..8) {
+      if (!isFishingRod(player, slot)) continue
+      val name = normalizeText(player.inventory.getItem(slot).hoverName.string)
+      if (SURF_LAVA_ROD_KEYWORDS.any { name.contains(it) }) return slot
+    }
+
+    return resolveRodSlot(player)
+  }
+
+  private fun resolveWeaponSlot(player: Player, rodSlot: Int): Int {
+    val configured = weaponSlotSetting.value.toInt() - 1
+
+    if (configured in 0..8) {
+      return if (
+        configured != rodSlot &&
+        !player.inventory.getItem(configured).isEmpty
+      ) {
+        configured
+      } else {
+        -1
+      }
+    }
+
+    if (combatMethod() == CombatMethod.SOUL_WHIP) {
+      for (slot in 0..8) {
+        if (slot == rodSlot) continue
+        if (isUniversalSoulWhipWeapon(player, slot)) return slot
+      }
+    }
+
+    if (
+      rememberedWeaponSlot in 0..8 &&
+      rememberedWeaponSlot != rodSlot &&
+      !player.inventory.getItem(rememberedWeaponSlot).isEmpty
+    ) {
       return rememberedWeaponSlot
     }
 
     val selected = player.inventory.selectedSlot
-    return if (selected in 0..8 && selected != rodSlot && !player.inventory.getItem(selected).isEmpty) selected else -1
+    return if (
+      selected in 0..8 &&
+      selected != rodSlot &&
+      !player.inventory.getItem(selected).isEmpty
+    ) {
+      selected
+    } else {
+      -1
+    }
+  }
+
+  private fun resolveActiveWeaponSlot(player: Player, rodSlot: Int): Int {
+    val configured = weaponSlotSetting.value.toInt() - 1
+
+    if (configured in 0..8) {
+      return if (
+        configured != rodSlot &&
+        !player.inventory.getItem(configured).isEmpty
+      ) {
+        configured
+      } else {
+        -1
+      }
+    }
+
+    val method = activeCombatMethod()
+    if (method == CombatMethod.SOUL_WHIP) {
+      for (slot in 0..8) {
+        if (slot == rodSlot) continue
+        if (isUniversalSoulWhipWeapon(player, slot)) return slot
+      }
+    }
+
+    if (isSurfMode()) {
+      val mode = SurfWeaponMode.entries.getOrElse(surfWeaponModeSetting.value) { SurfWeaponMode.SOUL_WHIP }
+      val preferred = when (mode) {
+        SurfWeaponMode.SOUL_WHIP -> findHotbarSlot(player, UNIVERSAL_SOUL_WHIP_WEAPON_KEYWORDS) { false }
+        SurfWeaponMode.AXE -> findHotbarSlot(player, SURF_AXE_KEYWORDS) { it.item is AxeItem }
+      }
+      if (preferred in 0..8 && preferred != rodSlot) return preferred
+    }
+
+    return resolveWeaponSlot(player, rodSlot)
+  }
+
+  private fun findHotbarSlot(
+    player: Player,
+    keywords: List<String>,
+    itemPredicate: (net.minecraft.world.item.ItemStack) -> Boolean,
+  ): Int {
+    for (slot in 0..8) {
+      val stack = player.inventory.getItem(slot)
+      if (stack.isEmpty) continue
+      val name = normalizeText(stack.hoverName.string)
+      if (itemPredicate(stack) || keywords.any { name.contains(it) }) {
+        return slot
+      }
+    }
+    return -1
+  }
+
+  private fun isUniversalSoulWhipWeapon(player: Player, slot: Int): Boolean {
+    if (slot !in 0..8) return false
+
+    val stack = player.inventory.getItem(slot)
+    if (stack.isEmpty) return false
+
+    val name = normalizeText(stack.hoverName.string)
+    return UNIVERSAL_SOUL_WHIP_WEAPON_KEYWORDS.any { keyword -> name.contains(keyword) }
   }
 
   private fun findSeaCreatureTarget(player: Player, anchor: Vec3? = combatAnchorPos): Mob? {
@@ -1075,6 +1321,51 @@ object FishingMacroModule : Module("Fishing Macro") {
         val anchorBias = if (matchesTargetKeyword(mob, keywords)) 0.0 else CLOSE_HOOK_NON_KEYWORD_PENALTY
         (anchorDistanceSq * 0.65) + (playerDistanceSq * 0.35) + anchorBias
       }
+  }
+
+  private fun findActiveCombatTarget(player: Player, anchor: Vec3? = combatAnchorPos): Mob? {
+    return if (isSurfMode()) findSurfstriderTarget(player, anchor) else findSeaCreatureTarget(player, anchor)
+  }
+
+  private fun findSurfstriderTarget(player: Player, anchor: Vec3? = combatAnchorPos): Mob? {
+    val level = mc.level ?: return null
+    val searchRangeSq = targetSearchRangeSetting.value * targetSearchRangeSetting.value
+
+    return level.entitiesForRendering()
+      .asSequence()
+      .mapNotNull { it as? Mob }
+      .filter { mob ->
+        if (!mob.isAlive || mob.isInvisible) return@filter false
+        if (!matchesSurfstrider(mob)) return@filter false
+
+        val playerDistanceSq = player.distanceToSqr(mob)
+        val anchorDistanceSq = anchor?.let { mob.position().distanceToSqr(it) } ?: Double.MAX_VALUE
+        playerDistanceSq <= searchRangeSq || anchorDistanceSq <= searchRangeSq
+      }
+      .minByOrNull { mob ->
+        val playerDistanceSq = player.distanceToSqr(mob)
+        val anchorDistanceSq = anchor?.let { mob.position().distanceToSqr(it) } ?: playerDistanceSq
+        (anchorDistanceSq * 0.65) + (playerDistanceSq * 0.35)
+      }
+  }
+
+  private fun countSurfstriders(player: Player): Int {
+    val level = mc.level ?: return 0
+    val searchRangeSq = targetSearchRangeSetting.value * targetSearchRangeSetting.value
+    return level.entitiesForRendering()
+      .asSequence()
+      .mapNotNull { it as? Mob }
+      .count { mob ->
+        mob.isAlive &&
+          !mob.isInvisible &&
+          player.distanceToSqr(mob) <= searchRangeSq &&
+          matchesSurfstrider(mob)
+      }
+  }
+
+  private fun matchesSurfstrider(mob: Mob): Boolean {
+    val names = targetMatchNames(mob)
+    return SURFSTRIDER_TARGET_KEYWORDS.any { keyword -> names.any { it.contains(keyword) } }
   }
 
   private fun matchesTargetKeyword(mob: Mob, keywords: List<String>): Boolean {
@@ -1144,15 +1435,37 @@ object FishingMacroModule : Module("Fishing Macro") {
     return base
   }
 
+  private fun activeCombatMethod(target: Mob? = null): CombatMethod {
+    if (isSurfMode()) {
+      return when (SurfWeaponMode.entries.getOrElse(surfWeaponModeSetting.value) { SurfWeaponMode.SOUL_WHIP }) {
+        SurfWeaponMode.SOUL_WHIP -> CombatMethod.SOUL_WHIP
+        SurfWeaponMode.AXE -> CombatMethod.MELEE
+      }
+    }
+
+    return combatMethod(target)
+  }
+
+  private fun canReelForActiveType(hook: FishingHook, gameTick: Long): Boolean {
+    val runtime = fishingRuntime(gameTick)
+    return activeFishingProfile().canReel(hook, runtime)
+  }
+
+  private fun shouldAcceptSplashForActiveType(hook: FishingHook, gameTick: Long): Boolean {
+    val runtime = fishingRuntime(gameTick)
+    return activeFishingProfile().shouldAcceptSplash(hook, runtime)
+  }
+
   private fun canReelForFishingType(hook: FishingHook): Boolean {
-    if (fishingType() != FishingType.TROPHY) return true
-    val minimumTicks = (minimumTrophyWaitTimeSetting.value * 20.0).toInt()
-    return hook.tickCount >= minimumTicks
+    val gameTick = mc.level?.gameTime ?: return false
+    return canReelForActiveType(hook, gameTick)
   }
 
   private fun fishingType(): FishingType {
     return FishingType.entries.getOrElse(fishingTypeSetting.value) { FishingType.NORMAL }
   }
+
+  private fun isSurfMode(): Boolean = fishingType() == FishingType.STRIDERSURFER
 
   private fun updateMacroSneak() {
     val shouldSneak =
@@ -1217,8 +1530,132 @@ object FishingMacroModule : Module("Fishing Macro") {
 
   private fun isFishingRod(player: Player, slot: Int): Boolean {
     if (slot !in 0..8) return false
+
     val stack = player.inventory.getItem(slot)
-    return !stack.isEmpty && stack.item is FishingRodItem
+    if (stack.isEmpty) return false
+
+    val name = normalizeText(stack.hoverName.string)
+
+    // Soul Whip / Flay are weapons, never rods.
+    if (UNIVERSAL_SOUL_WHIP_WEAPON_KEYWORDS.any { keyword -> name.contains(keyword) }) {
+      return false
+    }
+
+    // Vanilla/fallback rod item check.
+    if (stack.item is FishingRodItem) return true
+
+    return when (fishingType()) {
+      FishingType.STRIDERSURFER,
+      FishingType.WORM -> VALID_LAVA_ROD_NAMES.any { rodName -> name.contains(rodName) }
+
+      FishingType.NORMAL,
+      FishingType.BARN,
+      FishingType.TROPHY -> VALID_WATER_ROD_NAMES.any { rodName -> name.contains(rodName) }
+    }
+  }
+
+  private fun handleSurfNavigationBeforeCast(player: Player, gameTick: Long): Boolean {
+    val spot = surfSpot() ?: return false
+    val arrivalSq = navArrivalBlocksSetting.value * navArrivalBlocksSetting.value
+    if (player.distanceToSqr(spot) <= arrivalSq) return false
+
+    navTargetPos = spot
+    navStartTick = gameTick
+    NativePathfinder.setTargetWithRadius(spot.x, spot.y, spot.z, navArrivalBlocksSetting.value)
+    setState(State.MOVING_TO_HOTSPOT)
+    return true
+  }
+
+  private fun tryStartSurfCast(player: Player, rodSlot: Int, gameTick: Long): Boolean {
+    val savedAim = surfAim()
+    val target = savedAim?.target ?: findClosestLavaTarget(player)
+    val rotation = savedAim?.rotation ?: target?.let { AngleUtils.getRotation(player.eyePosition, it) }
+
+    if (rotation == null) {
+      castTargetPos = computeCastTarget(player)
+      enterRotationLock(player)
+      useRod(rodSlot)
+      nextActionTick = gameTick + castSettleTicksSetting.value.toLong()
+      setState(State.CASTING)
+      return true
+    }
+
+    RotationExecutor.rotateTo(rotation, combatRotationStrategy)
+    castTargetPos = target
+
+    if (!isAimedAt(rotation)) {
+      nextActionTick = gameTick + 1L
+      setState(State.CASTING)
+      return true
+    }
+
+    enterRotationLock(player)
+    useRod(rodSlot)
+    nextActionTick = gameTick + castSettleTicksSetting.value.toLong()
+    setState(State.CASTING)
+    return true
+  }
+
+  private fun surfSpot(): Vec3? {
+    val x = surfSpotXSetting.value.trim().toDoubleOrNull() ?: return null
+    val y = surfSpotYSetting.value.trim().toDoubleOrNull() ?: return null
+    val z = surfSpotZSetting.value.trim().toDoubleOrNull() ?: return null
+    return Vec3(x, y, z)
+  }
+
+  private fun surfAim(): SurfAim? {
+    val yaw = surfYawSetting.value.trim().toFloatOrNull() ?: return null
+    val pitch = surfPitchSetting.value.trim().toFloatOrNull() ?: return null
+    val rotation = Rotation(AngleUtils.normalizeAngle(yaw), pitch.coerceIn(-89.9f, 89.9f))
+    return SurfAim(rotation, surfLookBlockTarget())
+  }
+
+  private fun surfLookBlockTarget(): Vec3? {
+    val level = mc.level ?: return null
+    val x = surfLookBlockXSetting.value.trim().toIntOrNull() ?: return null
+    val y = surfLookBlockYSetting.value.trim().toIntOrNull() ?: return null
+    val z = surfLookBlockZSetting.value.trim().toIntOrNull() ?: return null
+    val pos = BlockPos(x, y, z)
+    val yOffset = if (level.getFluidState(pos).`is`(FluidTags.LAVA)) 0.55 else 0.5
+    return Vec3(pos.x + 0.5, pos.y + yOffset, pos.z + 0.5)
+  }
+
+  private fun findLookedSurfBlock(player: Player): BlockPos? {
+    val level = mc.level ?: return null
+    val eye = player.eyePosition
+    val end = eye.add(player.lookAngle.scale(CAST_RAYCAST_RANGE))
+    val fluidResult = level.clip(ClipContext(eye, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.SOURCE_ONLY, player))
+    if (fluidResult.type == HitResult.Type.BLOCK) {
+      return fluidResult.blockPos
+    }
+
+    val blockResult = level.clip(ClipContext(eye, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player))
+    return if (blockResult.type == HitResult.Type.BLOCK) blockResult.blockPos else null
+  }
+
+  private fun findClosestLavaTarget(player: Player): Vec3? {
+    val level = mc.level ?: return null
+    val playerBlock = player.blockPosition()
+    var bestPos: BlockPos? = null
+    var bestDistanceSq = Double.MAX_VALUE
+
+    for (dx in -SURF_LAVA_SEARCH_RADIUS..SURF_LAVA_SEARCH_RADIUS) {
+      for (dy in -SURF_LAVA_VERTICAL_SEARCH..SURF_LAVA_VERTICAL_SEARCH) {
+        for (dz in -SURF_LAVA_SEARCH_RADIUS..SURF_LAVA_SEARCH_RADIUS) {
+          val pos = playerBlock.offset(dx, dy, dz)
+          if (!level.getFluidState(pos).`is`(FluidTags.LAVA)) continue
+
+          val target = Vec3(pos.x + 0.5, pos.y + 0.55, pos.z + 0.5)
+          val distanceSq = player.eyePosition.distanceToSqr(target)
+          if (distanceSq < bestDistanceSq) {
+            bestDistanceSq = distanceSq
+            bestPos = pos
+          }
+        }
+      }
+    }
+
+    return bestPos?.let { Vec3(it.x + 0.5, it.y + 0.55, it.z + 0.5) }
   }
 
   private fun handleMovingToHotspot(player: Player, rodSlot: Int, gameTick: Long) {
@@ -1237,6 +1674,10 @@ object FishingMacroModule : Module("Fishing Macro") {
       NativePathfinder.stop()
       MovementManager.setMovementLock(false)
       navTargetPos = null
+      if (isSurfMode()) {
+        tryStartSurfCast(player, rodSlot, gameTick)
+        return
+      }
       castTargetPos = FishingHotspotModule.nearestHotspotPos(player.position()) ?: computeCastTarget(player)
       enterRotationLock(player)
       useRod(rodSlot)
@@ -1501,6 +1942,7 @@ object FishingMacroModule : Module("Fishing Macro") {
   private const val HOTSPOT_NAV_GROUP = "Hotspot Navigation"
   private const val ROTATION_SETTINGS_GROUP = "Rotation Settings"
   private const val RARE_MOB_GROUP = "Rare Mob"
+  private const val SURF_GROUP = "Surf Fishing"
   private const val BANK_SEARCH_ANGLES = 16
   private const val BANK_SEARCH_MIN_RADIUS = 3.0
   private const val BANK_SEARCH_MAX_RADIUS = 9.0
@@ -1531,6 +1973,34 @@ object FishingMacroModule : Module("Fishing Macro") {
       "moogma,magma slug,lava leech"
   private const val DEFAULT_HYPERION_TARGET_KEYWORDS = "moogma,magma slug,lava leech"
   private const val DEFAULT_LAVA_BURST_KEYWORDS = "from beneath the lava appears"
+  private val SURFSTRIDER_TARGET_KEYWORDS = listOf("surfstrider", "surf strider", "surf-strider")
+  private val SURF_LAVA_ROD_KEYWORDS = listOf("lava", "magma", "hellfire", "inferno")
+  private val UNIVERSAL_SOUL_WHIP_WEAPON_KEYWORDS = listOf("soul whip", "flay")
+  private val SURF_AXE_KEYWORDS = listOf("axe", "daedalus axe")
+  private val VALID_WATER_ROD_NAMES = setOf(
+    "fishing rod",
+    "prismarine rod",
+    "speedster rod",
+    "farmer's rod",
+    "winter rod",
+    "ice rod",
+    "challenging rod",
+    "rod of champions",
+    "rod of legends",
+    "rod of the sea",
+    "yeti rod",
+    "auger rod",
+    "phantom rod",
+    "shredder",
+  )
+  private val VALID_LAVA_ROD_NAMES = setOf(
+    "starter lava rod",
+    "magma rod",
+    "inferno rod",
+    "hellfire rod",
+  )
+  private const val SURF_LAVA_SEARCH_RADIUS = 12
+  private const val SURF_LAVA_VERTICAL_SEARCH = 5
   private const val CAST_RAYCAST_RANGE = 30.0
   private const val CAST_BOX_HALF = 0.15
   private const val BOBBER_BOX_HALF = 0.2

@@ -3,12 +3,10 @@ package org.cobalt.internal.mining
 import com.google.gson.GsonBuilder
 import net.minecraft.client.Minecraft
 import net.minecraft.core.BlockPos
-import net.minecraft.world.level.ClipContext
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.HitResult
-import net.minecraft.world.phys.Vec3
 import org.cobalt.api.event.EventBus
 import org.cobalt.api.event.annotation.SubscribeEvent
 import org.cobalt.api.event.impl.client.TickEvent
@@ -28,7 +26,6 @@ import java.io.File
 import java.time.Instant
 import java.util.ArrayDeque
 import kotlin.math.roundToInt
-import kotlin.math.sqrt
 
 object VeinScannerModule : Module("Vein Scanner") {
   override val category = ModuleCategory.MINING
@@ -202,10 +199,7 @@ object VeinScannerModule : Module("Vein Scanner") {
 
     OverlayRenderEngine.clearTag(PREVIEW_TAG)
     preview?.let { vein ->
-      for (block in vein.blocks) {
-        OverlayRenderEngine.outlineBlockColor(level, block, vein.ore.previewColor, durationTicks = 3, tag = PREVIEW_TAG, lineWidth = 2.4f)
-      }
-      OverlayRenderEngine.outlineBlockColor(level, vein.target, OverlayRenderEngine.Color(255, 255, 255, 255), durationTicks = 3, tag = PREVIEW_TAG, lineWidth = 3.0f)
+      renderVeinHeatmap(level, vein)
     }
 
     OverlayRenderEngine.clearTag(SAVED_TAG)
@@ -266,8 +260,7 @@ object VeinScannerModule : Module("Vein Scanner") {
     } else {
       floodFill(level, seed, ore)
     }
-    val visibleBlocks = visibleBlocks(level, rawBlocks)
-    val blocks = visibleConnectedComponent(visibleBlocks, seed)
+    val blocks = connectedComponent(rawBlocks, seed)
     if (blocks.isEmpty()) return null
 
     val center = mithrilCenter?.takeIf { candidate -> blocks.any { it == candidate } } ?: centerOf(blocks)
@@ -282,14 +275,7 @@ object VeinScannerModule : Module("Vein Scanner") {
     )
   }
 
-  private fun visibleBlocks(level: Level, blocks: List<BlockPos>): List<BlockPos> {
-    if (blocks.isEmpty()) return emptyList()
-    val player = mc.player ?: return blocks
-    val eye = player.eyePosition
-    return blocks.filter { block -> isBlockVisible(level, eye, block) }
-  }
-
-  private fun visibleConnectedComponent(blocks: List<BlockPos>, seed: BlockPos): List<BlockPos> {
+  private fun connectedComponent(blocks: List<BlockPos>, seed: BlockPos): List<BlockPos> {
     if (blocks.isEmpty()) return emptyList()
 
     val remaining = blocks.map { it.immutable() }.toHashSet()
@@ -315,26 +301,6 @@ object VeinScannerModule : Module("Vein Scanner") {
     }
 
     return out
-  }
-
-  private fun isBlockVisible(level: Level, eye: Vec3, block: BlockPos): Boolean {
-    val player = mc.player ?: return true
-
-    for (offset in VISIBLE_SAMPLE_OFFSETS) {
-      val target = Vec3(block.x + offset.x, block.y + offset.y, block.z + offset.z)
-      val dx = target.x - eye.x
-      val dy = target.y - eye.y
-      val dz = target.z - eye.z
-      val distance = sqrt(dx * dx + dy * dy + dz * dz)
-      if (distance < 0.2) return true
-
-      val hit = level.clip(ClipContext(eye, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player))
-      if (hit.type == HitResult.Type.MISS || hit.blockPos == block || hit.location.distanceTo(eye) >= distance - 0.05) {
-        return true
-      }
-    }
-
-    return false
   }
 
   private fun selectedOre(level: Level, pos: BlockPos): VeinOre? {
@@ -567,6 +533,53 @@ object VeinScannerModule : Module("Vein Scanner") {
 
   private fun format(pos: BlockPos): String = "${pos.x}, ${pos.y}, ${pos.z}"
 
+  private fun renderVeinHeatmap(level: Level, vein: ScannedVein) {
+    val veinSet = vein.blocks.map { it.immutable() }.toHashSet()
+
+    for (block in vein.blocks) {
+      val color = heatmapColor(surfaceDepth(block, veinSet))
+      val pad = 0.004
+      OverlayRenderEngine.addBox(
+        level,
+        block.x - pad,
+        block.y - pad,
+        block.z - pad,
+        block.x + 1.0 + pad,
+        block.y + 1.0 + pad,
+        block.z + 1.0 + pad,
+        fill = color,
+        outline = color.withAlpha(45),
+        lineWidth = 0.8f,
+        durationTicks = 3,
+        tag = PREVIEW_TAG,
+        forceRender = true
+      )
+    }
+  }
+
+  private fun heatmapColor(depth: Int): OverlayRenderEngine.Color =
+    when (depth) {
+      0 -> OverlayRenderEngine.Color(255, 18, 0, 160)
+      1 -> OverlayRenderEngine.Color(255, 132, 0, 118)
+      else -> OverlayRenderEngine.Color(35, 255, 35, 128)
+    }
+
+  private fun surfaceDepth(block: BlockPos, veinSet: Set<BlockPos>): Int {
+    for (radius in 1..2) {
+      for (dx in -radius..radius) {
+        for (dy in -radius..radius) {
+          for (dz in -radius..radius) {
+            if (maxOf(kotlin.math.abs(dx), kotlin.math.abs(dy), kotlin.math.abs(dz)) != radius) continue
+            if (!veinSet.contains(block.offset(dx, dy, dz))) {
+              return radius - 1
+            }
+          }
+        }
+      }
+    }
+    return 2
+  }
+
   internal fun selectedAreaKey(): String =
     VeinScanStore.normalizeAreaKey(commissionArea.options[commissionArea.value.coerceIn(0, commissionArea.options.lastIndex)])
 
@@ -606,15 +619,6 @@ object VeinScannerModule : Module("Vein Scanner") {
     }
   }
 
-  private val VISIBLE_SAMPLE_OFFSETS = listOf(
-    Vec3(0.5, 0.5, 0.5),
-    Vec3(0.5, 0.2, 0.5),
-    Vec3(0.5, 0.8, 0.5),
-    Vec3(0.2, 0.5, 0.5),
-    Vec3(0.8, 0.5, 0.5),
-    Vec3(0.5, 0.5, 0.2),
-    Vec3(0.5, 0.5, 0.8),
-  )
 }
 
 data class ScannedVein(

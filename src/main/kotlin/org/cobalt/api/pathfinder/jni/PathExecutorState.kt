@@ -7,6 +7,7 @@ import net.minecraft.world.phys.HitResult
 import net.minecraft.world.phys.Vec3
 import org.cobalt.api.util.AngleUtils
 import org.cobalt.api.util.helper.Rotation
+import java.util.Locale
 import kotlin.math.*
 
 object PathExecutorState {
@@ -28,12 +29,25 @@ object PathExecutorState {
         private set
     var currentTargetPoint: Vec3? = null
         private set
+    var currentLookaheadSplinePoint: Vec3? = null
+        private set
+    var lookaheadSplinePoints: List<Vec3> = emptyList()
+        private set
+    var currentSplineDistance: Double = 0.0
+        private set
+    var currentLookaheadDistance: Double = 0.0
+        private set
+    var executionDebugLine: String = "spline idle"
+        private set
+    var requiresPrecisionMovement: Boolean = false
+        private set
     private var smoothedTargetInitialized: Boolean = false
 
     // ── Dense look points (eye-level, curvature-offset, cached by signature) ──
     var lookPoints: List<Vec3> = emptyList()
         private set
     private var lookPointsSignature: String = ""
+    private var splinePath: SplinePath? = null
 
     // ── Adaptive lookahead ──
     var smoothedLookahead: Double = MAX_LOOKAHEAD
@@ -60,8 +74,12 @@ object PathExecutorState {
     // Constants
     // =========================================================================
 
-    private const val MIN_LOOKAHEAD = 1.1
-    private const val MAX_LOOKAHEAD = 2.5
+    private const val MIN_LOOKAHEAD = 2.35
+    private const val MAX_LOOKAHEAD = 4.8
+    private const val PRECISION_LOOKAHEAD = 1.25
+    private const val PRECISION_CURVATURE = 0.34
+    private const val DROP_SCAN_DISTANCE = 3.5
+    private const val DROP_HEIGHT_THRESHOLD = 0.45
     private const val RECOVERY_MIN_LOOKAHEAD = 0.1
     private const val LOOKAHEAD_STEP = 0.4
     private const val RECOVERY_LOOKAHEAD_STEP = 0.15
@@ -75,20 +93,25 @@ object PathExecutorState {
     private const val PREDICTION_MAX_ADVANCE_AIR = 2.4
     private const val PREDICTION_MIN_SPEED_XZ = 0.05
     private const val PREDICTION_TICKS = 10
-    private const val YAW_DEADZONE = 0.45f
-    private const val PITCH_DEADZONE = 0.65f
-    private const val TARGET_SMOOTH_MIN = 0.10f
-    private const val TARGET_SMOOTH_MAX = 0.42f
-    private const val TARGET_SMOOTH_YAW_SCALE = 36.0
-    private const val TARGET_SMOOTH_PITCH_SCALE = 24.0
+    private const val CATCHUP_MAX_ADVANCE_GROUND = 3.4
+    private const val CATCHUP_MAX_ADVANCE_AIR = 1.8
+    private const val CATCHUP_PROJECTION_DISTANCE = 6.0
+    private const val YAW_DEADZONE = 0.18f
+    private const val PITCH_DEADZONE = 0.25f
+    private const val TARGET_SMOOTH_MIN = 0.22f
+    private const val TARGET_SMOOTH_MAX = 0.65f
+    private const val TARGET_SMOOTH_YAW_SCALE = 24.0
+    private const val TARGET_SMOOTH_PITCH_SCALE = 18.0
     private const val TELEPORT_RESYNC_TICKS = 14
     private const val TELEPORT_RESYNC_SEARCH_WINDOW = 72
+    private const val TELEPORT_RESYNC_SEARCH_DISTANCE = 72.0
     private const val UNSEEN_ROLLBACK_MS = 600L
     private const val NON_CHANGE_PATH_DELTA = 0.45
     private const val NON_CHANGE_TICKS_THRESHOLD = 35
 
     // Look point generation
-    private const val LOOK_EYE_OFFSET = 2.62
+    private const val SPLINE_STEPS = 10
+    private const val LOOK_EYE_OFFSET = PLAYER_LOOK_HEIGHT
     private const val OUTWARD_OFFSET_STRENGTH = 0.6
     private const val LOOK_WINDOW = 4
     private const val MIN_LOOK_SPACING_SQ = 0.64
@@ -108,10 +131,17 @@ object PathExecutorState {
         pathCurvature = 0.0
         currentPathPosition = 0.0
         currentTargetPoint = null
+        currentLookaheadSplinePoint = null
+        lookaheadSplinePoints = emptyList()
+        currentSplineDistance = 0.0
+        currentLookaheadDistance = 0.0
+        executionDebugLine = "spline idle"
+        requiresPrecisionMovement = false
         smoothedTargetInitialized = false
         jumpSuppressTicks = 0
         lookPoints = emptyList()
         lookPointsSignature = ""
+        splinePath = null
         smoothedLookahead = MAX_LOOKAHEAD
         lookaheadOverride = null
         lookaheadOverrideExpiry = 0
@@ -130,7 +160,9 @@ object PathExecutorState {
         unseenStartPathPosition = currentPathPosition
         setTemporaryLookahead(MAX_LOOKAHEAD, TELEPORT_RESYNC_TICKS)
         if (targetPathPosition != null) {
-            currentPathPosition = maxOf(currentPathPosition, maxOf(0.0, targetPathPosition - 2.0))
+            val resyncDistance = splinePath?.distanceAtControlIndex(targetPathPosition) ?: targetPathPosition
+            currentSplineDistance = maxOf(currentSplineDistance, maxOf(0.0, resyncDistance - 2.0))
+            currentPathPosition = currentSplineDistance
         }
     }
 
@@ -193,7 +225,11 @@ object PathExecutorState {
         if (signature == lookPointsSignature && lookPoints.isNotEmpty()) return
         lookPointsSignature = signature
         lookPoints = if (nodes.size >= 2) buildLookPoints(nodes) else emptyList()
+        splinePath = lookPoints.takeIf { it.size >= 2 }?.let(::buildSplinePath)
+        lookaheadSplinePoints = splinePath?.samples ?: emptyList()
         currentPathPosition = 0.0
+        currentSplineDistance = 0.0
+        currentLookaheadDistance = 0.0
         smoothedTargetInitialized = false
         losCache.clear()
     }
@@ -204,7 +240,7 @@ object PathExecutorState {
         if (pts == null) {
             updateSimple(player, nodes)
         } else {
-            updateFull(player, pts)
+            updateFullSpline(player, pts)
         }
     }
 
@@ -244,6 +280,142 @@ object PathExecutorState {
     // =========================================================================
     // Full V5-style update (uses look points with LOS, adaptive lookahead, rollback)
     // =========================================================================
+
+    private fun updateFullSpline(player: LocalPlayer, pts: List<Vec3>) {
+        val spline = splinePath ?: run {
+            updateFull(player, pts)
+            return
+        }
+        val level = Minecraft.getInstance().level
+        val eye = player.eyePosition
+        val motionY = player.deltaMovement.y
+        val isFalling = motionY < -0.4 || isSplineDropping(spline)
+        val pathAnchor = spline.sample(currentSplineDistance)
+        val isJumpingHigh = motionY > 0.1 || player.y - pathAnchor.y > 2.0
+        val isTeleportResync = postTeleportResyncTicks > 0
+        val dropAhead = hasDropAhead(spline, DROP_SCAN_DISTANCE, DROP_HEIGHT_THRESHOLD)
+
+        val projection = spline.project(
+            point = eye,
+            hintDistance = currentSplineDistance,
+            searchBack = if (isTeleportResync) 24.0 else if (isFalling) 0.0 else 2.5,
+            searchForward = when {
+                isTeleportResync -> TELEPORT_RESYNC_SEARCH_DISTANCE
+                dropAhead -> 3.0
+                isFalling -> 5.0
+                isJumpingHigh -> 12.0
+                else -> 9.0
+            },
+            horizontalOnly = isFalling || isJumpingHigh
+        )
+
+        val effectiveThreshold = when {
+            isTeleportResync -> PROXIMITY_THRESHOLD * 1.8
+            isFalling -> 5.0
+            isJumpingHigh -> PROXIMITY_THRESHOLD * 2
+            else -> PROXIMITY_THRESHOLD
+        }
+        if (projection.distSq < effectiveThreshold * effectiveThreshold) {
+            val maxAdvance = if (isTeleportResync) 14.0 else if (isFalling) 0.55 else 2.2
+            val advanced = minOf(currentSplineDistance + maxAdvance, projection.distance)
+            currentSplineDistance = maxOf(currentSplineDistance, advanced).coerceAtMost(spline.totalLength)
+        }
+
+        if (!isTeleportResync && !dropAhead) {
+            catchUpSplineProgress(player, spline, isFalling || isJumpingHigh)
+        }
+
+        if (!isTeleportResync && !dropAhead) {
+            applyPredictedSplineProgress(player, spline)
+        }
+        currentPathPosition = currentSplineDistance
+
+        val adaptiveLookahead = getAdaptiveLookaheadDistance(eye, spline, dropAhead)
+        currentLookaheadDistance = adaptiveLookahead
+        requiresPrecisionMovement = dropAhead || pathCurvature >= PRECISION_CURVATURE || projection.distSq > 2.25
+        val remainingPathForLookahead = spline.totalLength - currentSplineDistance
+        val effectiveLookahead = minOf(adaptiveLookahead, remainingPathForLookahead.coerceAtLeast(0.1))
+        var findResult = if (level != null) {
+            findVisibleSplineLookahead(eye, spline, effectiveLookahead, level)
+        } else {
+            FindResult(spline.sample(minOf(spline.totalLength, currentSplineDistance + effectiveLookahead)), effectiveLookahead)
+        }
+
+        val effectiveMin = if (isInRecoveryMode()) RECOVERY_MIN_LOOKAHEAD else MIN_LOOKAHEAD
+        var targetVisible = findResult.visible && (level == null || isPointVisible(eye, findResult.point, level))
+
+        val now = System.currentTimeMillis()
+        if (findResult.lookahead <= effectiveMin + 0.001 && !targetVisible) {
+            if (unseenSinceMs == 0L) {
+                unseenSinceMs = now
+                unseenStartPathPosition = currentSplineDistance
+            }
+            if (now - unseenSinceMs >= UNSEEN_ROLLBACK_MS && level != null) {
+                val testPoint = spline.sample(minOf(spline.totalLength, currentSplineDistance + effectiveMin))
+                if (isPointVisible(eye, testPoint, level)) {
+                    unseenSinceMs = 0L
+                    unseenStartPathPosition = currentSplineDistance
+                    findResult = FindResult(testPoint, effectiveMin)
+                    targetVisible = true
+                }
+            }
+        } else {
+            unseenSinceMs = 0L
+            unseenStartPathPosition = currentSplineDistance
+        }
+
+        if (!targetVisible && findResult.lookahead <= 0.0) {
+            currentTargetPoint = null
+            currentLookaheadSplinePoint = null
+            requiresPrecisionMovement = true
+            executionDebugLine = formatDebugLine(spline, projection.distSq, false)
+            return
+        }
+
+        var targetPoint = findResult.point
+        currentLookaheadSplinePoint = targetPoint
+        val rawDx = targetPoint.x - eye.x
+        val rawDy = targetPoint.y - eye.y
+        val rawDz = targetPoint.z - eye.z
+        val rawHorz = sqrt(rawDx * rawDx + rawDz * rawDz)
+        val rawPitch = -atan2(rawDy, rawHorz) * (180.0 / PI)
+
+        if (rawPitch < -50.0 && rawHorz < 1.0) {
+            val newDy = rawHorz * tan(30.0 * (PI / 180.0))
+            targetPoint = Vec3(targetPoint.x, eye.y + newDy, targetPoint.z)
+        }
+        if (isFalling && rawHorz < 0.5) {
+            val fallTarget = spline.sample(minOf(spline.totalLength, currentSplineDistance + 2.5))
+            if (level == null || isPointVisible(eye, fallTarget, level)) {
+                targetPoint = fallTarget
+            }
+        }
+
+        targetPoint = clampLookDistance(eye, targetPoint)
+        currentTargetPoint = targetPoint
+
+        val r = rotationTo(eye, targetPoint)
+        val remainingPath = spline.totalLength - currentSplineDistance
+        val finishFactor = if (remainingPath < 4.0) maxOf(0.25, remainingPath / 4.0) else 1.0
+        val isStraight = pathCurvature < 0.15
+        val dynamicYawDeadzone = (if (isStraight) YAW_DEADZONE * 1.5f else YAW_DEADZONE) * finishFactor.toFloat()
+
+        updateSmoothedRotationTarget(
+            targetYaw = r.yaw,
+            targetPitch = r.pitch,
+            yawDeadzone = dynamicYawDeadzone,
+            pitchDeadzone = (PITCH_DEADZONE * finishFactor).toFloat(),
+            finishFactor = finishFactor.toFloat()
+        )
+
+        val nearEnd3D = eye.distanceToSqr(spline.samples.last()) <= COMPLETION_RADIUS * COMPLETION_RADIUS &&
+            currentSplineDistance >= spline.totalLength - 2.0
+        if (nearEnd3D || currentSplineDistance >= spline.totalLength - 0.25) {
+            currentSplineDistance = spline.totalLength
+            currentPathPosition = currentSplineDistance
+        }
+        executionDebugLine = formatDebugLine(spline, projection.distSq, targetVisible)
+    }
 
     private fun updateFull(player: LocalPlayer, pts: List<Vec3>) {
         val level = Minecraft.getInstance().level
@@ -344,11 +516,13 @@ object PathExecutorState {
 
         if (!targetVisible && findResult.lookahead <= 0.0) {
             currentTargetPoint = null
+            currentLookaheadSplinePoint = null
             return
         }
 
         // ── Pitch clamping for steep upward angles ──
         var targetPoint = findResult.point
+        currentLookaheadSplinePoint = targetPoint
         val rawDx = targetPoint.x - eye.x
         val rawDy = targetPoint.y - eye.y
         val rawDz = targetPoint.z - eye.z
@@ -419,7 +593,8 @@ object PathExecutorState {
     private fun updateSimple(player: LocalPlayer, nodes: List<Vec3>) {
         if (nodes.isEmpty()) {
             rawTargetYaw = player.yRot; rawTargetPitch = player.xRot
-            pathCurvature = 0.0; currentPathPosition = 0.0; currentTargetPoint = null
+            pathCurvature = 0.0; currentPathPosition = 0.0; currentTargetPoint = null; currentLookaheadSplinePoint = null
+            requiresPrecisionMovement = false
             return
         }
         val eye = player.eyePosition
@@ -434,8 +609,10 @@ object PathExecutorState {
         updateCurvature(nodes, nearIdx)
         val lookT = maxOf(currentPathPosition + 2.5, (projected.takeIf { it.isFinite() } ?: currentPathPosition) + 0.75)
             .coerceIn(0.0, nodes.lastIndex.toDouble())
-        val targetPoint = clampLookDistance(eye, pointAtSimple(nodes, lookT))
+        val splinePoint = pointAtSimple(nodes, lookT)
+        val targetPoint = clampLookDistance(eye, splinePoint)
         currentTargetPoint = targetPoint
+        currentLookaheadSplinePoint = splinePoint
         val r = rotationTo(eye, targetPoint)
         rawTargetYaw = r.yaw; rawTargetPitch = r.pitch
     }
@@ -534,6 +711,118 @@ object PathExecutorState {
         return result
     }
 
+    private data class SplineProjection(val distance: Double, val point: Vec3, val distSq: Double)
+
+    private data class SplinePath(
+        val controlPoints: List<Vec3>,
+        val samples: List<Vec3>,
+        val cumulative: DoubleArray
+    ) {
+        val totalLength: Double = cumulative.lastOrNull() ?: 0.0
+
+        fun sample(distance: Double): Vec3 {
+            if (samples.isEmpty()) return Vec3.ZERO
+            if (samples.size == 1 || totalLength <= 0.0) return samples.first()
+            val d = distance.coerceIn(0.0, totalLength)
+            val rawIndex = cumulative.binarySearch(d)
+            val upper = if (rawIndex >= 0) rawIndex else (-rawIndex - 1).coerceIn(1, cumulative.lastIndex)
+            val lower = (upper - 1).coerceAtLeast(0)
+            val span = cumulative[upper] - cumulative[lower]
+            if (span <= 1e-6) return samples[upper]
+            val t = (d - cumulative[lower]) / span
+            return lerp(samples[lower], samples[upper], t)
+        }
+
+        fun project(
+            point: Vec3,
+            hintDistance: Double,
+            searchBack: Double,
+            searchForward: Double,
+            horizontalOnly: Boolean
+        ): SplineProjection {
+            if (samples.size < 2) return SplineProjection(0.0, samples.firstOrNull() ?: Vec3.ZERO, Double.POSITIVE_INFINITY)
+            val startDistance = (hintDistance - searchBack).coerceAtLeast(0.0)
+            val endDistance = (hintDistance + searchForward).coerceAtMost(totalLength)
+            var bestDistance = hintDistance.coerceIn(0.0, totalLength)
+            var bestPoint = sample(bestDistance)
+            var bestDistSq = Double.POSITIVE_INFINITY
+
+            for (i in 0 until samples.lastIndex) {
+                val segStart = cumulative[i]
+                val segEnd = cumulative[i + 1]
+                if (segEnd < startDistance || segStart > endDistance) continue
+
+                val a = samples[i]
+                val b = samples[i + 1]
+                val frac = if (horizontalOnly) closestHorizontalFraction(point, a, b) else closestFraction(point, a, b)
+                val projected = lerp(a, b, frac)
+                val distance = (segStart + (segEnd - segStart) * frac).coerceIn(startDistance, endDistance)
+                val distSq = if (horizontalOnly) {
+                    val dx = point.x - projected.x
+                    val dz = point.z - projected.z
+                    dx * dx + dz * dz
+                } else {
+                    point.distanceToSqr(projected)
+                }
+
+                if (distSq < bestDistSq) {
+                    bestDistSq = distSq
+                    bestDistance = distance
+                    bestPoint = projected
+                }
+            }
+
+            return SplineProjection(bestDistance, bestPoint, bestDistSq)
+        }
+
+        fun distanceAtControlIndex(indexFloat: Double): Double {
+            if (controlPoints.isEmpty() || samples.isEmpty()) return indexFloat
+            val control = sampleControl(indexFloat)
+            return project(control, indexFloat.coerceAtLeast(0.0), searchBack = 12.0, searchForward = 18.0, horizontalOnly = false).distance
+        }
+
+        private fun sampleControl(indexFloat: Double): Vec3 {
+            val safe = indexFloat.coerceIn(0.0, controlPoints.lastIndex.toDouble())
+            val index = safe.toInt().coerceIn(0, controlPoints.lastIndex)
+            val frac = safe - index
+            val a = controlPoints[index]
+            val b = controlPoints[minOf(index + 1, controlPoints.lastIndex)]
+            return lerp(a, b, frac)
+        }
+    }
+
+    private fun buildSplinePath(points: List<Vec3>): SplinePath {
+        if (points.size < 2) return SplinePath(points, points, DoubleArray(points.size) { 0.0 })
+
+        val samples = ArrayList<Vec3>((points.size - 1) * SPLINE_STEPS + 1)
+        for (i in 0 until points.lastIndex) {
+            val p0 = points[(i - 1).coerceAtLeast(0)]
+            val p1 = points[i]
+            val p2 = points[i + 1]
+            val p3 = points[(i + 2).coerceAtMost(points.lastIndex)]
+            for (step in 0 until SPLINE_STEPS) {
+                samples.add(catmullRom(p0, p1, p2, p3, step.toDouble() / SPLINE_STEPS))
+            }
+        }
+        samples.add(points.last())
+
+        val cumulative = DoubleArray(samples.size)
+        for (i in 1 until samples.size) {
+            cumulative[i] = cumulative[i - 1] + samples[i - 1].distanceTo(samples[i])
+        }
+        return SplinePath(points, samples, cumulative)
+    }
+
+    private fun catmullRom(p0: Vec3, p1: Vec3, p2: Vec3, p3: Vec3, t: Double): Vec3 {
+        val t2 = t * t
+        val t3 = t2 * t
+        return Vec3(
+            0.5 * (2 * p1.x + (-p0.x + p2.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3),
+            0.5 * (2 * p1.y + (-p0.y + p2.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3),
+            0.5 * (2 * p1.z + (-p0.z + p2.z) * t + (2 * p0.z - 5 * p1.z + 4 * p2.z - p3.z) * t2 + (-p0.z + 3 * p1.z - 3 * p2.z + p3.z) * t3)
+        )
+    }
+
     // =========================================================================
     // Adaptive lookahead
     // =========================================================================
@@ -583,6 +872,67 @@ object PathExecutorState {
         return smoothedLookahead
     }
 
+    private fun getAdaptiveLookaheadDistance(eye: Vec3, spline: SplinePath, dropAhead: Boolean): Double {
+        lookaheadOverride?.let {
+            if (System.currentTimeMillis() > lookaheadOverrideDeadlineMs) {
+                lookaheadOverride = null
+                lookaheadOverrideExpiry = 0
+            } else {
+                return it
+            }
+        }
+
+        if (currentSplineDistance + 1.0 >= spline.totalLength) return smoothedLookahead
+
+        val pathPoint = spline.sample(currentSplineDistance)
+        val pdx = eye.x - pathPoint.x
+        val pdz = eye.z - pathPoint.z
+        val deviationFactor = ((sqrt(pdx * pdx + pdz * pdz) - 1.6) / 2.0).coerceIn(0.0, 1.0)
+
+        val baseA = spline.sample(currentSplineDistance)
+        val baseB = spline.sample(minOf(spline.totalLength, currentSplineDistance + 0.9))
+        val bdx = baseB.x - baseA.x
+        val bdy = baseB.y - baseA.y
+        val bdz = baseB.z - baseA.z
+        val baseMag = sqrt(bdx * bdx + bdy * bdy + bdz * bdz)
+
+        var maxAngle = 0.0
+        if (baseMag > 0.4) {
+            for (look in doubleArrayOf(1.4, 2.2, 3.2, 4.8)) {
+                val fa = spline.sample(minOf(spline.totalLength, currentSplineDistance + look))
+                val fb = spline.sample(minOf(spline.totalLength, currentSplineDistance + look + 0.9))
+                val fdx = fb.x - fa.x
+                val fdy = fb.y - fa.y
+                val fdz = fb.z - fa.z
+                val fMag = sqrt(fdx * fdx + fdy * fdy + fdz * fdz)
+                if (fMag > 0.4) {
+                    val dot = ((bdx * fdx + bdy * fdy + bdz * fdz) / (baseMag * fMag)).coerceIn(-1.0, 1.0)
+                    maxAngle = maxOf(maxAngle, acos(dot))
+                }
+            }
+        }
+
+        pathCurvature = maxAngle
+        val isFalling = Minecraft.getInstance().player?.deltaMovement?.y?.let { it < -0.1 } ?: false
+        val effectiveAngle = if (isFalling) maxAngle * 0.5 else maxAngle
+        val curveFactor = ((effectiveAngle - 0.52) / 0.75).coerceIn(0.0, 1.0)
+        val safetyFactor = if (dropAhead) 1.0 else 0.0
+        val adjustFactor = maxOf(deviationFactor, curveFactor, safetyFactor)
+        val target = if (dropAhead) {
+            PRECISION_LOOKAHEAD
+        } else {
+            MAX_LOOKAHEAD - (MAX_LOOKAHEAD - MIN_LOOKAHEAD) * adjustFactor
+        }
+        val lerpFactor = if (dropAhead) 0.45 else if (target > smoothedLookahead) 0.14 else 0.08
+        smoothedLookahead += (target - smoothedLookahead) * lerpFactor
+        val lowerBound = when {
+            dropAhead -> PRECISION_LOOKAHEAD
+            isInRecoveryMode() -> RECOVERY_MIN_LOOKAHEAD
+            else -> MIN_LOOKAHEAD
+        }
+        return smoothedLookahead.coerceIn(lowerBound, MAX_LOOKAHEAD)
+    }
+
     // =========================================================================
     // LOS + visible lookahead finder
     // =========================================================================
@@ -622,20 +972,65 @@ object PathExecutorState {
                 }
             }
 
-            if (isPointVisible(eye, point, level)) return FindResult(point, lookahead)
-            lookahead -= if (lookahead < MIN_LOOKAHEAD) RECOVERY_LOOKAHEAD_STEP else LOOKAHEAD_STEP
+            return FindResult(point, lookahead, isPointVisible(eye, point, level))
         }
 
-        // Close fallback
-        var close = maxOf(RECOVERY_MIN_LOOKAHEAD, MIN_LOOKAHEAD - 0.2)
-        while (close >= RECOVERY_MIN_LOOKAHEAD) {
-            val t = minOf(pts.lastIndex.toDouble(), currentPathPosition + close)
-            val point = getInterpolatedPoint(pts, t)
-            if (isPointVisible(eye, point, level)) return FindResult(point, close)
-            close -= RECOVERY_LOOKAHEAD_STEP
+        val close = maxOf(RECOVERY_MIN_LOOKAHEAD, MIN_LOOKAHEAD - 0.2)
+        val t = minOf(pts.lastIndex.toDouble(), currentPathPosition + close)
+        val point = getInterpolatedPoint(pts, t)
+        return FindResult(point, close, isPointVisible(eye, point, level))
+    }
+
+    private fun findVisibleSplineLookahead(
+        eye: Vec3,
+        spline: SplinePath,
+        idealLookahead: Double,
+        level: net.minecraft.world.level.Level
+    ): FindResult {
+        val imm = spline.sample(minOf(spline.totalLength, currentSplineDistance + 0.5))
+        val immDx = imm.x - eye.x
+        val immDy = imm.y - eye.y
+        val immDz = imm.z - eye.z
+
+        val inRecovery = isInRecoveryMode()
+        val effectiveMin = if (inRecovery) RECOVERY_MIN_LOOKAHEAD else minOf(MIN_LOOKAHEAD, idealLookahead)
+        var lookahead = if (inRecovery) idealLookahead else maxOf(idealLookahead, effectiveMin)
+
+        while (lookahead >= effectiveMin) {
+            val point = spline.sample(minOf(spline.totalLength, currentSplineDistance + lookahead))
+            val dx = point.x - eye.x
+            val dy = point.y - eye.y
+            val dz = point.z - eye.z
+            val horzDist = sqrt(dx * dx + dz * dz)
+
+            if (lookahead >= MIN_LOOKAHEAD) {
+                if (dy > 1.8 && horzDist < 0.8) {
+                    lookahead -= LOOKAHEAD_STEP
+                    continue
+                }
+                val pitch = -atan2(dy, horzDist) * (180.0 / PI)
+                if (pitch < MAX_UPWARD_PITCH && horzDist < 1.5) {
+                    lookahead -= LOOKAHEAD_STEP
+                    continue
+                }
+                val immMag = sqrt(immDx * immDx + immDy * immDy + immDz * immDz)
+                val tMag = sqrt(dx * dx + dy * dy + dz * dz)
+                if (immMag > 0.001 && tMag > 0.001) {
+                    val dotDiv = (immDx * dx + immDy * dy + immDz * dz) / (immMag * tMag)
+                    val angle = acos(dotDiv.coerceIn(-1.0, 1.0)) * (180.0 / PI)
+                    if (angle > MAX_DIRECTION_DIVERGENCE) {
+                        lookahead -= LOOKAHEAD_STEP
+                        continue
+                    }
+                }
+            }
+
+            return FindResult(point, lookahead, isPointVisible(eye, point, level))
         }
 
-        return FindResult(currentTargetPoint ?: eye, 0.0, visible = false)
+        val close = maxOf(RECOVERY_MIN_LOOKAHEAD, MIN_LOOKAHEAD - 0.2)
+        val point = spline.sample(minOf(spline.totalLength, currentSplineDistance + close))
+        return FindResult(point, close, isPointVisible(eye, point, level))
     }
 
     private fun isPointVisible(from: Vec3, to: Vec3, level: net.minecraft.world.level.Level): Boolean {
@@ -685,6 +1080,40 @@ object PathExecutorState {
         currentPathPosition = minOf(currentPathPosition + maxAdvance, projectedT)
     }
 
+    private fun applyPredictedSplineProgress(player: LocalPlayer, spline: SplinePath) {
+        val motion = player.deltaMovement
+        val speedXZ = sqrt(motion.x * motion.x + motion.z * motion.z)
+        val onGround = player.onGround()
+        if (onGround && speedXZ < PREDICTION_MIN_SPEED_XZ) return
+
+        val (predX, predZ) = if (onGround) Pair(player.x, player.z) else predictXZ(player, PREDICTION_TICKS)
+        val projected = spline.project(
+            point = Vec3(predX, player.eyeY, predZ),
+            hintDistance = currentSplineDistance,
+            searchBack = 0.5,
+            searchForward = 5.5,
+            horizontalOnly = true
+        )
+        if (!projected.distance.isFinite() || projected.distance <= currentSplineDistance) return
+        val maxAdvance = if (onGround) PREDICTION_MAX_ADVANCE_GROUND else PREDICTION_MAX_ADVANCE_AIR
+        currentSplineDistance = minOf(currentSplineDistance + maxAdvance, projected.distance, spline.totalLength)
+    }
+
+    private fun catchUpSplineProgress(player: LocalPlayer, spline: SplinePath, airborneOrVertical: Boolean) {
+        val projection = spline.project(
+            point = Vec3(player.x, player.eyeY, player.z),
+            hintDistance = currentSplineDistance,
+            searchBack = if (airborneOrVertical) 0.0 else 0.75,
+            searchForward = 12.0,
+            horizontalOnly = true
+        )
+        if (!projection.distance.isFinite() || projection.distance <= currentSplineDistance) return
+        if (projection.distSq > CATCHUP_PROJECTION_DISTANCE * CATCHUP_PROJECTION_DISTANCE) return
+
+        val maxAdvance = if (airborneOrVertical) CATCHUP_MAX_ADVANCE_AIR else CATCHUP_MAX_ADVANCE_GROUND
+        currentSplineDistance = minOf(currentSplineDistance + maxAdvance, projection.distance, spline.totalLength)
+    }
+
     private fun predictXZ(player: LocalPlayer, ticks: Int): Pair<Double, Double> {
         var px = player.x; var pz = player.z
         var vx = player.deltaMovement.x; var vy = player.deltaMovement.y; var vz = player.deltaMovement.z
@@ -707,6 +1136,37 @@ object PathExecutorState {
         val ahead = getInterpolatedPoint(pts, minOf(pts.lastIndex.toDouble(), currentPathPosition + 2.0))
         return curr.y - ahead.y > 0.8
     }
+
+    private fun isSplineDropping(spline: SplinePath): Boolean {
+        if (currentSplineDistance >= spline.totalLength - 2.0) return false
+        val curr = spline.sample(currentSplineDistance)
+        val ahead = spline.sample(minOf(spline.totalLength, currentSplineDistance + 2.0))
+        return curr.y - ahead.y > 0.8
+    }
+
+    private fun hasDropAhead(spline: SplinePath, distance: Double, threshold: Double): Boolean {
+        val base = spline.sample(currentSplineDistance)
+        var step = 0.75
+        while (step <= distance) {
+            val ahead = spline.sample(minOf(spline.totalLength, currentSplineDistance + step))
+            if (base.y - ahead.y >= threshold) return true
+            step += 0.75
+        }
+        return false
+    }
+
+    private fun formatDebugLine(spline: SplinePath, projectionDistSq: Double, targetVisible: Boolean): String =
+        String.format(
+            Locale.US,
+            "spline %.1f/%.1fm | look %.2fm | curve %.2f | proj %.2fm | %s%s",
+            currentSplineDistance,
+            spline.totalLength,
+            currentLookaheadDistance,
+            pathCurvature,
+            sqrt(projectionDistSq.coerceAtLeast(0.0)),
+            if (targetVisible) "visible" else "blocked",
+            if (requiresPrecisionMovement) " | precision" else ""
+        )
 
     private fun updateCurvatureFromLookPoints(pts: List<Vec3>, nearIdx: Int) {
         if (nearIdx + 2 > pts.lastIndex) return
@@ -744,6 +1204,26 @@ object PathExecutorState {
         if (dSq == 0.0) return 0.0
         return (((p.x - p1.x) * dx + (p.z - p1.z) * dz) / dSq).coerceIn(0.0, 1.0)
     }
+
+    private fun closestFraction(p: Vec3, a: Vec3, b: Vec3): Double {
+        val dx = b.x - a.x
+        val dy = b.y - a.y
+        val dz = b.z - a.z
+        val lenSq = dx * dx + dy * dy + dz * dz
+        if (lenSq <= 1e-8) return 0.0
+        return (((p.x - a.x) * dx + (p.y - a.y) * dy + (p.z - a.z) * dz) / lenSq).coerceIn(0.0, 1.0)
+    }
+
+    private fun closestHorizontalFraction(p: Vec3, a: Vec3, b: Vec3): Double {
+        val dx = b.x - a.x
+        val dz = b.z - a.z
+        val lenSq = dx * dx + dz * dz
+        if (lenSq <= 1e-8) return 0.0
+        return (((p.x - a.x) * dx + (p.z - a.z) * dz) / lenSq).coerceIn(0.0, 1.0)
+    }
+
+    private fun lerp(a: Vec3, b: Vec3, t: Double): Vec3 =
+        Vec3(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t)
 
     private fun projectLookPathPositionHorizontal(x: Double, z: Double, hint: Double, pts: List<Vec3>): Double {
         if (pts.size < 2) return 0.0

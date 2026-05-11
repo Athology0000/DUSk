@@ -2,6 +2,9 @@ package org.cobalt.api.hud
 
 import org.cobalt.api.module.setting.Setting
 import org.cobalt.api.module.setting.SettingsContainer
+import org.cobalt.api.module.setting.impl.CheckboxSetting
+import org.cobalt.api.module.setting.impl.SliderSetting
+import org.cobalt.api.module.setting.inGroup
 
 /**
  * A HUD overlay element rendered on the in-game screen.
@@ -18,6 +21,9 @@ abstract class HudElement(
   val id: String,
   val name: String,
   val description: String = "",
+  defaultBlurBackground: Boolean = false,
+  defaultBlurStrength: Double = 14.0,
+  private val managedBlurBackground: Boolean = true,
 ) : SettingsContainer {
 
   /** Whether this element is rendered. Toggled by the user in the HUD editor. */
@@ -50,6 +56,27 @@ abstract class HudElement(
   protected open val defaultScale: Float = 1.0f
 
   private val settingsList = mutableListOf<Setting<*>>()
+
+  private val blurBackgroundSetting =
+    CheckboxSetting(
+      "Blur Background",
+      "Use the shader blur behind this HUD element.",
+      defaultBlurBackground,
+    ).inGroup("Appearance")
+
+  private val blurStrengthSetting =
+    SliderSetting(
+      "Blur Strength",
+      "How strongly this HUD blurs the scene behind it.",
+      defaultBlurStrength,
+      2.0,
+      24.0,
+      0.5,
+    ).inGroup("Appearance")
+
+  init {
+    addSetting(blurBackgroundSetting, blurStrengthSetting)
+  }
 
   override fun addSetting(vararg settings: Setting<*>) {
     settingsList.addAll(listOf(*settings))
@@ -86,6 +113,10 @@ abstract class HudElement(
 
   fun getScaledWidth(): Float = getBaseWidth() * scale
   fun getScaledHeight(): Float = getBaseHeight() * scale
+
+  fun isBlurBackgroundEnabled(): Boolean = blurBackgroundSetting.value
+  fun getBlurStrength(): Float = blurStrengthSetting.value.toFloat()
+  fun usesManagedBlurBackground(): Boolean = managedBlurBackground
 
   fun getScreenPosition(screenWidth: Float, screenHeight: Float): Pair<Float, Float> =
     anchor.computeScreenPosition(

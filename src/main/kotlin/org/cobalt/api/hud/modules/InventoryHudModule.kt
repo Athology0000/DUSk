@@ -42,6 +42,8 @@ class InventoryHudModule : Module("Inventory HUD") {
     anchor   = HudAnchor.BOTTOM_CENTER
     offsetX  = 0f
     offsetY  = 24f
+    blurBackground = true
+    blurStrength = 16.0
 
     val background = setting(CheckboxSetting("Background", "Show panel background", true))
     backgroundSetting = background
@@ -74,7 +76,8 @@ class InventoryHudModule : Module("Inventory HUD") {
       val totalH = p * 2 + ROWS * ss + (ROWS - 1) * sg
 
       if (background.value) {
-        NVGRenderer.rect(0f, 0f, totalW, totalH, ThemeSurface.slotGlass(), br)
+        NVGRenderer.rect(0f, 0f, totalW, totalH, ThemeSurface.panel(0x3A), br)
+        NVGRenderer.gradientRect(0f, 0f, totalW, totalH * 0.45f, ThemeSurface.overlay(0x18), 0x00000000, Gradient.TopToBottom, br)
       }
 
       val angle  = (System.currentTimeMillis() % 12000L).toFloat() / 12000f * (Math.PI * 2.0).toFloat()

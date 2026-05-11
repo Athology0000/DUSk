@@ -57,6 +57,7 @@ import org.cobalt.api.util.getLoreLines
 
 object EtherwarpLogic {
   private val mc = Minecraft.getInstance()
+  private var lastTeleportUseTick = Long.MIN_VALUE
 
   private val etherwarpItemIds = setOf(
     "ETHERWARP_CONDUIT",
@@ -275,6 +276,13 @@ object EtherwarpLogic {
     if (mc.level == null) return false
     val screen = mc.screen ?: return true
     return screen.javaClass.simpleName == "ChatScreen"
+  }
+
+  fun tryConsumeTeleportUseThisTick(): Boolean {
+    val tick = mc.level?.gameTime ?: return false
+    if (lastTeleportUseTick == tick) return false
+    lastTeleportUseTick = tick
+    return true
   }
 
   fun getLookingAtBlockTrace(): BlockPos? {

@@ -101,6 +101,7 @@ internal fun MiningMacroModule.handleWarp(
     1 -> {
       mc.options.keyShift?.setDown(true)
       if (warpStageTicks >= WARP_SNEAK_TICKS) {
+        if (!EtherwarpLogic.tryConsumeTeleportUseThisTick()) return
         mc.options.keyUse?.setDown(true)
         warpStage = 2
         warpStageTicks = 0

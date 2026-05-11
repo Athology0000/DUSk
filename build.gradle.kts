@@ -1,6 +1,5 @@
+
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.gradle.api.GradleException
-import org.gradle.api.tasks.JavaExec
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
@@ -170,7 +169,7 @@ tasks.named("processResources") {
 }
 
 // ── Deploy JAR to Prism mods folder ──────────────────────────────────────────
-val modsDir = file("C:/Users/rohan/AppData/Roaming/PrismLauncher/instances/dutt/minecraft/mods")
+val modsDir = file("C:/Users/aeare/AppData/Roaming/PrismLauncher/instances/1.21.11(1)/minecraft/mods")
 val releaseBranchName = "release"
 
 tasks.register("buildDev") {

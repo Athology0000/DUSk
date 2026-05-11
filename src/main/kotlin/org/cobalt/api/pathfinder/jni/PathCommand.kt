@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.SlabBlock
 import net.minecraft.world.level.block.StairBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.properties.Half
+import net.minecraft.world.level.block.state.properties.SlabType
 import net.minecraft.world.phys.Vec3
 import org.cobalt.api.rotation.RotationExecutor
 import org.cobalt.api.util.helper.Rotation
@@ -146,10 +147,11 @@ data class PathCommand(
 
         val playerFloorY = Math.floor(player.y - 0.001).toInt()
 
-        // 5. FLAG_STEP_UP_NEXT guard + preemptive climb (V5: only fires when flag set)
+        // 5. Native flag fast path, plus a geometry fallback for missed/late step-up flags.
         if (nextFlags and FLAG_STEP_UP_NEXT != 0) {
             if (checkPreemptiveClimbJump(player, nodes, nearIdx, playerFloorY)) return true
         }
+        if (checkUpcomingStepJump(level, player, nodes, nearIdx, playerFloorY)) return true
 
         // 6. Hazard jump: jump over one/two harmful blocks only when the landing is safe.
         if (checkHazardJump(level, player, nodes, nearIdx)) return true
@@ -189,14 +191,67 @@ data class PathCommand(
         nearIdx: Int,
         playerFloorY: Int
     ): Boolean {
+        val level = Minecraft.getInstance().level ?: return false
         if (nearIdx + 1 > nodes.lastIndex) return false
         val curr = nodes[nearIdx]; val next = nodes[nearIdx + 1]
-        if (next.y <= curr.y) return false        // V5: nextNode.y <= currentNode.y → return false
+        if (next.y - curr.y < JUMP_RISE_MIN) return false
         val rise = Math.round(next.y).toInt() - playerFloorY
         if (rise !in 1..2) return false
+        if (isWalkablePartialStairStep(level, player, next, playerFloorY)) return false
         val tdx = next.x + 0.5 - player.x; val tdz = next.z + 0.5 - player.z
         if (tdx * tdx + tdz * tdz > PREEMPTIVE_JUMP_DIST_SQ) return false
         return jumpTrue(JUMP_SUPPRESS_TICKS)
+    }
+
+    private fun checkUpcomingStepJump(
+        level: Level,
+        player: LocalPlayer,
+        nodes: List<Vec3>,
+        nearIdx: Int,
+        playerFloorY: Int
+    ): Boolean {
+        val end = minOf(nodes.lastIndex, nearIdx + STEP_LOOKAHEAD_NODES)
+
+        for (i in (nearIdx + 1)..end) {
+            val previous = nodes[(i - 1).coerceAtLeast(nearIdx)]
+            val next = nodes[i]
+            val pathRise = next.y - previous.y
+            val riseFromPlayer = Math.round(next.y).toInt() - playerFloorY
+            if (pathRise < JUMP_RISE_MIN) continue
+            if (riseFromPlayer !in 1..2) continue
+            if (isWalkablePartialStairStep(level, player, next, playerFloorY)) continue
+
+            val nextFeet = BlockPos(Math.floor(next.x).toInt(), Math.round(next.y).toInt(), Math.floor(next.z).toInt())
+            val supportPos = nextFeet.below()
+            val landingState = cachedBlock(level, supportPos)
+            val landingName = landingState.block.descriptionId
+            if (landingName.contains("slab")) continue
+            if (landingState.block is StairBlock) {
+                try {
+                    if (landingState.getValue(StairBlock.HALF) == Half.BOTTOM) continue
+                } catch (_: Exception) {
+                }
+            }
+            if (landingState.getCollisionShape(level, supportPos).isEmpty) continue
+
+            val feetState = cachedBlock(level, nextFeet)
+            val headState = cachedBlock(level, nextFeet.above())
+            if (!feetState.getCollisionShape(level, nextFeet).isEmpty) continue
+            if (!headState.getCollisionShape(level, nextFeet.above()).isEmpty) continue
+
+            val takeoff = Vec3(previous.x + 0.5, previous.y, previous.z + 0.5)
+            val landing = Vec3(next.x + 0.5, next.y, next.z + 0.5)
+            if (!isAheadOnSegment(player.position(), takeoff, landing)) continue
+
+            val triggerDistSq = minOf(
+                distanceToSegmentHorizontalSq(player.x, player.z, takeoff, landing),
+                horizontalDistanceSq(player.x, player.z, takeoff.x, takeoff.z)
+            )
+            if (triggerDistSq > HILL_JUMP_TRIGGER_DIST_SQ) continue
+            return jumpTrue(JUMP_SUPPRESS_TICKS)
+        }
+
+        return false
     }
 
     /**
@@ -223,9 +278,10 @@ data class PathCommand(
             val spanDz = landingNode.z - takeoffNode.z
             if (spanDx * spanDx + spanDz * spanDz > HAZARD_JUMP_MAX_DIST_SQ) return false
 
-            val triggerDx = player.x - (takeoffNode.x + 0.5)
-            val triggerDz = player.z - (takeoffNode.z + 0.5)
-            if (triggerDx * triggerDx + triggerDz * triggerDz > HAZARD_JUMP_TRIGGER_DIST_SQ) return false
+            val takeoff = Vec3(takeoffNode.x + 0.5, takeoffNode.y, takeoffNode.z + 0.5)
+            val landing = Vec3(landingNode.x + 0.5, landingNode.y, landingNode.z + 0.5)
+            if (!isAheadOnSegment(player.position(), takeoff, landing)) return false
+            if (distanceToSegmentHorizontalSq(player.x, player.z, takeoff, landing) > HAZARD_JUMP_TRIGGER_DIST_SQ) return false
 
             return jumpTrue(HAZARD_JUMP_SUPPRESS_TICKS)
         }
@@ -265,8 +321,10 @@ data class PathCommand(
         val gdx = recovNode.x - edgeNode.x; val gdz = recovNode.z - edgeNode.z
         val gapDistSq = gdx * gdx + gdz * gdz
         if (gapDistSq <= 0.0 || gapDistSq > 20.0) return false
-        val pdx = player.x - (edgeNode.x + 0.5); val pdz = player.z - (edgeNode.z + 0.5)
-        if (pdx * pdx + pdz * pdz > GAP_TRIGGER_DIST_SQ) return false
+        val edge = Vec3(edgeNode.x + 0.5, edgeNode.y, edgeNode.z + 0.5)
+        val landing = Vec3(recovNode.x + 0.5, recovNode.y, recovNode.z + 0.5)
+        if (!isAheadOnSegment(player.position(), edge, landing)) return false
+        if (distanceToSegmentHorizontalSq(player.x, player.z, edge, landing) > GAP_TRIGGER_DIST_SQ) return false
         return jumpTrue(GAP_JUMP_SUPPRESS_TICKS)
     }
 
@@ -375,6 +433,79 @@ data class PathCommand(
         return true
     }
 
+    private fun isAheadOnSegment(playerPos: Vec3, start: Vec3, end: Vec3): Boolean {
+        val sx = end.x - start.x
+        val sz = end.z - start.z
+        val lenSq = sx * sx + sz * sz
+        if (lenSq <= 1e-6) return true
+        val px = playerPos.x - start.x
+        val pz = playerPos.z - start.z
+        val progress = (px * sx + pz * sz) / lenSq
+        return progress >= -0.45 && progress <= 1.15
+    }
+
+    private fun distanceToSegmentHorizontalSq(x: Double, z: Double, start: Vec3, end: Vec3): Double {
+        val sx = end.x - start.x
+        val sz = end.z - start.z
+        val lenSq = sx * sx + sz * sz
+        if (lenSq <= 1e-6) {
+            val dx = x - start.x
+            val dz = z - start.z
+            return dx * dx + dz * dz
+        }
+        val t = (((x - start.x) * sx + (z - start.z) * sz) / lenSq).coerceIn(0.0, 1.0)
+        val px = start.x + sx * t
+        val pz = start.z + sz * t
+        val dx = x - px
+        val dz = z - pz
+        return dx * dx + dz * dz
+    }
+
+    private fun horizontalDistanceSq(x1: Double, z1: Double, x2: Double, z2: Double): Double {
+        val dx = x1 - x2
+        val dz = z1 - z2
+        return dx * dx + dz * dz
+    }
+
+    private fun isWalkablePartialStairStep(
+        level: Level,
+        player: LocalPlayer,
+        next: Vec3,
+        playerFloorY: Int
+    ): Boolean {
+        val standingPos = BlockPos(Math.floor(player.x).toInt(), playerFloorY, Math.floor(player.z).toInt())
+        val nextFeet = BlockPos(Math.floor(next.x).toInt(), Math.round(next.y).toInt(), Math.floor(next.z).toInt())
+        val landingSupport = nextFeet.below()
+
+        val standingState = cachedBlock(level, standingPos)
+        val landingState = cachedBlock(level, landingSupport)
+        val standingTop = collisionTopY(level, standingPos, standingState) ?: return false
+        val landingTop = collisionTopY(level, landingSupport, landingState) ?: return false
+        val heightDelta = landingTop - standingTop
+        if (heightDelta <= 0.0 || heightDelta > PARTIAL_STAIR_STEP_HEIGHT) return false
+
+        val standingPartial = isWalkablePartialStepBlock(standingState)
+        val landingPartial = isWalkablePartialStepBlock(landingState)
+        return standingPartial || landingPartial
+    }
+
+    private fun collisionTopY(level: Level, pos: BlockPos, state: BlockState): Double? {
+        val shape = state.getCollisionShape(level, pos)
+        if (shape.isEmpty) return null
+        return pos.y + shape.bounds().maxY
+    }
+
+    private fun isWalkablePartialStepBlock(state: BlockState): Boolean {
+        val block = state.block
+        if (block is StairBlock) {
+            return runCatching { state.getValue(StairBlock.HALF) == Half.BOTTOM }.getOrDefault(false)
+        }
+        if (block is SlabBlock) {
+            return runCatching { state.getValue(SlabBlock.TYPE) == SlabType.BOTTOM }.getOrDefault(false)
+        }
+        return false
+    }
+
     // ── Helpers ───────────────────────────────────────────────────────────
 
     private fun usesGroundMovement(): Boolean =
@@ -391,19 +522,24 @@ data class PathCommand(
 
         // Jump detection (V5 values)
         private const val STEP_HEIGHT = 0.6
-        private const val LOOKAHEAD_NODES = 3           // V5 LOOKAHEAD_NODES
-        private const val PREEMPTIVE_JUMP_DISTANCE = 1.65
+        private const val LOOKAHEAD_NODES = 5
+        private const val STEP_LOOKAHEAD_NODES = 4
+        private const val JUMP_RISE_MIN = 0.9
+        private const val PARTIAL_STAIR_STEP_HEIGHT = 0.6
+        private const val HILL_JUMP_TRIGGER_DISTANCE = 1.55
+        private const val HILL_JUMP_TRIGGER_DIST_SQ = HILL_JUMP_TRIGGER_DISTANCE * HILL_JUMP_TRIGGER_DISTANCE
+        private const val PREEMPTIVE_JUMP_DISTANCE = 2.15
         private const val PREEMPTIVE_JUMP_DIST_SQ = PREEMPTIVE_JUMP_DISTANCE * PREEMPTIVE_JUMP_DISTANCE
-        private const val GAP_TRIGGER_DIST_SQ = 1.35 * 1.35
+        private const val GAP_TRIGGER_DIST_SQ = 1.75 * 1.75
         private const val JUMP_SUPPRESS_TICKS = 3
         private const val GAP_JUMP_SUPPRESS_TICKS = 2
         private const val OBSTACLE_JUMP_SUPPRESS_TICKS = 2
         private const val HAZARD_LOOKAHEAD_NODES = 4
         private const val HAZARD_MAX_JUMP_NODES = 3
-        private const val HAZARD_JUMP_TRIGGER_DIST_SQ = 1.55 * 1.55
+        private const val HAZARD_JUMP_TRIGGER_DIST_SQ = 1.85 * 1.85
         private const val HAZARD_JUMP_MAX_DIST_SQ = 3.25 * 3.25
         private const val HAZARD_JUMP_SUPPRESS_TICKS = 2
-        private const val OBSTACLE_TRIGGER_DIST_SQ = 1.45 * 1.45
+        private const val OBSTACLE_TRIGGER_DIST_SQ = 2.05 * 2.05
 
         // Per-tick block state cache shared across all jump checks in one detectJump call
         private val blockCache = HashMap<Long, BlockState>(32)

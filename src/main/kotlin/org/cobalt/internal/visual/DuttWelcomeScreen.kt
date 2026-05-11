@@ -97,8 +97,8 @@ class DuttWelcomeScreen : Screen(Component.literal("Welcome")) {
     TitleBackgroundRenderer.renderToScreen(screenWidth.toInt(), screenHeight.toInt(), timeSeconds)
     NVGRenderer.endFrame()
 
-    HudGlassBlurRenderer.renderBlurRect(cardX, cardY, cardWidth, cardHeight, 12f * guiScale, 1.45f)
-    HudGlassBlurRenderer.renderBlurRect(inputX, inputY, inputWidth, inputHeight, 8f * guiScale, 1.0f)
+    HudGlassBlurRenderer.renderBlurRect(cardX, cardY, cardWidth, cardHeight, 12f * guiScale, 13.0f)
+    HudGlassBlurRenderer.renderBlurRect(inputX, inputY, inputWidth, inputHeight, 8f * guiScale, 9.0f)
 
     NVGRenderer.beginFrame(screenWidth, screenHeight)
     drawWelcomeCard(screenWidth, screenHeight, guiScale, cardX, cardY, cardWidth, cardHeight)

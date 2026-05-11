@@ -24,7 +24,6 @@ import org.cobalt.api.ui.theme.ThemeManager
 import org.cobalt.api.ui.theme.ThemeSurface
 import org.cobalt.api.util.ui.NVGRenderer
 import org.cobalt.api.util.ui.helper.Gradient
-import org.cobalt.render.HudGlassBlurRenderer
 
 class WatermarkModule : Module("Watermark") {
 
@@ -77,8 +76,6 @@ class WatermarkModule : Module("Watermark") {
     private const val KEY_PILL_TEXT_SIZE = 9.4f
     private const val WHITE_TEXT = 0xFFF2EFF6.toInt()
     private const val MUTED_TEXT = 0x998E8995.toInt()
-    private const val GLASS_BLUR_STRENGTH = 1.35f
-    private const val SECTION_TINT = 0x1F1A1720
   }
 
   private val mc = Minecraft.getInstance()
@@ -125,6 +122,8 @@ class WatermarkModule : Module("Watermark") {
     anchor = HudAnchor.TOP_LEFT
     offsetX = 10f
     offsetY = 10f
+    blurBackground = true
+    blurStrength = 14.0
 
     val text = setting(TextSetting("Text", "Display text", "Dutt Client"))
     val color = setting(ColorSetting("Color", "Accent color", ThemeManager.currentTheme.accent))
@@ -169,20 +168,6 @@ class WatermarkModule : Module("Watermark") {
       renderWatermarkCard(screenX, screenY, layout, text.value, color.value, rows)
     }
 
-    preRender { screenX, screenY, scale ->
-      if (!background.value) return@preRender
-
-      val rows = macroRowsForLayout(macroPanel.value)
-      val layout = computeLayout(text.value, macroPanel.value, true, rows)
-      HudGlassBlurRenderer.renderBlurRect(
-        screenX,
-        screenY,
-        layout.width * scale,
-        layout.totalHeight * scale,
-        CARD_CORNER * scale,
-        GLASS_BLUR_STRENGTH,
-      )
-    }
   }
 
   private fun computeLayout(
@@ -275,15 +260,15 @@ class WatermarkModule : Module("Watermark") {
     val shiftX = cos((now % 10000L).toFloat() / 10000f * (Math.PI * 2).toFloat()) * (width * 0.32f)
     val (gradientStart, gradientEnd) = ThemeGradient.colors()
 
-    NVGRenderer.rect(x + 3f, y + 2f, width, totalHeight, 0x10000000, CARD_CORNER + 1f)
-    NVGRenderer.rect(x, y, width, totalHeight, ThemeSurface.panel(0x4C), CARD_CORNER)
+    NVGRenderer.rect(x + 3f, y + 2f, width, totalHeight, 0x0A000000, CARD_CORNER + 1f)
+    NVGRenderer.rect(x, y, width, totalHeight, ThemeSurface.panel(0x34), CARD_CORNER)
     NVGRenderer.gradientRect(
       x,
       y,
       width,
       totalHeight,
-      0x18FFFFFF,
-      SECTION_TINT,
+      ThemeSurface.overlay(0x18),
+      ThemeSurface.inset(0x12),
       Gradient.TopToBottom,
       CARD_CORNER,
     )
@@ -292,7 +277,7 @@ class WatermarkModule : Module("Watermark") {
       y,
       width,
       MAIN_BAR_HEIGHT + layout.macroVisibleHeight * 0.55f,
-      0x2EFFFFFF,
+      ThemeSurface.overlay(0x1E),
       0x00000000,
       Gradient.TopToBottom,
       CARD_CORNER,

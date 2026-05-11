@@ -50,8 +50,11 @@ public abstract class AbstractShaderPass {
         boolean depthTestEnabled = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
         boolean blendEnabled = GL11.glIsEnabled(GL11.GL_BLEND);
         boolean cullEnabled = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        boolean depthMaskEnabled = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
         int[] viewport = new int[4];
+        float[] clearColor = new float[4];
         GL11.glGetIntegerv(GL11.GL_VIEWPORT, viewport);
+        GL11.glGetFloatv(GL11.GL_COLOR_CLEAR_VALUE, clearColor);
 
         try {
             output.clear(0.0f, 0.0f, 0.0f, 0.0f);
@@ -71,6 +74,8 @@ public abstract class AbstractShaderPass {
             GL30.glBlendFuncSeparate(prevBlendSrcRgb, prevBlendDstRgb, prevBlendSrcAlpha, prevBlendDstAlpha);
             GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, prevFbo);
             GL11.glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+            GL11.glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+            GL11.glDepthMask(depthMaskEnabled);
 
             if (depthTestEnabled) {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
