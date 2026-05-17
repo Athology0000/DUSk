@@ -291,7 +291,7 @@ object PathfindingModule : Module("Pathfinding") {
   private val jumpRangeMultiplier = SliderSetting(
     "Jump Range Multiplier",
     "Scales all jump trigger distances (preemptive / hill / obstacle / gap / hazard). 1.0 = original. Lower = jumps only fire when the player is closer to the obstacle — kills early/random jumps.",
-    0.55, 0.4, 1.0
+    0.85, 0.4, 1.0
   )
 
   private val aotvSlot = ModeSetting(

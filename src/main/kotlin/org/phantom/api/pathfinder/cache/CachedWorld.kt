@@ -3,6 +3,8 @@ package org.phantom.api.pathfinder.cache
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.minecraft.client.Minecraft
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.Level
 import net.minecraft.world.level.chunk.LevelChunk
 import org.phantom.api.event.annotation.SubscribeEvent
 import org.phantom.api.event.impl.client.BlockChangeEvent
@@ -87,6 +89,24 @@ object CachedWorld {
         return if (chunk?.ready == true) chunk else null
     }
 
+    fun cacheLoadedChunksAround(level: Level, center: BlockPos, radiusChunks: Int): Int {
+        val dimType = level.dimensionType()
+        val minY = dimType.minY()
+        val maxY = minY + dimType.height()
+        ensureNativeWorld(level.dimension().toString(), minY, maxY)
+
+        val centerChunkX = center.x shr 4
+        val centerChunkZ = center.z shr 4
+        var cachedCount = 0
+        for (chunkX in centerChunkX - radiusChunks..centerChunkX + radiusChunks) {
+            for (chunkZ in centerChunkZ - radiusChunks..centerChunkZ + radiusChunks) {
+                val chunk = level.getChunk(chunkX, chunkZ) as? LevelChunk ?: continue
+                if (cacheChunk(chunk, minY, maxY)) cachedCount++
+            }
+        }
+        return cachedCount
+    }
+
     fun register() {
         ClientChunkEvents.CHUNK_LOAD.register { _, chunk ->
             pendingChunks.add(chunk)
@@ -137,36 +157,7 @@ object CachedWorld {
 
         repeat(CHUNKS_PER_TICK) {
             val chunk = pendingChunks.poll() ?: return@repeat
-            val chunkX = chunk.pos.x
-            val chunkZ = chunk.pos.z
-            val cached = CachedChunk(minY, maxY)
-            val sections = chunk.sections
-
-            for (sectionIndex in sections.indices) {
-                val section = sections[sectionIndex]
-                if (section.hasOnlyAir()) continue
-
-                val sectionData = ShortArray(4096) { CachedChunk.AIR_FLAGS }
-                for (ly in 0..15) {
-                    val yOffset = ly shl 8
-                    for (lz in 0..15) {
-                        val zOffset = lz shl 4
-                        for (lx in 0..15) {
-                            sectionData[yOffset or zOffset or lx] =
-                                NativeStateEncoder.flagsShortForState(section.getBlockState(lx, ly, lz))
-                        }
-                    }
-                }
-                cached.setSection(sectionIndex, sectionData)
-            }
-
-            cached.ready = true
-            val key = chunkKey(chunkX, chunkZ)
-            if (!chunks.containsKey(key)) chunkInsertionOrder.addLast(key)
-            chunks[key] = cached
-            if (cacheKey == key) cacheChunk = cached
-            dirty = true
-            syncChunkToNative(chunkX, chunkZ, cached)
+            cacheChunk(chunk, minY, maxY)
         }
 
         if (!unlimitedChunkCache && chunks.size > MAXIMUM_CACHED_CHUNKS) {
@@ -323,6 +314,40 @@ object CachedWorld {
             val chunkZ = key.toInt()
             syncChunkToNative(chunkX, chunkZ, chunk)
         }
+    }
+
+    private fun cacheChunk(chunk: LevelChunk, minY: Int, maxY: Int): Boolean {
+        val chunkX = chunk.pos.x
+        val chunkZ = chunk.pos.z
+        val cached = CachedChunk(minY, maxY)
+        val sections = chunk.sections
+
+        for (sectionIndex in sections.indices) {
+            val section = sections[sectionIndex]
+            if (section.hasOnlyAir()) continue
+
+            val sectionData = ShortArray(4096) { CachedChunk.AIR_FLAGS }
+            for (ly in 0..15) {
+                val yOffset = ly shl 8
+                for (lz in 0..15) {
+                    val zOffset = lz shl 4
+                    for (lx in 0..15) {
+                        sectionData[yOffset or zOffset or lx] =
+                            NativeStateEncoder.flagsShortForState(section.getBlockState(lx, ly, lz))
+                    }
+                }
+            }
+            cached.setSection(sectionIndex, sectionData)
+        }
+
+        cached.ready = true
+        val key = chunkKey(chunkX, chunkZ)
+        if (!chunks.containsKey(key)) chunkInsertionOrder.addLast(key)
+        chunks[key] = cached
+        if (cacheKey == key) cacheChunk = cached
+        dirty = true
+        syncChunkToNative(chunkX, chunkZ, cached)
+        return true
     }
 
     private fun syncChunkToNative(chunkX: Int, chunkZ: Int, chunk: CachedChunk) {

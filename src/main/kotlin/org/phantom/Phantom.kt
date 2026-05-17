@@ -39,6 +39,7 @@ import org.phantom.internal.etherwarp.LeftClickEtherwarpModule
 import org.phantom.internal.etherwarp.SmoothAotvModule
 import org.phantom.internal.farming.FarmingMacroModule
 import org.phantom.internal.fishing.*
+import org.phantom.internal.foraging.ForagingMacroModule
 import org.phantom.internal.garden.GardenAnalyzerModule
 import org.phantom.internal.garden.GardenHudModule
 import org.phantom.internal.garden.GardenMacroModule
@@ -187,6 +188,7 @@ object Phantom : ClientModInitializer {
 
         GardenAnalyzerModule,
         GardenMacroModule,
+        ForagingMacroModule,
         PestWarningModule,
         GardenHudModule,
         FarmingMacroModule,

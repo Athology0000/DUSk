@@ -41,7 +41,8 @@ data class PathCommand(
         // Sneak engage hysteresis: require N ticks of sustained "want sneak"
         // before actually engaging. Releases instantly when the signal stops,
         // so the player doesn't stay sneaked when the path demands a drop.
-        val wantSneak = sneak || PathExecutorState.shouldUsePrecisionSneak
+        val wantSneak = !PathExecutorState.disablePrecisionSneak &&
+            (sneak || PathExecutorState.shouldUsePrecisionSneak)
         if (wantSneak) {
             PathExecutorState.sneakRequestTicks = (PathExecutorState.sneakRequestTicks + 1).coerceAtMost(100)
         } else {

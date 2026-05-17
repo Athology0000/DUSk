@@ -55,6 +55,7 @@ object PathExecutorState {
         private set
     var shouldUsePrecisionSneak: Boolean = false
         private set
+    @JvmField var disablePrecisionSneak: Boolean = false
     private var smoothedTargetInitialized: Boolean = false
 
     // â”€â”€ Dense look points (eye-level, curvature-offset, cached by signature) â”€â”€
@@ -308,6 +309,7 @@ object PathExecutorState {
         executionDebugLine = "spline idle"
         requiresPrecisionMovement = false
         shouldUsePrecisionSneak = false
+        disablePrecisionSneak = false
         smoothedTargetInitialized = false
         jumpSuppressTicks = 0
         lookPoints = emptyList()

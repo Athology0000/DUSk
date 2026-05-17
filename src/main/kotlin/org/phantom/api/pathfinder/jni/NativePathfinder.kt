@@ -3,10 +3,14 @@ package org.phantom.api.pathfinder.jni
 import net.minecraft.client.Minecraft
 import net.minecraft.client.player.LocalPlayer
 import net.minecraft.core.BlockPos
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.world.level.ClipContext
 import net.minecraft.world.level.Level
+import net.minecraft.world.phys.HitResult
 import net.minecraft.world.phys.Vec3
 import org.phantom.api.module.ModuleDebug
 import org.phantom.api.pathfinder.cache.CachedWorld
+import org.phantom.api.pathfinder.minecraft.MinecraftPathingRules
 import org.phantom.api.rotation.RotationExecutor
 import org.phantom.api.util.AngleUtils
 import org.phantom.api.util.InventoryUtils
@@ -25,6 +29,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import kotlin.math.abs
 import kotlin.math.atan2
+import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sin
@@ -91,6 +96,13 @@ object NativePathfinder {
     private var searchVariantSeed: Int = 0
 
     private data class SearchPoint(val x: Int, val y: Int, val z: Int)
+
+    data class BlockTargetSearchResult(
+        val started: Boolean,
+        val targetBlock: BlockPos?,
+        val goalPositions: List<BlockPos>,
+        val reason: String,
+    )
 
     private data class AvoidPoint(
         val x: Int,
@@ -250,11 +262,174 @@ object NativePathfinder {
         goalX = finalGoal.x; goalY = finalGoal.y; goalZ = finalGoal.z
         arrivalRadius = radius
         return startSearch(
-            starts.map { SearchPoint(it.x, if (isFly) it.y else it.y + 1, it.z) },
-            goals.map { SearchPoint(it.x, if (isFly) it.y else it.y + 1, it.z) },
+            starts.flatMap { buildYPaddedCandidates(it.x, it.y, it.z, isFly) }.distinct(),
+            goals.flatMap { buildYPaddedCandidates(it.x, it.y, it.z, isFly) }.distinct(),
             isFly
         )
     }
+
+    /**
+     * Scans the loaded client world for one of [blockIds], finds walkable goal
+     * positions within [reachableDistance] of the nearest matching block, and
+     * starts native pathing to those goals. Macros can call this when they want
+     * "walk close enough to interact with block X" without owning scan/path
+     * endpoint selection themselves.
+     */
+    fun walkToNearestBlock(
+        blockIds: Set<String>,
+        scanRadius: Int = 32,
+        scanVertical: Int = 16,
+        reachableDistance: Double = 4.5,
+        arrivalRadius: Double = 1.4,
+        maxGoals: Int = 32,
+        excludedBlocks: Set<BlockPos> = emptySet(),
+    ): BlockTargetSearchResult {
+        val mc = Minecraft.getInstance()
+        val player = mc.player ?: return BlockTargetSearchResult(false, null, emptyList(), "No player")
+        val level = mc.level ?: return BlockTargetSearchResult(false, null, emptyList(), "No level")
+        val normalizedIds = blockIds.mapTo(linkedSetOf()) { normalizeBlockId(it) }
+        if (normalizedIds.isEmpty()) {
+            return BlockTargetSearchResult(false, null, emptyList(), "No block ids")
+        }
+
+        val target = findNearestMatchingBlock(level, player, normalizedIds, scanRadius, scanVertical, excludedBlocks)
+            ?: return BlockTargetSearchResult(false, null, emptyList(), "No matching block found")
+        CachedWorld.cacheLoadedChunksAround(level, player.blockPosition(), 1)
+        CachedWorld.cacheLoadedChunksAround(level, target, 1)
+        val goals = findWalkGoalsNearBlock(level, player, target, reachableDistance, maxGoals)
+        if (goals.isEmpty()) {
+            return BlockTargetSearchResult(false, target, emptyList(), "No walkable goals near block")
+        }
+
+        val started = setTargetWithStarts(
+            starts = listOf(player.blockPosition()),
+            goals = goals,
+            radius = arrivalRadius,
+        )
+        return BlockTargetSearchResult(
+            started = started,
+            targetBlock = target,
+            goalPositions = goals,
+            reason = if (started) "Started" else lastError.ifBlank { "Path search failed to start" },
+        )
+    }
+
+    private fun findNearestMatchingBlock(
+        level: Level,
+        player: LocalPlayer,
+        blockIds: Set<String>,
+        scanRadius: Int,
+        scanVertical: Int,
+        excludedBlocks: Set<BlockPos>,
+    ): BlockPos? {
+        val radius = scanRadius.coerceAtLeast(1)
+        val vertical = scanVertical.coerceAtLeast(1)
+        val origin = player.blockPosition()
+        val minTrunkY = origin.y
+        val maxTrunkY = origin.y + 1
+        var best: BlockPos? = null
+        var bestDist = Double.POSITIVE_INFINITY
+
+        for (cursor in BlockPos.betweenClosed(origin.offset(-radius, -vertical, -radius), origin.offset(radius, vertical, radius))) {
+            val state = level.getBlockState(cursor)
+            if (state.isAir) continue
+            if (cursor in excludedBlocks) continue
+            val id = BuiltInRegistries.BLOCK.getKey(state.block).toString()
+            if (id !in blockIds) continue
+            if (cursor.y < minTrunkY || cursor.y > maxTrunkY) continue
+            val dist = player.distanceToSqr(cursor.x + 0.5, cursor.y + 0.5, cursor.z + 0.5)
+            if (dist < bestDist) {
+                bestDist = dist
+                best = cursor.immutable()
+            }
+        }
+
+        return best
+    }
+
+    private fun findWalkGoalsNearBlock(
+        level: Level,
+        player: LocalPlayer,
+        block: BlockPos,
+        reachableDistance: Double,
+        maxGoals: Int,
+    ): List<BlockPos> {
+        val radius = ceil(reachableDistance).toInt().coerceAtLeast(1)
+        val maxDistanceSq = reachableDistance * reachableDistance
+        val goals = ArrayList<BlockPos>()
+        val feetY = player.blockPosition().y
+        if (block.y < feetY || block.y > feetY + 1) return emptyList()
+
+        for (dx in -radius..radius) {
+            for (dy in -radius..radius) {
+                for (dz in -radius..radius) {
+                    val feet = MinecraftPathingRules.walkableAt(level, block.offset(dx, dy, dz)) ?: continue
+                    val eye = Vec3(feet.x + 0.5, feet.y + 1.62, feet.z + 0.5)
+                    val nearestAim = aimPoints(block).minBy { eye.distanceToSqr(it) }
+                    if (eye.distanceToSqr(nearestAim) > maxDistanceSq) continue
+                    if (!canSeeBlockFrom(level, player, eye, block)) continue
+                    goals.add(feet.immutable())
+                }
+            }
+        }
+
+        return goals
+            .distinct()
+            .sortedWith(
+                compareBy<BlockPos> {
+                    val eye = Vec3(it.x + 0.5, it.y + 1.62, it.z + 0.5)
+                    aimPoints(block).minOf { aim -> eye.distanceToSqr(aim) }
+                }.thenBy { player.distanceToSqr(it.x + 0.5, it.y.toDouble(), it.z + 0.5) }
+            )
+            .take(maxGoals.coerceAtLeast(1))
+    }
+
+    private fun canSeeBlockFrom(level: Level, player: LocalPlayer, eye: Vec3, block: BlockPos): Boolean {
+        for (target in aimPoints(block)) {
+            val hit = level.clip(
+                ClipContext(
+                    eye,
+                    target,
+                    ClipContext.Block.COLLIDER,
+                    ClipContext.Fluid.NONE,
+                    player,
+                )
+            )
+            if (hit.type == HitResult.Type.BLOCK && hit.blockPos == block) return true
+        }
+        return false
+    }
+
+    private fun aimPoints(pos: BlockPos): List<Vec3> {
+        val x = pos.x.toDouble()
+        val y = pos.y.toDouble()
+        val z = pos.z.toDouble()
+        return listOf(
+            Vec3(x + 0.5, y + 0.5, z + 0.5),
+            Vec3(x + 0.5, y - 0.5, z + 0.5),
+            Vec3(x + 0.5, y + 1.5, z + 0.5),
+        )
+    }
+
+    private fun isLiveWalkable(level: Level, feet: BlockPos): Boolean {
+        val floorPos = feet.below()
+        val floor = level.getBlockState(floorPos)
+        val body = level.getBlockState(feet)
+        val headPos = feet.above()
+        val head = level.getBlockState(headPos)
+        return !floor.getCollisionShape(level, floorPos).isEmpty &&
+            body.getCollisionShape(level, feet).isEmpty &&
+            head.getCollisionShape(level, headPos).isEmpty &&
+            body.fluidState.isEmpty &&
+            head.fluidState.isEmpty
+    }
+
+    private fun normalizeBlockId(id: String): String =
+        id.trim()
+            .lowercase(Locale.US)
+            .takeIf { it.isNotBlank() }
+            ?.let { if (':' in it) it else "minecraft:$it" }
+            .orEmpty()
 
     fun setFlyTarget(x: Double, y: Double, z: Double, radius: Double = 2.5) {
         routeWaypoints = emptyList()
@@ -571,7 +746,7 @@ object NativePathfinder {
         val cmd = PathCommand(
             forward = true,
             back = false,
-            jump = false,
+            jump = activeAction == ActionType.JUMP || activeAction == ActionType.SPRINT_JUMP,
             sneak = PathExecutorState.shouldUsePrecisionSneak,
             sprint = !lowHeadroom &&
                 !tightCorridor &&

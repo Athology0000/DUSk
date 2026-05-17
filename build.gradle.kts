@@ -1,5 +1,6 @@
 
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
@@ -169,8 +170,64 @@ tasks.named("processResources") {
 }
 
 // â”€â”€ Deploy JAR to Prism mods folder â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-val modsDir = file("C:/Users/aeare/AppData/Roaming/PrismLauncher/instances/1.21.11(1)/minecraft/mods")
+val deployInstanceName = "dutt"
+val deployMinecraftVersion = "1.21.11"
 val releaseBranchName = "release"
+
+fun prismInstanceRoots(): List<File> {
+  val userHome = System.getProperty("user.home")
+  return listOfNotNull(
+    System.getenv("APPDATA")?.let { File(it, "PrismLauncher/instances") },
+    System.getenv("LOCALAPPDATA")?.let { File(it, "PrismLauncher/instances") },
+    userHome?.let { File(it, "AppData/Roaming/PrismLauncher/instances") },
+    userHome?.let { File(it, ".local/share/PrismLauncher/instances") },
+    userHome?.let { File(it, "Library/Application Support/PrismLauncher/instances") },
+  ).distinctBy { it.absoluteFile.normalize().path }
+}
+
+fun prismInstanceDisplayName(instanceDir: File): String {
+  val cfg = File(instanceDir, "instance.cfg")
+  if (!cfg.isFile) return instanceDir.name
+
+  return cfg.readLines()
+    .firstOrNull { it.startsWith("name=", ignoreCase = true) }
+    ?.substringAfter('=')
+    ?.trim()
+    ?.takeIf { it.isNotEmpty() }
+    ?: instanceDir.name
+}
+
+fun isFabricMinecraftInstance(instanceDir: File, minecraftVersion: String): Boolean {
+  val packFile = File(instanceDir, "mmc-pack.json")
+  if (!packFile.isFile) return false
+
+  val pack = packFile.readText()
+  val hasFabricLoader = pack.contains("\"uid\": \"net.fabricmc.fabric-loader\"") ||
+    pack.contains("\"uid\":\"net.fabricmc.fabric-loader\"")
+  val hasMinecraftVersion = Regex(
+    """"uid"\s*:\s*"net\.minecraft"[\s\S]*?"version"\s*:\s*"$minecraftVersion""""
+  ).containsMatchIn(pack)
+
+  return hasFabricLoader && hasMinecraftVersion
+}
+
+fun resolvePrismModsDir(instanceName: String, minecraftVersion: String): File {
+  val candidates = prismInstanceRoots()
+    .filter { it.isDirectory }
+    .flatMap { root -> root.listFiles()?.filter { it.isDirectory }.orEmpty() }
+    .filter { instance ->
+      instance.name.equals(instanceName, ignoreCase = true) ||
+        prismInstanceDisplayName(instance).equals(instanceName, ignoreCase = true)
+    }
+
+  val match = candidates.firstOrNull { isFabricMinecraftInstance(it, minecraftVersion) }
+    ?: throw GradleException(
+      "Could not find a Prism Launcher instance named '$instanceName' using Fabric and Minecraft $minecraftVersion. " +
+        "Searched: ${prismInstanceRoots().joinToString { it.path }}"
+    )
+
+  return File(match, "minecraft/mods")
+}
 
 tasks.register("buildDev") {
   group = "build"
@@ -206,6 +263,7 @@ tasks.register("copyBuiltMod") {
   description = "Copies the built JAR to the Prism Launcher mods folder."
   dependsOn("build")
   doLast {
+    val modsDir = resolvePrismModsDir(deployInstanceName, deployMinecraftVersion)
     val jarName = "${base.archivesName.get()}-${project.version}.jar"
     val sourceJar = layout.buildDirectory.file("libs/$jarName").get().asFile.toPath()
     val targetJar = modsDir.toPath().resolve(jarName)

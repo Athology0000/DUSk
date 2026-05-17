@@ -35,6 +35,7 @@ import org.phantom.internal.farming.FarmingMacroModule
 import org.phantom.internal.fishing.FishingHotspotModule
 import org.phantom.internal.fishing.FishingMacroModule
 import org.phantom.internal.fishing.FishingQolModule
+import org.phantom.internal.foraging.ForagingMacroModule
 import org.phantom.internal.garden.GardenAnalyzerModule
 import org.phantom.internal.garden.GardenHudModule
 import org.phantom.internal.garden.GardenMacroModule
@@ -172,6 +173,7 @@ internal object BuiltinModules {
 
     // Garden / farming / fishing / misc macros
     GardenMacroModule,
+    ForagingMacroModule,
     GardenAnalyzerModule,
     GardenHudModule,
     PestWarningModule,
