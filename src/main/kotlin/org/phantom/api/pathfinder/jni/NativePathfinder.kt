@@ -314,6 +314,35 @@ object NativePathfinder {
         )
     }
 
+    fun walkToBlock(
+        target: BlockPos,
+        reachableDistance: Double = 4.5,
+        arrivalRadius: Double = 1.4,
+        maxGoals: Int = 32,
+        trunkOnly: Boolean = true,
+    ): BlockTargetSearchResult {
+        val mc = Minecraft.getInstance()
+        val player = mc.player ?: return BlockTargetSearchResult(false, null, emptyList(), "No player")
+        val level = mc.level ?: return BlockTargetSearchResult(false, null, emptyList(), "No level")
+        CachedWorld.cacheLoadedChunksAround(level, player.blockPosition(), 1)
+        CachedWorld.cacheLoadedChunksAround(level, target, 1)
+        val goals = findWalkGoalsNearBlock(level, player, target, reachableDistance, maxGoals, trunkOnly)
+        if (goals.isEmpty()) {
+            return BlockTargetSearchResult(false, target, emptyList(), "No walkable goals near block")
+        }
+        val started = setTargetWithStarts(
+            starts = listOf(player.blockPosition()),
+            goals = goals,
+            radius = arrivalRadius,
+        )
+        return BlockTargetSearchResult(
+            started = started,
+            targetBlock = target,
+            goalPositions = goals,
+            reason = if (started) "Started" else lastError.ifBlank { "Path search failed to start" },
+        )
+    }
+
     private fun findNearestMatchingBlock(
         level: Level,
         player: LocalPlayer,
@@ -353,12 +382,13 @@ object NativePathfinder {
         block: BlockPos,
         reachableDistance: Double,
         maxGoals: Int,
+        trunkOnly: Boolean = true,
     ): List<BlockPos> {
         val radius = ceil(reachableDistance).toInt().coerceAtLeast(1)
         val maxDistanceSq = reachableDistance * reachableDistance
         val goals = ArrayList<BlockPos>()
         val feetY = player.blockPosition().y
-        if (block.y < feetY || block.y > feetY + 1) return emptyList()
+        if (trunkOnly && (block.y < feetY || block.y > feetY + 1)) return emptyList()
 
         for (dx in -radius..radius) {
             for (dy in -radius..radius) {
