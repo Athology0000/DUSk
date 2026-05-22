@@ -6,7 +6,8 @@ import net.minecraft.client.gui.screens.ProgressScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.input.KeyEvent;
-import org.phantom.internal.dungeons.gambling.DungeonChestGamblingModule;
+import org.phantom.api.event.impl.client.ScreenKeyEvent;
+import org.phantom.api.event.impl.render.ScreenDrawEvent;
 import org.phantom.render.LoadingScreenRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,9 +19,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ScreenMixin {
 
     @Inject(method = "renderWithTooltipAndSubtitles", at = @At("HEAD"), cancellable = true)
-    private void phantom$renderDungeonChestGambling(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
+    private void phantom$renderScreenOverlay(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
         Screen screen = (Screen) (Object) this;
-        if (DungeonChestGamblingModule.INSTANCE.renderScreen(screen, guiGraphics)) {
+        if (new ScreenDrawEvent(screen, guiGraphics).post()) {
             ci.cancel();
         }
     }
@@ -41,8 +42,8 @@ public class ScreenMixin {
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    private void phantom$cancelDungeonChestGamblingKeys(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
-        if (DungeonChestGamblingModule.INSTANCE.onKeyPressed(input.key())) {
+    private void phantom$handleScreenKeyPress(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
+        if (new ScreenKeyEvent(input, false, null).post()) {
             cir.setReturnValue(true);
         }
     }

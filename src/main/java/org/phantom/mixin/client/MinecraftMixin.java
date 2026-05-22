@@ -7,8 +7,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import org.phantom.api.addon.Addon;
 import org.phantom.api.addon.AddonMetadata;
+import org.phantom.api.event.impl.client.ScreenOpenEvent;
 import org.phantom.api.event.impl.client.TickEvent;
-import org.phantom.internal.dungeons.gambling.DungeonChestGamblingModule;
 import org.phantom.internal.loader.AddonLoader;
 import org.phantom.internal.visual.PhantomStartupGate;
 import org.phantom.internal.visual.PhantomWelcomeScreen;
@@ -47,7 +47,7 @@ public class MinecraftMixin {
 
   @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
   private void phantom$showWelcomeBeforeTitle(Screen screen, CallbackInfo callbackInfo) {
-    DungeonChestGamblingModule.INSTANCE.onScreenChanged(screen);
+    new ScreenOpenEvent(screen).post();
 
     if (
       phantom$redirectingWelcome ||

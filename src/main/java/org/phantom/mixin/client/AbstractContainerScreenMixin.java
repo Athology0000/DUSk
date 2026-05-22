@@ -10,9 +10,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
-import org.phantom.internal.dungeons.gambling.DungeonChestGamblingModule;
-import org.phantom.internal.qol.AutoStashModule;
-import org.phantom.internal.qol.ItemLockingModule;
+import org.phantom.api.event.impl.client.AutoStashButtonEvent;
+import org.phantom.api.event.impl.client.AutoStashToggleEvent;
+import org.phantom.api.event.impl.client.ContainerMouseEvent;
+import org.phantom.api.event.impl.client.ContainerSlotClickEvent;
+import org.phantom.api.event.impl.client.ScreenKeyEvent;
+import org.phantom.api.event.impl.render.ContainerSlotRenderEvent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,7 +43,9 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
 
     @Inject(method = "init", at = @At("TAIL"))
     private void phantom$addAutoStashButton(CallbackInfo ci) {
-        if (!AutoStashModule.INSTANCE.isStashScreen(this)) {
+        AutoStashButtonEvent query = new AutoStashButtonEvent((AbstractContainerScreen<?>) (Object) this);
+        query.post();
+        if (!query.getShow()) {
             phantom$autoStashButton = null;
             return;
         }
@@ -51,60 +56,56 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
         int y = Math.max(4, this.topPos - buttonHeight - 4);
 
         phantom$autoStashButton = this.addRenderableWidget(
-            Button.builder(Component.literal(AutoStashModule.INSTANCE.getGuiButtonLabel()), btn -> {
-                AutoStashModule.INSTANCE.toggleFromGui();
-                btn.setMessage(Component.literal(AutoStashModule.INSTANCE.getGuiButtonLabel()));
+            Button.builder(Component.literal(query.getLabel()), btn -> {
+                new AutoStashToggleEvent().post();
+                AutoStashButtonEvent refreshed = new AutoStashButtonEvent((AbstractContainerScreen<?>) (Object) this);
+                refreshed.post();
+                btn.setMessage(Component.literal(refreshed.getLabel()));
             }).bounds(x, y, buttonWidth, buttonHeight).build()
         );
     }
 
     @Inject(method = "containerTick", at = @At("TAIL"))
     private void phantom$syncAutoStashButton(CallbackInfo ci) {
-        if (phantom$autoStashButton != null) {
-            phantom$autoStashButton.setMessage(Component.literal(AutoStashModule.INSTANCE.getGuiButtonLabel()));
+        if (phantom$autoStashButton == null) {
+            return;
         }
+        AutoStashButtonEvent query = new AutoStashButtonEvent((AbstractContainerScreen<?>) (Object) this);
+        query.post();
+        phantom$autoStashButton.setMessage(Component.literal(query.getLabel()));
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    private void phantom$handleItemLockKeybinds(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
-        if (DungeonChestGamblingModule.INSTANCE.onKeyPressed(input.key())) {
-            cir.setReturnValue(true);
-            return;
-        }
-
-        if (hoveredSlot == null || minecraft == null || minecraft.player == null) {
-            return;
-        }
-
-        if (ItemLockingModule.INSTANCE.handleContainerKeyPressed(hoveredSlot, input)) {
+    private void phantom$handleContainerKeyPress(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
+        if (new ScreenKeyEvent(input, false, hoveredSlot).post()) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
-    private void phantom$cancelDungeonChestGamblingMouseClicked(MouseButtonEvent input, boolean doubleClick, CallbackInfoReturnable<Boolean> cir) {
-        if (DungeonChestGamblingModule.INSTANCE.isRendering()) {
+    private void phantom$onContainerMouseClicked(MouseButtonEvent input, boolean doubleClick, CallbackInfoReturnable<Boolean> cir) {
+        if (new ContainerMouseEvent(ContainerMouseEvent.Kind.CLICK).post()) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "mouseReleased", at = @At("HEAD"), cancellable = true)
-    private void phantom$cancelDungeonChestGamblingMouseReleased(MouseButtonEvent input, CallbackInfoReturnable<Boolean> cir) {
-        if (DungeonChestGamblingModule.INSTANCE.isRendering()) {
+    private void phantom$onContainerMouseReleased(MouseButtonEvent input, CallbackInfoReturnable<Boolean> cir) {
+        if (new ContainerMouseEvent(ContainerMouseEvent.Kind.RELEASE).post()) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true)
-    private void phantom$cancelDungeonChestGamblingMouseDragged(MouseButtonEvent input, double dragX, double dragY, CallbackInfoReturnable<Boolean> cir) {
-        if (DungeonChestGamblingModule.INSTANCE.isRendering()) {
+    private void phantom$onContainerMouseDragged(MouseButtonEvent input, double dragX, double dragY, CallbackInfoReturnable<Boolean> cir) {
+        if (new ContainerMouseEvent(ContainerMouseEvent.Kind.DRAG).post()) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "mouseScrolled", at = @At("HEAD"), cancellable = true)
-    private void phantom$cancelDungeonChestGamblingMouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY, CallbackInfoReturnable<Boolean> cir) {
-        if (DungeonChestGamblingModule.INSTANCE.isRendering()) {
+    private void phantom$onContainerMouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY, CallbackInfoReturnable<Boolean> cir) {
+        if (new ContainerMouseEvent(ContainerMouseEvent.Kind.SCROLL).post()) {
             cir.setReturnValue(true);
         }
     }
@@ -114,30 +115,21 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
         at = @At("HEAD"),
         cancellable = true
     )
-    private void phantom$preventLockedInteractions(Slot slot, int slotId, int button, ClickType clickType, CallbackInfo ci) {
-        if (DungeonChestGamblingModule.INSTANCE.isRendering()) {
-            ci.cancel();
-            return;
-        }
-
-        if (ItemLockingModule.INSTANCE.shouldCancelContainerClick(getTitle().getString(), menu, slot, slotId, button, clickType)) {
+    private void phantom$onSlotClicked(Slot slot, int slotId, int button, ClickType clickType, CallbackInfo ci) {
+        ContainerSlotClickEvent event = new ContainerSlotClickEvent(
+            getTitle().getString(), menu, slot, slotId, button, clickType);
+        if (event.post()) {
             ci.cancel();
         }
     }
 
     @Inject(method = "renderSlots", at = @At("TAIL"))
-    private void phantom$renderItemLockOverlays(GuiGraphics graphics, int mouseX, int mouseY, CallbackInfo ci) {
+    private void phantom$renderSlotOverlays(GuiGraphics graphics, int mouseX, int mouseY, CallbackInfo ci) {
         for (Slot slot : menu.slots) {
             if (!slot.isActive() || slot.isFake()) {
                 continue;
             }
-
-            ItemLockingModule.INSTANCE.renderContainerSlotOverlay(
-                graphics,
-                slot,
-                leftPos + slot.x,
-                topPos + slot.y
-            );
+            new ContainerSlotRenderEvent(graphics, slot, leftPos + slot.x, topPos + slot.y).post();
         }
     }
 }

@@ -5,7 +5,6 @@ import net.minecraft.client.input.MouseButtonInfo;
 import org.phantom.api.event.impl.client.MouseEvent;
 import org.phantom.api.util.MouseUtils;
 import org.phantom.api.util.player.MovementManager;
-import org.phantom.internal.dungeons.DungeonsModule;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -25,12 +24,6 @@ public abstract class MouseHandlerMixin {
 
   @Inject(method = "onButton", at = @At("HEAD"), cancellable = true)
   private void onMouseButton(long window, MouseButtonInfo input, int action, CallbackInfo ci) {
-    if (input.button() == 0 && action == 1) {
-      if (DungeonsModule.onLeftClick()) {
-        return;
-      }
-    }
-
     MouseEvent event = phantom$createMouseEvent(input.button(), action == 1);
 
     if (event != null && event.post()) {

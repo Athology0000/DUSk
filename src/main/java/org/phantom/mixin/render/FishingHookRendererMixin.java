@@ -4,7 +4,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.FishingHookRenderer;
 import net.minecraft.world.entity.projectile.FishingHook;
-import org.phantom.internal.fishing.FishingQolModule;
+import org.phantom.api.event.impl.client.FishingBobberRenderEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,7 +26,9 @@ public class FishingHookRendererMixin {
     double cameraZ,
     CallbackInfoReturnable<Boolean> cir
   ) {
-    if (FishingQolModule.shouldHideOtherBobbers() && !(fishingHook.getPlayerOwner() instanceof LocalPlayer)) {
+    FishingBobberRenderEvent event =
+      new FishingBobberRenderEvent(fishingHook.getPlayerOwner() instanceof LocalPlayer);
+    if (event.post()) {
       cir.setReturnValue(false);
     }
   }

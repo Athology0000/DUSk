@@ -3,8 +3,8 @@ package org.phantom.mixin.client;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.KeyboardInput;
+import org.phantom.api.event.impl.client.ForcedBackwardKeyEvent;
 import org.phantom.api.util.player.MovementManager;
-import org.phantom.internal.dungeons.DungeonsModule;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -22,12 +22,14 @@ public class KeyboardInputMixin {
   )
   private boolean phantom$overrideKeyboardTickState(KeyMapping keyBinding) {
     Minecraft mc = Minecraft.getInstance();
+    boolean forcedBackward = new ForcedBackwardKeyEvent().post();
+
     if (mc != null && mc.options != null && MovementManager.isMovementLocked && MovementManager.hasForcedMovement) {
       if (keyBinding == mc.options.keyUp) {
         return MovementManager.forcedForward;
       }
       if (keyBinding == mc.options.keyDown) {
-        return MovementManager.forcedBackward || DungeonsModule.INSTANCE.shouldPressBackward();
+        return MovementManager.forcedBackward || forcedBackward;
       }
       if (keyBinding == mc.options.keyLeft) {
         return MovementManager.forcedLeft;
@@ -46,7 +48,7 @@ public class KeyboardInputMixin {
       }
     }
 
-    if (mc != null && mc.options != null && keyBinding == mc.options.keyDown && DungeonsModule.INSTANCE.shouldPressBackward()) {
+    if (mc != null && mc.options != null && keyBinding == mc.options.keyDown && forcedBackward) {
       return true;
     }
 

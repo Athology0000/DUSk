@@ -2,8 +2,8 @@ package org.phantom.mixin.client;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.phys.Vec3;
-import org.phantom.internal.dungeons.DungeonsModule;
-import org.phantom.internal.qol.ItemLockingModule;
+import org.phantom.api.event.impl.client.ItemDropQueryEvent;
+import org.phantom.api.event.impl.client.PlayerVelocityCancelEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,7 +15,7 @@ public class LocalPlayerMixin {
 
   @Inject(method = "aiStep", at = @At("TAIL"))
   private void phantom$cancelVelocityForBonzoStaff(CallbackInfo ci) {
-    if (!DungeonsModule.INSTANCE.shouldCancelVelocity()) {
+    if (!new PlayerVelocityCancelEvent().post()) {
       return;
     }
     LocalPlayer player = (LocalPlayer) (Object) this;
@@ -28,7 +28,7 @@ public class LocalPlayerMixin {
 
   @Inject(method = "drop(Z)Z", at = @At("HEAD"), cancellable = true)
   private void phantom$preventLockedDrops(CallbackInfoReturnable<Boolean> cir) {
-    if (ItemLockingModule.INSTANCE.shouldCancelSelectedItemDrop()) {
+    if (new ItemDropQueryEvent().post()) {
       cir.setReturnValue(false);
     }
   }

@@ -3,7 +3,7 @@ package org.phantom.mixin.client;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import org.phantom.internal.wardrobe.WardrobeModule;
+import org.phantom.api.event.impl.render.ContainerDrawEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,7 +15,9 @@ public abstract class WardrobeScreenMixin<T extends AbstractContainerMenu> {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void phantom$suppressWardrobeRender(
             GuiGraphics graphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
-        if (WardrobeModule.INSTANCE.shouldSuppressVanillaRender()) {
+        ContainerDrawEvent event = new ContainerDrawEvent(
+            (AbstractContainerScreen<?>) (Object) this, graphics, mouseX, mouseY, partialTick);
+        if (event.post()) {
             ci.cancel();
         }
     }

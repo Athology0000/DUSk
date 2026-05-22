@@ -6,8 +6,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MessageSignature;
+import org.phantom.api.event.impl.client.ChatMessageEvent;
 import org.phantom.api.util.ChatUtils;
-import org.phantom.internal.garden.managers.PestCleaningSequencer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,7 +35,7 @@ public class ChatComponentMixin {
 
   @Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;)V", at = @At("TAIL"))
   private void phantom$handleClientChatMessage(Component message, CallbackInfo ci) {
-    forwardToGarden(message);
+    phantom$forwardChatMessage(message);
   }
 
   @Inject(
@@ -43,13 +43,13 @@ public class ChatComponentMixin {
     at = @At("TAIL")
   )
   private void phantom$handleTaggedClientChatMessage(Component message, MessageSignature signature, GuiMessageTag tag, CallbackInfo ci) {
-    forwardToGarden(message);
+    phantom$forwardChatMessage(message);
   }
 
-  private static void forwardToGarden(Component message) {
+  private static void phantom$forwardChatMessage(Component message) {
     if (message == null) {
       return;
     }
-    PestCleaningSequencer.INSTANCE.onChatMessage(message.getString());
+    new ChatMessageEvent(message.getString()).post();
   }
 }

@@ -5,7 +5,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.world.inventory.Slot;
-import org.phantom.internal.qol.ItemLockingModule;
+import org.phantom.api.event.impl.client.ScreenKeyEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,7 +27,7 @@ public interface GuiEventListenerMixin {
     }
 
     Slot hoveredSlot = ((AbstractContainerScreenAccessor) containerScreen).getHoveredSlot();
-    if (ItemLockingModule.INSTANCE.handleContainerKeyReleased(hoveredSlot, input)) {
+    if (new ScreenKeyEvent(input, true, hoveredSlot).post()) {
       cir.setReturnValue(true);
     }
   }
