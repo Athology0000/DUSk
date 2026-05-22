@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -9,15 +10,35 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+// duplicateObjectCodes are the Postgres SQLSTATEs raised when a migration tries
+// to create something that already exists — i.e. the migration's objects are
+// already present in the database.
+var duplicateObjectCodes = map[string]bool{
+	"42P07": true, // duplicate_table
+	"42P06": true, // duplicate_schema
+	"42710": true, // duplicate_object (constraint, index, type, trigger, ...)
+	"42701": true, // duplicate_column
+	"42723": true, // duplicate_function
+}
+
+func isDuplicateObjectErr(err error) bool {
+	var pgErr *pgconn.PgError
+	return errors.As(err, &pgErr) && duplicateObjectCodes[pgErr.Code]
+}
+
 // RunMigrations applies every *.sql file in dir that has not yet been recorded
 // in the schema_migrations table, in filename order, each inside its own
-// transaction. Already-applied migrations are skipped, so it is safe to call
-// on every boot — a fresh database is brought fully up to schema with no
-// manual step. A missing directory is treated as "nothing to do" so local
-// runs without the migrations folder still start.
+// transaction. It is idempotent and safe to call on every boot.
+//
+// If the tracking table starts empty, the database may already carry a schema
+// that was created before auto-migration existed. In that case a migration
+// whose objects already exist is *adopted* (recorded as applied) rather than
+// failing the boot — so a pre-existing manually-migrated database is brought
+// under tracking without a crash. A missing directory is a no-op.
 func RunMigrations(ctx context.Context, pool *pgxpool.Pool, dir string) error {
 	if _, err := pool.Exec(ctx, `
 		CREATE TABLE IF NOT EXISTS schema_migrations (
@@ -26,6 +47,12 @@ func RunMigrations(ctx context.Context, pool *pgxpool.Pool, dir string) error {
 		)`); err != nil {
 		return fmt.Errorf("create schema_migrations: %w", err)
 	}
+
+	var trackedCount int
+	if err := pool.QueryRow(ctx, `SELECT count(*) FROM schema_migrations`).Scan(&trackedCount); err != nil {
+		return fmt.Errorf("count schema_migrations: %w", err)
+	}
+	adoptExisting := trackedCount == 0
 
 	entries, err := os.ReadDir(dir)
 	if err != nil {
@@ -44,7 +71,7 @@ func RunMigrations(ctx context.Context, pool *pgxpool.Pool, dir string) error {
 	}
 	sort.Strings(files)
 
-	applied := 0
+	applied, adopted := 0, 0
 	for _, name := range files {
 		var exists bool
 		if err := pool.QueryRow(ctx,
@@ -68,8 +95,22 @@ func RunMigrations(ctx context.Context, pool *pgxpool.Pool, dir string) error {
 
 		if _, err := tx.Exec(ctx, string(sqlBytes)); err != nil {
 			_ = tx.Rollback(ctx)
+
+			if adoptExisting && isDuplicateObjectErr(err) {
+				if _, recErr := pool.Exec(ctx,
+					`INSERT INTO schema_migrations (filename) VALUES ($1)
+					 ON CONFLICT (filename) DO NOTHING`, name,
+				); recErr != nil {
+					return fmt.Errorf("adopt migration %q: %w", name, recErr)
+				}
+				log.Printf("[migrate] %s — objects already present, marked as applied", name)
+				adopted++
+				continue
+			}
+
 			return fmt.Errorf("apply migration %q: %w", name, err)
 		}
+
 		if _, err := tx.Exec(ctx,
 			`INSERT INTO schema_migrations (filename) VALUES ($1)`, name,
 		); err != nil {
@@ -84,10 +125,6 @@ func RunMigrations(ctx context.Context, pool *pgxpool.Pool, dir string) error {
 		applied++
 	}
 
-	if applied == 0 {
-		log.Printf("[migrate] schema up to date (%d migration file(s))", len(files))
-	} else {
-		log.Printf("[migrate] applied %d new migration(s)", applied)
-	}
+	log.Printf("[migrate] done — %d applied, %d adopted, %d migration file(s) total", applied, adopted, len(files))
 	return nil
 }
