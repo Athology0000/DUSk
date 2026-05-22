@@ -31,6 +31,7 @@ type Config struct {
 	AdminCORSAllowOrigins  string
 	BodyLimit             int
 	SessionTTLHours       int
+	MigrationsDir         string
 }
 
 func Load() (*Config, error) {
@@ -71,6 +72,7 @@ func Load() (*Config, error) {
 		AdminCORSAllowOrigins:  adminOrigins,
 		SessionTTLHours:       getEnvIntOr("SESSION_TTL_HOURS", 1),
 		BodyLimit:             getEnvIntOr("BODY_LIMIT_BYTES", 10*1024*1024),
+		MigrationsDir:         getEnvOr("MIGRATIONS_DIR", "./migrations"),
 	}
 
 	if cfg.AppEnv != "production" && os.Getenv("ALLOW_PUBLIC_REGISTRATION") == "" {

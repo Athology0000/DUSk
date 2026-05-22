@@ -16,5 +16,6 @@ FROM alpine:3.20
 RUN apk add --no-cache ca-certificates
 WORKDIR /app
 COPY --from=builder /app/phantom-server .
+COPY --from=builder /app/migrations ./migrations
 EXPOSE 8080 8081
 CMD ["./phantom-server"]
