@@ -8,6 +8,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.ClickType
 import org.phantom.api.event.EventBus
 import org.phantom.api.event.annotation.SubscribeEvent
+import org.phantom.api.event.impl.client.AutoStashButtonEvent
+import org.phantom.api.event.impl.client.AutoStashToggleEvent
 import org.phantom.api.event.impl.client.TickEvent
 import org.phantom.api.module.Module
 import org.phantom.api.module.setting.impl.CheckboxSetting
@@ -97,6 +99,19 @@ object AutoStashModule : Module("Auto Stash") {
 
   fun toggleFromGui() {
     setGuiEnabled(!enabled.value)
+  }
+
+  @SubscribeEvent
+  fun onAutoStashButtonQuery(event: AutoStashButtonEvent) {
+    if (isStashScreen(event.screen)) {
+      event.show = true
+      event.label = getGuiButtonLabel()
+    }
+  }
+
+  @SubscribeEvent
+  fun onAutoStashToggle(@Suppress("UNUSED_PARAMETER") event: AutoStashToggleEvent) {
+    toggleFromGui()
   }
 
   fun setGuiEnabled(value: Boolean) {

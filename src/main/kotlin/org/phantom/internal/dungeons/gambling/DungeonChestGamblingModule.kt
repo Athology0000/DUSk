@@ -24,6 +24,13 @@ import org.phantom.api.module.setting.impl.SliderSetting
 import org.phantom.api.module.setting.inGroup
 import org.phantom.api.util.getSkyblockApiId
 import org.phantom.api.util.getSkyblockId
+import org.phantom.api.event.EventBus
+import org.phantom.api.event.annotation.SubscribeEvent
+import org.phantom.api.event.impl.client.ContainerMouseEvent
+import org.phantom.api.event.impl.client.ContainerSlotClickEvent
+import org.phantom.api.event.impl.client.ScreenKeyEvent
+import org.phantom.api.event.impl.client.ScreenOpenEvent
+import org.phantom.api.event.impl.render.ScreenDrawEvent
 import org.phantom.internal.qol.SkyblockPriceService
 
 object DungeonChestGamblingModule : Module("Dungeon Chest Gambling") {
@@ -57,6 +64,40 @@ object DungeonChestGamblingModule : Module("Dungeon Chest Gambling") {
 
   init {
     addSetting(enabled, croesus, rollTime)
+    EventBus.register(this)
+  }
+
+  @SubscribeEvent
+  fun onScreenOpen(event: ScreenOpenEvent) {
+    onScreenChanged(event.screen)
+  }
+
+  @SubscribeEvent
+  fun onScreenDraw(event: ScreenDrawEvent) {
+    if (renderScreen(event.screen, event.graphics)) {
+      event.setCancelled(true)
+    }
+  }
+
+  @SubscribeEvent
+  fun onScreenKey(event: ScreenKeyEvent) {
+    if (!event.released && onKeyPressed(event.key.key())) {
+      event.setCancelled(true)
+    }
+  }
+
+  @SubscribeEvent
+  fun onContainerMouse(event: ContainerMouseEvent) {
+    if (isRendering()) {
+      event.setCancelled(true)
+    }
+  }
+
+  @SubscribeEvent
+  fun onContainerSlotClick(event: ContainerSlotClickEvent) {
+    if (isRendering()) {
+      event.setCancelled(true)
+    }
   }
 
   @JvmStatic

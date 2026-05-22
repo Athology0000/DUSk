@@ -11,7 +11,11 @@ import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import org.phantom.api.event.EventBus
 import org.phantom.api.event.annotation.SubscribeEvent
+import org.phantom.api.event.impl.client.ContainerSlotClickEvent
+import org.phantom.api.event.impl.client.ItemDropQueryEvent
+import org.phantom.api.event.impl.client.ScreenKeyEvent
 import org.phantom.api.event.impl.client.TickEvent
+import org.phantom.api.event.impl.render.ContainerSlotRenderEvent
 import org.phantom.api.event.impl.render.GuiRenderEvent
 import org.phantom.api.module.Module
 import org.phantom.api.module.setting.impl.CheckboxSetting
@@ -183,6 +187,35 @@ object ItemLockingModule : Module("Item Locking") {
   fun shouldCancelSelectedItemDrop(): Boolean {
     val player = mc.player ?: return false
     return isBlockedHotbarSlot(player.inventory.selectedSlot) || isProtectedItem(player.mainHandItem)
+  }
+
+  @SubscribeEvent
+  fun onScreenKey(event: ScreenKeyEvent) {
+    val slot = event.hoveredSlot
+    val handled = if (event.released) {
+      handleContainerKeyReleased(slot, event.key)
+    } else {
+      slot != null && handleContainerKeyPressed(slot, event.key)
+    }
+    if (handled) event.setCancelled(true)
+  }
+
+  @SubscribeEvent
+  fun onContainerSlotClick(event: ContainerSlotClickEvent) {
+    if (shouldCancelContainerClick(
+        event.menuTitle, event.menu, event.slot, event.slotId, event.button, event.clickType)) {
+      event.setCancelled(true)
+    }
+  }
+
+  @SubscribeEvent
+  fun onContainerSlotRender(event: ContainerSlotRenderEvent) {
+    renderContainerSlotOverlay(event.graphics, event.slot, event.x, event.y)
+  }
+
+  @SubscribeEvent
+  fun onItemDropQuery(event: ItemDropQueryEvent) {
+    if (shouldCancelSelectedItemDrop()) event.setCancelled(true)
   }
 
   fun handleContainerKeyPressed(slot: Slot, input: KeyEvent): Boolean {

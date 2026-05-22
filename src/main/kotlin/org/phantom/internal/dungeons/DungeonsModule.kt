@@ -23,6 +23,9 @@ import net.minecraft.world.scores.DisplaySlot
 import org.phantom.api.event.EventBus
 import org.phantom.api.event.annotation.SubscribeEvent
 import org.phantom.api.event.impl.client.ChatEvent
+import org.phantom.api.event.impl.client.ForcedBackwardKeyEvent
+import org.phantom.api.event.impl.client.MouseEvent
+import org.phantom.api.event.impl.client.PlayerVelocityCancelEvent
 import org.phantom.api.event.impl.client.TickEvent
 import org.phantom.api.event.impl.render.WorldRenderEvent
 import org.phantom.api.module.Module
@@ -269,6 +272,21 @@ object DungeonsModule : Module("Dungeons"), IBonzoStaffHelper {
   fun onChat(event: ChatEvent.Receive) {
     val message = event.message ?: return
     onChatMessage(message)
+  }
+
+  @SubscribeEvent
+  fun onForcedBackwardKey(event: ForcedBackwardKeyEvent) {
+    if (shouldPressBackward()) event.setCancelled(true)
+  }
+
+  @SubscribeEvent
+  fun onPlayerVelocityCancel(event: PlayerVelocityCancelEvent) {
+    if (shouldCancelVelocity()) event.setCancelled(true)
+  }
+
+  @SubscribeEvent
+  fun onMouseLeftClick(@Suppress("UNUSED_PARAMETER") event: MouseEvent.LeftClick) {
+    onLeftClick()
   }
 
   @SubscribeEvent

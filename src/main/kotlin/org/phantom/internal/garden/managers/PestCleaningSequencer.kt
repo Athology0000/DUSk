@@ -3,6 +3,9 @@ package org.phantom.internal.garden.managers
 import net.minecraft.client.Minecraft
 import org.phantom.internal.garden.GardenConfig
 import org.phantom.internal.garden.GardenWorkerThread
+import org.phantom.api.event.EventBus
+import org.phantom.api.event.annotation.SubscribeEvent
+import org.phantom.api.event.impl.client.ChatMessageEvent
 import org.phantom.internal.garden.ScriptBridge
 
 object PestCleaningSequencer {
@@ -11,6 +14,15 @@ object PestCleaningSequencer {
     @Volatile private var awaitingFinishChat = false
     @Volatile private var finishQueued = false
     @Volatile private var onComplete: (() -> Unit)? = null
+
+    init {
+        EventBus.register(this)
+    }
+
+    @SubscribeEvent
+    fun onChat(event: ChatMessageEvent) {
+        onChatMessage(event.message)
+    }
 
     fun reset() {
         isRunning = false

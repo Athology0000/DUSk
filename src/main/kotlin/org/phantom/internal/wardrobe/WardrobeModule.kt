@@ -10,6 +10,7 @@ import org.phantom.api.event.EventBus
 import org.phantom.api.event.annotation.SubscribeEvent
 import org.phantom.api.event.impl.client.MouseEvent
 import org.phantom.api.event.impl.client.PacketEvent
+import org.phantom.api.event.impl.render.ContainerDrawEvent
 import org.phantom.api.event.impl.render.GuiRenderEvent
 import org.phantom.api.module.Module
 import org.phantom.api.module.setting.inGroup
@@ -67,6 +68,11 @@ object WardrobeModule : Module("Wardrobe GUI") {
     /** Called by WardrobeScreenMixin to decide whether to cancel vanilla rendering. */
     fun shouldSuppressVanillaRender(): Boolean =
         enabled && WardrobeState.isOpen && scanState == ScanState.DONE
+
+    @SubscribeEvent
+    fun onContainerDraw(event: ContainerDrawEvent) {
+        if (shouldSuppressVanillaRender()) event.setCancelled(true)
+    }
 
     fun setsOnCurrentCustomPage(): List<WardrobeSet> {
         val currentVanillaPage = WardrobeState.currentVanillaPage ?: return emptyList()

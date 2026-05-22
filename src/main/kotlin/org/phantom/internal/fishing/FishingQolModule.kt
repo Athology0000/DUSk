@@ -11,6 +11,8 @@ import net.minecraft.world.entity.projectile.FishingHook
 import net.minecraft.world.phys.Vec3
 import org.phantom.api.event.EventBus
 import org.phantom.api.event.annotation.SubscribeEvent
+import org.phantom.api.event.impl.client.FishingBobberFixEvent
+import org.phantom.api.event.impl.client.FishingBobberRenderEvent
 import org.phantom.api.event.impl.client.PacketEvent
 import org.phantom.api.event.impl.client.TickEvent
 import org.phantom.api.event.impl.render.WorldRenderEvent
@@ -212,6 +214,16 @@ object FishingQolModule : Module("Fishing QoL") {
   @JvmStatic
   fun shouldFixBobber(): Boolean {
     return enabledSetting.value && bobberFixSetting.value
+  }
+
+  @SubscribeEvent
+  fun onFishingBobberRender(event: FishingBobberRenderEvent) {
+    if (shouldHideOtherBobbers() && !event.isLocalPlayerOwned) event.setCancelled(true)
+  }
+
+  @SubscribeEvent
+  fun onFishingBobberFix(event: FishingBobberFixEvent) {
+    if (shouldFixBobber()) event.setCancelled(true)
   }
 
   private const val MIN_SPLASH_HOOK_AGE_TICKS = 8

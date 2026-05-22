@@ -25,6 +25,7 @@ import org.phantom.api.event.annotation.SubscribeEvent
 import org.phantom.api.event.impl.client.MouseEvent
 import org.phantom.api.event.impl.client.PacketEvent
 import org.phantom.api.event.impl.client.TickEvent
+import org.phantom.api.event.impl.render.CameraSetupEvent
 import org.phantom.api.module.Module
 import org.phantom.api.module.ModuleCategory
 import org.phantom.api.module.setting.impl.CheckboxSetting
@@ -94,6 +95,11 @@ object SmoothAotvModule : Module("Smooth AOTV") {
       zpew,
     )
     EventBus.register(this)
+  }
+
+  @SubscribeEvent
+  fun onCameraSetup(event: CameraSetupEvent) {
+    event.positionOverride = interpolatedCameraPos()
   }
 
   fun interpolatedCameraPos(): Vec3? {
