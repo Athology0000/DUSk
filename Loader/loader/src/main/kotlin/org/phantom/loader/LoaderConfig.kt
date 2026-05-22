@@ -4,10 +4,10 @@ import net.fabricmc.loader.api.FabricLoader
 
 object LoaderConfig {
     private const val RELEASE_SERVER_BASE_URL = "https://valiant-cooperation-production.up.railway.app"
-    // RELEASE BLOCKER: paste the base64 Ed25519 public key (public half of the
-    // server's manifest signing key) before shipping. BootstrapManifestVerifier
-    // fails closed while this is the placeholder value.
-    private const val RELEASE_MANIFEST_PUBLIC_KEY_B64 = "REPLACE_WITH_BASE64_ED25519_PUBLIC_KEY"
+    // Pinned Ed25519 public key — the public half of the server's
+    // MANIFEST_SIGNING_KEY. BootstrapManifestVerifier checks every manifest
+    // signature against this, so it must match the key the server signs with.
+    private const val RELEASE_MANIFEST_PUBLIC_KEY_B64 = "LLeG53gx/aRVy/jhuuKFHJqATd9+cN0Jm04RVxq3o34="
 
     private val isDev: Boolean
         get() = FabricLoader.getInstance().isDevelopmentEnvironment
