@@ -4,6 +4,7 @@ package config
 import (
 	"encoding/base64"
 	"fmt"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -48,8 +49,8 @@ func Load() (*Config, error) {
 		return nil, err
 	}
 
-	publicOrigins := getEnvOr("CORS_ALLOW_ORIGINS", "http://localhost:3001,http://localhost:3002,http://127.0.0.1:3001,http://127.0.0.1:3002,http://localhost:5173,http://localhost:5174")
-	adminOrigins := getEnvOr("ADMIN_CORS_ALLOW_ORIGINS", publicOrigins)
+	publicOrigins := sanitizeOrigins(getEnvOr("CORS_ALLOW_ORIGINS", "http://localhost:3001,http://localhost:3002,http://127.0.0.1:3001,http://127.0.0.1:3002,http://localhost:5173,http://localhost:5174"))
+	adminOrigins := sanitizeOrigins(getEnvOr("ADMIN_CORS_ALLOW_ORIGINS", publicOrigins))
 
 	cfg := &Config{
 		MasterKey:             masterKey,
@@ -105,6 +106,32 @@ func getEnvIntOr(key string, def int) int {
 		}
 	}
 	return def
+}
+
+// sanitizeOrigins normalizes a comma-separated CORS origin list to bare
+// scheme://host[:port] entries. A stray path, query, fragment, or trailing
+// slash on any origin makes gofiber's cors.New panic at boot, so they are
+// stripped defensively here — a misconfigured env var should never crash
+// the server.
+func sanitizeOrigins(raw string) string {
+	parts := strings.Split(raw, ",")
+	out := make([]string, 0, len(parts))
+	for _, part := range parts {
+		origin := strings.TrimSpace(part)
+		if origin == "" {
+			continue
+		}
+		if origin == "*" {
+			out = append(out, origin)
+			continue
+		}
+		if u, err := url.Parse(origin); err == nil && u.Scheme != "" && u.Host != "" {
+			out = append(out, u.Scheme+"://"+u.Host)
+			continue
+		}
+		out = append(out, strings.TrimRight(origin, "/"))
+	}
+	return strings.Join(out, ",")
 }
 
 func decodeBase64Env(key string, expectedLen int) ([]byte, error) {
