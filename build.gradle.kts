@@ -103,6 +103,13 @@ dependencies {
 
   runtimeOnly(libs.httpclient)
   modRuntimeOnly(libs.devauth)
+
+  testImplementation(libs.junit.jupiter)
+  testRuntimeOnly(libs.junit.platform.launcher)
+}
+
+tasks.named<Test>("test") {
+  useJUnitPlatform()
 }
 
 tasks {

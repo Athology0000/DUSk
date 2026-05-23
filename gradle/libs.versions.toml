@@ -12,6 +12,7 @@ reflections = "0.10.2"
 httpclient = "4.5.14"
 devauth = "1.2.2"
 hypixel-api = "1.0.1"
+junit-jupiter = "5.11.3"
 
 # Plugins Versions
 kotlin = "2.3.0"
@@ -30,6 +31,9 @@ reflections = { group = "org.reflections", name = "reflections", version.ref = "
 httpclient = { group = "org.apache.httpcomponents", name = "httpclient", version.ref = "httpclient" }
 devauth = { group = "me.djtheredstoner", name = "DevAuth-fabric", version.ref = "devauth" }
 hypixel-api = { group = "net.hypixel", name = "mod-api", version.ref = "hypixel-api" }
+
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
 
 [bundles]
 fabric = ["fabric-api", "fabric-loader", "fabric-kotlin"]
