@@ -53,7 +53,6 @@ import org.phantom.api.util.helper.KeyBind
 import org.phantom.api.util.helper.Rotation
 import org.phantom.api.util.render.Render3D
 import org.phantom.internal.etherwarp.EtherwarpLogic
-import org.phantom.internal.wardrobe.WardrobeModule
 import org.phantom.mixin.client.FishingHookAccessor
 
 object FishingMacroModule : Module("Fishing Macro") {
@@ -524,7 +523,7 @@ object FishingMacroModule : Module("Fishing Macro") {
 
   private val rareLoadoutEnabledSetting = CheckboxSetting(
     "Rare Mob Loadout",
-    "Swap wardrobe and run a pet command when a boss sea creature's HP drops below threshold.",
+    "Run a pet command when a boss sea creature's HP drops below threshold.",
     false,
   ).inGroup(RARE_MOB_GROUP)
 
@@ -532,12 +531,6 @@ object FishingMacroModule : Module("Fishing Macro") {
     "Rare Mob Keywords",
     "Comma-separated keywords that mark a sea creature as a boss.",
     DEFAULT_RARE_MOB_KEYWORDS,
-  ).inGroup(RARE_MOB_GROUP)
-
-  private val rareWardrobeSetSetting = SliderSetting(
-    "Rare Wardrobe Set",
-    "Wardrobe set to equip when boss HP is low (0 = skip).",
-    0.0, 0.0, 27.0, 1.0,
   ).inGroup(RARE_MOB_GROUP)
 
   private val rarePetCommandSetting = TextSetting(
@@ -673,7 +666,6 @@ object FishingMacroModule : Module("Fishing Macro") {
       snapThresholdSetting,
       rareLoadoutEnabledSetting,
       rareMobKeywordsSetting,
-      rareWardrobeSetSetting,
       rarePetCommandSetting,
       rareHpThresholdSetting,
       lockRotationSetting,
@@ -1823,10 +1815,6 @@ object FishingMacroModule : Module("Fishing Macro") {
   }
 
   private fun triggerRareLoadout() {
-    val setId = rareWardrobeSetSetting.value.toInt()
-    if (setId in 1..27) {
-      WardrobeModule.requestEquip(setId)
-    }
     val petCmd = rarePetCommandSetting.value.trim().trimStart('/')
     if (petCmd.isNotBlank()) {
       mc.player?.connection?.sendCommand(petCmd)

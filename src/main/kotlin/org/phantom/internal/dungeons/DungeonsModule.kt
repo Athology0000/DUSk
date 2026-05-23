@@ -8,10 +8,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.core.BlockPos
 import net.minecraft.core.component.DataComponents
 import net.minecraft.nbt.CompoundTag
-import net.minecraft.world.entity.LivingEntity
-import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.entity.item.ItemEntity
-import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ClipContext
 import net.minecraft.world.level.Level
@@ -38,7 +35,6 @@ import org.phantom.api.module.setting.impl.TextSetting
 import org.phantom.api.util.InventoryUtils
 import org.phantom.api.util.render.Render3D
 import org.phantom.bridge.module.IBonzoStaffHelper
-import org.phantom.internal.helper.ClientGlowEspManager
 
 object DungeonsModule : Module("Dungeons"), IBonzoStaffHelper {
 
@@ -176,18 +172,6 @@ object DungeonsModule : Module("Dungeons"), IBonzoStaffHelper {
     true
   )
 
-  private val mobEspEnabled = CheckboxSetting(
-    "Mob ESP",
-    "Apply a vanilla glow outline to dungeon mobs.",
-    false
-  )
-
-  private val mobEspColor = ColorSetting(
-    "Mob ESP Color",
-    "Glow color used for dungeon mobs.",
-    0xFFFF5555.toInt()
-  )
-
   @Volatile
   private var shouldPressBackward = false
 
@@ -240,8 +224,6 @@ object DungeonsModule : Module("Dungeons"), IBonzoStaffHelper {
       witherKeyTracer,
       witherKeyColor,
       witherKeyLabel,
-      mobEspEnabled,
-      mobEspColor,
     )
     EventBus.register(this)
   }
@@ -254,18 +236,11 @@ object DungeonsModule : Module("Dungeons"), IBonzoStaffHelper {
     tickBonzo(player)
 
     if (level == null || player == null) {
-      ClientGlowEspManager.clear(DUNGEON_MOB_ESP_SCOPE)
       resetSuperboomState(true)
       return
     }
 
     tickSuperboom(level)
-
-    if (mobEspEnabled.value && isInDungeon(level)) {
-      syncDungeonMobEsp(level, player)
-    } else {
-      ClientGlowEspManager.clear(DUNGEON_MOB_ESP_SCOPE, level)
-    }
   }
 
   @SubscribeEvent
@@ -884,23 +859,4 @@ object DungeonsModule : Module("Dungeons"), IBonzoStaffHelper {
     return bonzoEnabled.value && shouldCancelVelocity
   }
 
-  private fun syncDungeonMobEsp(level: net.minecraft.client.multiplayer.ClientLevel, player: Player) {
-    val targets =
-      level.entitiesForRendering()
-        .asSequence()
-        .mapNotNull { it as? LivingEntity }
-        .filter { shouldHighlightDungeonMob(it, player) }
-        .map { ClientGlowEspManager.GlowTarget(it, mobEspColor.value) }
-        .toList()
-
-    ClientGlowEspManager.sync(DUNGEON_MOB_ESP_SCOPE, level, targets)
-  }
-
-  private fun shouldHighlightDungeonMob(entity: LivingEntity, player: Player): Boolean {
-    if (!entity.isAlive || entity.health <= 0f) return false
-    if (entity === player || entity is ArmorStand || entity is Player) return false
-    return true
-  }
-
-  private const val DUNGEON_MOB_ESP_SCOPE = "dungeon_mob_esp"
 }

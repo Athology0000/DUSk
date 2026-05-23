@@ -7,9 +7,6 @@ import kotlin.math.sin
 import java.util.Locale
 import net.minecraft.client.Minecraft
 import net.minecraft.core.BlockPos
-import net.minecraft.world.entity.LivingEntity
-import net.minecraft.world.entity.decoration.ArmorStand
-import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Blocks
@@ -28,7 +25,6 @@ import org.phantom.api.module.setting.impl.ColorSetting
 import org.phantom.api.module.setting.impl.ModeSetting
 import org.phantom.api.module.setting.impl.SliderSetting
 import org.phantom.api.util.getSkyblockId
-import org.phantom.internal.helper.ClientGlowEspManager
 import org.phantom.internal.pathfinding.OverlayRenderEngine
 
 object WitherImpactOverlayModule : Module("Wither Impact Overlay") {
@@ -111,12 +107,6 @@ object WitherImpactOverlayModule : Module("Wither Impact Overlay") {
     true
   )
 
-  private val mobEsp = CheckboxSetting(
-    "Mob ESP",
-    "Glow ESP on mobs inside the Hyperion radius.",
-    true
-  )
-
   private val boomRadius = SliderSetting(
     "Boom Radius",
     "Implosion radius in blocks.",
@@ -152,7 +142,6 @@ object WitherImpactOverlayModule : Module("Wither Impact Overlay") {
       fillOpacity,
       showWhenInAir,
       showBoomRadius,
-      mobEsp,
       boomRadius,
       ringLineWidth,
       animationSpeed,
@@ -165,36 +154,30 @@ object WitherImpactOverlayModule : Module("Wither Impact Overlay") {
     val mc = Minecraft.getInstance()
     val level = mc.level ?: run {
       clearOverlay()
-      clearMobEsp()
       return
     }
     val player = mc.player ?: run {
       clearOverlay()
-      clearMobEsp()
       return
     }
 
     if (!enabled.value || !isWitherImpactBlade(player.mainHandItem)) {
       clearOverlay()
-      clearMobEsp()
       return
     }
 
     val targetBlock = findTargetBlock(player.eyePosition, player.getViewVector(1.0f)) ?: run {
       clearOverlay()
-      clearMobEsp()
       return
     }
 
     if (!level.worldBorder.isWithinBounds(targetBlock)) {
       clearOverlay()
-      clearMobEsp()
       return
     }
 
     if (!showWhenInAir.value && level.getBlockState(targetBlock).isAir) {
       clearOverlay()
-      clearMobEsp()
       return
     }
 
@@ -214,20 +197,10 @@ object WitherImpactOverlayModule : Module("Wither Impact Overlay") {
     if (showBoomRadius.value) {
       renderBoomRadius(level, targetBlock)
     }
-
-    if (mobEsp.value) {
-      syncMobEsp(level, player, targetBlock)
-    } else {
-      clearMobEsp(level)
-    }
   }
 
   private fun clearOverlay() {
     OverlayRenderEngine.clearTag(TAG)
-  }
-
-  private fun clearMobEsp(level: net.minecraft.client.multiplayer.ClientLevel? = Minecraft.getInstance().level) {
-    ClientGlowEspManager.clear(HYPERION_MOB_ESP_SCOPE, level)
   }
 
   private fun isWitherImpactBlade(stack: ItemStack): Boolean {
@@ -291,31 +264,6 @@ object WitherImpactOverlayModule : Module("Wither Impact Overlay") {
     val width = ringLineWidth.value.toFloat()
 
     renderRing(level, center, radius, width, phase, pulse)
-  }
-
-  private fun syncMobEsp(level: net.minecraft.client.multiplayer.ClientLevel, player: net.minecraft.client.player.LocalPlayer, targetBlock: BlockPos) {
-    val radius = boomRadius.value
-    val center = Vec3(targetBlock.x + 0.5, targetBlock.y + 0.9, targetBlock.z + 0.5)
-    val targets =
-      level.entitiesForRendering()
-        .asSequence()
-        .mapNotNull { it as? LivingEntity }
-        .filter { it != player && it !is ArmorStand && it !is Player && it.isAlive && isEntityInsideRadius(it, center, radius) }
-        .map { ClientGlowEspManager.GlowTarget(it, overlayColor.value, HYPERION_MOB_ESP_PRIORITY) }
-        .toList()
-
-    ClientGlowEspManager.sync(HYPERION_MOB_ESP_SCOPE, level, targets)
-  }
-
-  private fun isEntityInsideRadius(entity: LivingEntity, center: Vec3, radius: Double): Boolean {
-    val box = entity.boundingBox
-    val closestX = center.x.coerceIn(box.minX, box.maxX)
-    val closestY = center.y.coerceIn(box.minY, box.maxY)
-    val closestZ = center.z.coerceIn(box.minZ, box.maxZ)
-    val dx = closestX - center.x
-    val dy = closestY - center.y
-    val dz = closestZ - center.z
-    return dx * dx + dy * dy + dz * dz <= radius * radius
   }
 
   private fun renderRing(level: Level, center: Vec3, radius: Double, lineWidth: Float, phase: Double, alphaScale: Double) {
@@ -450,6 +398,4 @@ object WitherImpactOverlayModule : Module("Wither Impact Overlay") {
     val b = argb and 0xFF
     return OverlayRenderEngine.Color(r, g, b, a)
   }
-  private const val HYPERION_MOB_ESP_SCOPE = "hyp_mob_esp"
-  private const val HYPERION_MOB_ESP_PRIORITY = 20
 }

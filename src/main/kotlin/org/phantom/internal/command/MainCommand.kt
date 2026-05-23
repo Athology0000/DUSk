@@ -20,7 +20,6 @@ import org.phantom.api.util.helper.Rotation
 import org.phantom.api.util.player.MovementManager
 import org.phantom.internal.pathfinding.PathfindingModule
 import org.phantom.internal.mining.VeinScannerModule
-import org.phantom.internal.qol.CraftHelperModule
 import org.phantom.internal.stats.MacroTimeTracker
 import org.phantom.internal.ui.screen.UIConfig
 
@@ -178,30 +177,6 @@ internal object MainCommand : Command(name = "phantom", aliases = arrayOf("phant
     }
 
     ChatUtils.sendMessage("[EntityScan] Found $count entities within $range blocks.")
-  }
-
-  @SubCommand
-  fun craftheld() {
-    CraftHelperModule.setTargetFromHeld()
-  }
-
-  @SubCommand
-  fun craftset(id: String) {
-    CraftHelperModule.setTarget(id)
-  }
-
-  @SubCommand
-  fun craftamount(amount: Int) {
-    if (amount <= 0) {
-      ChatUtils.sendMessage("Craft Helper: Amount must be greater than 0.")
-      return
-    }
-    CraftHelperModule.setTargetAmount(amount)
-  }
-
-  @SubCommand
-  fun craftclear() {
-    CraftHelperModule.clearTarget()
   }
 
   private fun sendEntityScanResult(entity: Entity, distance: Double, dx: Double, dy: Double, dz: Double) {

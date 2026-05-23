@@ -1,4 +1,4 @@
-package org.phantom.mixin.rsa;
+package org.phantom.mixin.network;
 
 import com.mojang.authlib.yggdrasil.YggdrasilServicesKeyInfo;
 import org.slf4j.Logger;

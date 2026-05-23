@@ -8,16 +8,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.state.SkyRenderState;
 import net.minecraft.client.renderer.state.LevelRenderState;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.phantom.api.event.impl.render.WorldRenderContext;
 import org.phantom.api.event.impl.render.WorldRenderEvent;
 import org.phantom.internal.pathfinding.OverlayRenderEngine;
-import org.phantom.internal.visual.SkyboxChangerModule;
 import org.phantom.render.rise.ShaderRegistry;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
@@ -73,13 +70,6 @@ public class LevelRendererMixin {
   private PoseStack setInternalStack(PoseStack original) {
     ctx.setMatrixStack(original);
     return original;
-  }
-
-  @Inject(method = "method_62215", at = @At("HEAD"), cancellable = true)
-  private static void renderImportedSkybox(GpuBufferSlice fogBuffer, SkyRenderState skyRenderState, SkyRenderer skyRenderer, CallbackInfo callbackInfo) {
-    if (SkyboxChangerModule.renderCustomSky(fogBuffer)) {
-      callbackInfo.cancel();
-    }
   }
 
 }
