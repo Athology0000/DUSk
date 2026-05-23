@@ -3,6 +3,25 @@ package org.phantom.loader.bootstrap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Determines whether a manifest module activates immediately after onLoad,
+ * or waits for a successful POST /auth/verify-module per user toggle.
+ */
+@Serializable
+enum class ActivationPolicy {
+    @SerialName("auto")             AUTO,
+    @SerialName("verify_on_toggle") VERIFY_ON_TOGGLE;
+
+    companion object {
+        fun fromWire(raw: String?): ActivationPolicy =
+            when (raw?.trim()?.lowercase()) {
+                "auto" -> AUTO
+                "verify_on_toggle", null, "" -> VERIFY_ON_TOGGLE
+                else -> VERIFY_ON_TOGGLE
+            }
+    }
+}
+
 @Serializable
 data class VerifySessionRequest(
     @SerialName("session_token") val sessionToken: String,
@@ -51,6 +70,7 @@ data class ManifestModule(
     val sha256: String,
     val required: Boolean = false,
     @SerialName("init_order") val initOrder: Int = 0,
+    @SerialName("activation_policy") val activationPolicy: ActivationPolicy = ActivationPolicy.VERIFY_ON_TOGGLE,
 )
 
 @Serializable
