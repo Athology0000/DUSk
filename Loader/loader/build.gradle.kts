@@ -38,6 +38,13 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${property("serialization_version")}")
     include("org.jetbrains.kotlinx:kotlinx-serialization-json:${property("serialization_version")}")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.3")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
 }
 
 tasks.named<Jar>("jar") {
