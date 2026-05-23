@@ -35,7 +35,7 @@ object LoaderConfig {
         get() = devOverride("phantom.heartbeat.failureLimit", "PHANTOM_HEARTBEAT_FAILURE_LIMIT")
             ?.toIntOrNull()
             ?.coerceAtLeast(1)
-            ?: 2
+            ?: 1
 
     val clientVersion: String
         get() = devOverride("phantom.client.version", "PHANTOM_CLIENT_VERSION") ?: "0.1.0"
