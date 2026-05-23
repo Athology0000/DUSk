@@ -50,10 +50,13 @@ func RegisterRoutes(app *fiber.App, svc *Service, pool *pgxpool.Pool, rdb *redis
 	authLimit := middleware.RateLimit(rdb, 10, time.Minute, middleware.IPAndUsernameKey("auth"))
 	heartbeatLimit := middleware.RateLimit(rdb, 60, time.Minute, middleware.IPAndUsernameKey("heartbeat"))
 
+	verifyModuleLimit := middleware.RateLimit(rdb, 60, time.Minute, middleware.IPAndUsernameKey("verify-module"))
+
 	app.Post("/auth/start", authLimit, handleStart(svc))
 	app.Post("/auth/finish", authLimit, handleFinish(svc))
 	app.Post("/auth/verify-minecraft", authLimit, handleVerifyMinecraft(svc))
 	app.Post("/auth/verify-session", authLimit, handleVerifySession(svc))
+	app.Post("/auth/verify-module", verifyModuleLimit, handleVerifyModule(svc))
 	app.Post("/auth/heartbeat", heartbeatLimit, handleHeartbeat(svc))
 
 	panelLimit := middleware.RateLimit(rdb, 20, time.Minute, middleware.IPKey("panel-auth"))

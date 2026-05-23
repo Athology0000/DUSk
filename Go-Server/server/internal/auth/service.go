@@ -400,6 +400,89 @@ type VerifySessionResult struct {
 	EntitlementExpiresAt *time.Time
 }
 
+type VerifyModuleResult struct {
+	Authorized bool
+	Reason     string
+}
+
+func (s *Service) VerifyModule(ctx context.Context, rawToken, moduleName, minecraftUsernameInput, sourceIP string) (*VerifyModuleResult, error) {
+	minecraftUsernameInput = strings.TrimSpace(minecraftUsernameInput)
+	moduleName = strings.TrimSpace(moduleName)
+
+	if moduleName == "" {
+		return &VerifyModuleResult{Authorized: false, Reason: "missing_module_name"}, nil
+	}
+
+	tokenHash, err := crypto.HashToken(rawToken)
+	if err != nil {
+		return nil, ErrSessionInvalid
+	}
+
+	sess, err := db.GetSessionByTokenHash(ctx, s.pool, tokenHash)
+	if err != nil || sess.Revoked || time.Now().After(sess.ExpiresAt) {
+		return nil, ErrSessionInvalid
+	}
+
+	device, err := db.GetDeviceByID(ctx, s.pool, sess.DeviceID)
+	if err != nil {
+		return nil, err
+	}
+
+	if device.BindingStatus == "suspended" || device.BindingStatus == "banned" {
+		return &VerifyModuleResult{Authorized: false, Reason: "device_blocked"}, nil
+	}
+
+	account, err := db.GetAccountByID(ctx, s.pool, sess.AccountID)
+	if err != nil {
+		return nil, err
+	}
+	if account.Status != "active" {
+		return &VerifyModuleResult{Authorized: false, Reason: "account_blocked"}, nil
+	}
+
+	if device.MinecraftUsername == nil || !strings.EqualFold(*device.MinecraftUsername, minecraftUsernameInput) {
+		s.auditSvc.Log("auth.verify_module.fail", &account.ID, &device.ID, nil, &sourceIP, map[string]any{
+			"reason": "minecraft_username_mismatch",
+			"module": moduleName,
+		})
+		return &VerifyModuleResult{Authorized: false, Reason: "minecraft_username_mismatch"}, nil
+	}
+
+	ent, err := s.entSvc.Resolve(ctx, account.ID)
+	if err != nil {
+		return nil, err
+	}
+	if !ent.Authorized {
+		return &VerifyModuleResult{Authorized: false, Reason: ent.Reason}, nil
+	}
+
+	if !moduleAllowed(moduleName, ent.EnabledModules) {
+		s.auditSvc.Log("auth.verify_module.fail", &account.ID, &device.ID, nil, &sourceIP, map[string]any{
+			"reason": "not_entitled",
+			"module": moduleName,
+		})
+		return &VerifyModuleResult{Authorized: false, Reason: "not_entitled"}, nil
+	}
+
+	s.auditSvc.Log("auth.verify_module.success", &account.ID, &device.ID, nil, &sourceIP, map[string]any{
+		"module": moduleName,
+	})
+	return &VerifyModuleResult{Authorized: true, Reason: ""}, nil
+}
+
+func moduleAllowed(moduleName string, enabled []string) bool {
+	if moduleName == "phantom-core" {
+		return true
+	}
+	short := strings.TrimPrefix(moduleName, "phantom-")
+	for _, m := range enabled {
+		if m == "*" || m == moduleName || m == short {
+			return true
+		}
+	}
+	return false
+}
+
 func (s *Service) VerifyMinecraft(ctx context.Context, rawToken, minecraftUsername, sourceIP string) (*VerifyMinecraftResult, error) {
 	tokenHash, err := crypto.HashToken(rawToken)
 	if err != nil {
