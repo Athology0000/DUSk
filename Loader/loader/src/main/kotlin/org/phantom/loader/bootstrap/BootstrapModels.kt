@@ -90,3 +90,15 @@ data class SignedManifestPayload(
     val modules: List<ManifestModule>,
     @SerialName("native_components") val nativeComponents: List<ManifestNative>,
 )
+
+@Serializable
+data class VerifyModuleRequest(
+    @SerialName("module_name") val moduleName: String,
+    @SerialName("minecraft_username") val minecraftUsername: String,
+)
+
+@Serializable
+data class VerifyModuleResponse(
+    val authorized: Boolean = false,
+    val reason: String = "",
+)
