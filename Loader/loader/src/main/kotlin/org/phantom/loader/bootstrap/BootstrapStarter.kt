@@ -2,11 +2,16 @@ package org.phantom.loader.bootstrap
 
 import net.minecraft.client.Minecraft
 import org.phantom.PhantomPublicInit
+import org.phantom.api.module.AuthSnapshot
+import org.phantom.api.module.ModuleRegistry
 import org.phantom.internal.auth.Auth
 import org.phantom.internal.auth.AuthState
 import org.phantom.internal.loader.AddonLoader
 import org.phantom.loader.LoaderLog
 import org.phantom.loader.PhantomSession
+import org.phantom.loader.activation.ActivationExecutor
+import org.phantom.loader.activation.ActiveLoaderState
+import org.phantom.loader.activation.DefaultLoaderApi
 
 object BootstrapStarter {
     fun start() {
@@ -59,12 +64,68 @@ object BootstrapStarter {
                 }
 
             Auth.modulesTotal = modules.size
-            modules.forEachIndexed { index, module ->
-                loadModule(module, manifest, session.token)
+
+            val registry = ModuleRegistry()
+            val activationExecutor = ActivationExecutor()
+            val authSnapshot = AuthSnapshot(
+                accountId = auth.accountId,
+                username = auth.username.ifBlank { auth.alias },
+                minecraftUsername = Auth.minecraftUsername,
+                planTier = auth.planTier,
+                entitledModules = auth.enabledModules.toSet(),
+            )
+            val loaderApi = DefaultLoaderApi(
+                sessionToken = session.token,
+                auth = authSnapshot,
+                registry = registry,
+                executor = activationExecutor,
+                onSessionInvalid = { triggerSessionInvalidCascade(registry, activationExecutor) },
+            )
+
+            modules.forEachIndexed { index, manifestModule ->
+                runCatching { loadModule(manifestModule, manifest, session.token) }
+                    .onSuccess {
+                        val loaded = AddonLoader.findLoaded(manifestModule.name)
+                        if (loaded != null) {
+                            registry.register(loaded)
+                            runCatching { loaded.onLoad(loaderApi) }
+                                .onFailure {
+                                    registry.markLoadFailed(manifestModule.name, it.message ?: "onLoad threw")
+                                    LoaderLog.error("onLoad failed for ${manifestModule.name}", it)
+                                }
+                        }
+                    }
+                    .onFailure {
+                        if (manifestModule.name == "phantom-core") throw it
+                        LoaderLog.error("Failed to load ${manifestModule.name}", it)
+                    }
                 Auth.modulesLoaded = index + 1
             }
 
+            // Auto-activate only modules whose manifest entry says so.
+            modules
+                .filter { it.activationPolicy == ActivationPolicy.AUTO }
+                .forEach { manifestModule ->
+                    val loaded = registry.moduleOf(manifestModule.name) ?: return@forEach
+                    runCatching { loaded.onActivate() }
+                        .onSuccess { registry.markActive(manifestModule.name) }
+                        .onFailure {
+                            registry.markActivationFailed(manifestModule.name, it.message ?: "onActivate threw")
+                            LoaderLog.error("Auto onActivate failed for ${manifestModule.name}", it)
+                            if (manifestModule.name == "phantom-core") throw it
+                        }
+                }
+
+            // Legacy path: activate any Addon entrypoints that DON'T implement
+            // LoadedModule. AddonLoader.activateLoadedAddons now skips
+            // LoadedModule-implementing addons (those went through the new
+            // lifecycle above).
             AddonLoader.activateLoadedAddons()
+
+            ActiveLoaderState.registry = registry
+            ActiveLoaderState.activationExecutor = activationExecutor
+            ActiveLoaderState.loaderApi = loaderApi
+
             BootstrapHeartbeatClient.start(session.token)
 
             Auth.state = AuthState.READY
@@ -96,5 +157,20 @@ object BootstrapStarter {
         Auth.failureReason = message
         Auth.statusMessage = message
         LoaderLog.error(message, throwable)
+    }
+
+    private fun triggerSessionInvalidCascade(
+        registry: ModuleRegistry,
+        executor: ActivationExecutor,
+    ) {
+        Auth.state = AuthState.FAILED
+        Auth.failureReason = "Session invalidated by server"
+        Auth.statusMessage = "Phantom session invalidated. Restart Minecraft."
+        registry.activeModules().forEach { module ->
+            runCatching { module.onDeactivate() }
+                .onFailure { LoaderLog.error("onDeactivate during cascade failed for ${module.name}", it) }
+            registry.markInactive(module.name)
+        }
+        executor.shutdown()
     }
 }

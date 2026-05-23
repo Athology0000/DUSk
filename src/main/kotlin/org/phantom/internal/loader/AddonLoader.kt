@@ -9,6 +9,7 @@ import net.fabricmc.loader.api.FabricLoader
 import net.fabricmc.loader.impl.launch.FabricLauncherBase
 import org.phantom.api.addon.Addon
 import org.phantom.api.addon.AddonMetadata
+import org.phantom.api.module.LoadedModule
 import org.phantom.api.module.ModuleManager
 import org.phantom.api.util.ui.NVGRenderer
 import org.phantom.api.util.ui.helper.Image
@@ -191,8 +192,14 @@ object AddonLoader {
     }
   }
 
+  /**
+   * Activates every loaded addon EXCEPT ones whose entrypoint implements
+   * the new LoadedModule lifecycle — those go through the loader's
+   * activation executor instead (see DefaultLoaderApi.requestActivate).
+   */
   fun activateLoadedAddons() {
     addons.forEach { (_, addon) ->
+      if (addon is LoadedModule) return@forEach
       val identity = System.identityHashCode(addon)
       if (activatedAddons.add(identity)) {
         addon.onLoad()
@@ -201,11 +208,24 @@ object AddonLoader {
     }
   }
 
+  /**
+   * Returns the first loaded addon entrypoint matching the given manifest
+   * module name AND implementing the new LoadedModule lifecycle. Null if
+   * no such entrypoint is loaded (legacy addons go through the old path).
+   */
+  fun findLoaded(name: String): LoadedModule? {
+    return addons
+      .firstOrNull { (meta, addon) -> meta.id == name && addon is LoadedModule }
+      ?.second as? LoadedModule
+  }
+
   fun unloadLoadedAddons() {
     addons.asReversed().forEach { (_, addon) ->
       runCatching {
-        ModuleManager.removeModules(addon.getModules())
-        addon.onUnload()
+        if (addon !is LoadedModule) {
+          ModuleManager.removeModules(addon.getModules())
+          addon.onUnload()
+        }
       }.onFailure { it.printStackTrace() }
       activatedAddons.remove(System.identityHashCode(addon))
     }
