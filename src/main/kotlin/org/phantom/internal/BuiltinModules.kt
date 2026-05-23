@@ -6,7 +6,6 @@ import org.phantom.api.hud.modules.WatermarkModule
 import org.phantom.api.module.Module
 import org.phantom.api.module.ModuleManager
 import org.phantom.internal.chat.ChatFilterModule
-import org.phantom.internal.chat.RngDropDisplayModule
 import org.phantom.internal.combat.CombatHudModule
 import org.phantom.internal.combat.CombatMacroModule
 import org.phantom.internal.combat.CombatPatrolModule
@@ -25,9 +24,7 @@ import org.phantom.internal.dungeons.BloodCampHelperModule
 import org.phantom.internal.dungeons.DungeonMapModule
 import org.phantom.internal.dungeons.DungeonRoutesModule
 import org.phantom.internal.dungeons.DungeonsModule
-import org.phantom.internal.dungeons.MobEspModule as DungeonMobEspModule
 import org.phantom.internal.dungeons.autoroutes.AutoRoutesModule
-import org.phantom.internal.dungeons.gambling.DungeonChestGamblingModule
 import org.phantom.internal.etherwarp.EtherwarpHelperModule
 import org.phantom.internal.etherwarp.LeftClickEtherwarpModule
 import org.phantom.internal.etherwarp.SmoothAotvModule
@@ -61,7 +58,6 @@ import org.phantom.internal.pathfinding.debug.PathPreviewRenderModule
 import org.phantom.internal.pig.PigMacroModule
 import org.phantom.internal.qol.AutoStashModule
 import org.phantom.internal.qol.ColoredEnchantsModule
-import org.phantom.internal.qol.CraftHelperModule
 import org.phantom.internal.qol.ItemLockingModule
 import org.phantom.internal.qol.LagDetectorModule
 import org.phantom.internal.qol.MissingEnchantsModule
@@ -81,14 +77,11 @@ import org.phantom.internal.visual.DeployableHudModule
 import org.phantom.internal.visual.FreecamModule
 import org.phantom.internal.visual.FullBrightModule
 import org.phantom.internal.visual.HotbarOverlayModule
-import org.phantom.internal.visual.MobEspModule as VisualMobEspModule
 import org.phantom.internal.visual.OrbitFreecamModule
 import org.phantom.internal.visual.PetDisplayModule
 import org.phantom.internal.visual.RsaEffectsModule
 import org.phantom.internal.visual.RsaPresetWaypointsModule
-import org.phantom.internal.visual.SkyboxChangerModule
 import org.phantom.internal.visual.WitherImpactOverlayModule
-import org.phantom.internal.wardrobe.WardrobeModule
 
 /**
  * Single source of truth for built-in Phantom modules.
@@ -182,8 +175,6 @@ internal object BuiltinModules {
     DungeonRoutesModule,
     AutoRoutesModule,
     BloodCampHelperModule,
-    DungeonChestGamblingModule,
-    DungeonMobEspModule,
     AutoDojoModule,
 
     // Etherwarp / movement helpers
@@ -194,7 +185,6 @@ internal object BuiltinModules {
     // QoL
     QolModule,
     AutoStashModule,
-    CraftHelperModule,
     ItemLockingModule,
     PriceTooltipModule,
     ColoredEnchantsModule,
@@ -202,7 +192,6 @@ internal object BuiltinModules {
     LagDetectorModule,
     TimerModule,
     RsaAutoGfsModule,
-    WardrobeModule,
     SpotifyModule,
 
     // Visuals
@@ -215,17 +204,14 @@ internal object BuiltinModules {
     CustomScoreboardModule,
     HotbarOverlayModule,
     PetDisplayModule,
-    VisualMobEspModule,
     DeadEntityCleanerModule,
     DeployableHudModule,
     RsaEffectsModule,
     RsaPresetWaypointsModule,
-    SkyboxChangerModule,
     WitherImpactOverlayModule,
 
     // Chat / drop display
     ChatFilterModule,
-    RngDropDisplayModule,
   ).distinctBy { it.name.trim().lowercase() }
 
   private const val DEFAULT_ENABLED_HUD_ID = "watermark"
