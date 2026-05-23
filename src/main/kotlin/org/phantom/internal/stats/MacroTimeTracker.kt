@@ -14,7 +14,6 @@ import org.phantom.api.event.impl.client.TickEvent
 import org.phantom.internal.combat.CombatMacroModule
 import org.phantom.internal.diana.DianaMacroModule
 import org.phantom.internal.farming.FarmingMacroModule
-import org.phantom.internal.garden.GardenMacroModule
 import org.phantom.internal.mining.CommissionMacroModule
 import org.phantom.internal.mining.MiningMacroModule
 import org.phantom.internal.pig.PigMacroModule
@@ -50,7 +49,6 @@ object MacroTimeTracker {
     MacroDefinition("commission", "Dwarven Commission Macro", 100) { CommissionMacroModule.isRunning },
     MacroDefinition("mining", "Mining Macro", 90) { MiningMacroModule.isActive },
     MacroDefinition("combat", "Combat Macro", 80) { CombatMacroModule.isRunning },
-    MacroDefinition("garden", "Garden Macro", 70) { GardenMacroModule.isActive },
     MacroDefinition("farming", "Farming Macro", 60) { FarmingMacroModule.isActive },
     MacroDefinition("pig", "Pig Macro", 50) { PigMacroModule.isActive },
     MacroDefinition("diana", "Diana Macro", 40) { DianaMacroModule.isActive },

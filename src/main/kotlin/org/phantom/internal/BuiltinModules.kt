@@ -35,10 +35,6 @@ import org.phantom.internal.farming.FarmingMacroModule
 import org.phantom.internal.fishing.FishingHotspotModule
 import org.phantom.internal.fishing.FishingMacroModule
 import org.phantom.internal.fishing.FishingQolModule
-import org.phantom.internal.garden.GardenAnalyzerModule
-import org.phantom.internal.garden.GardenHudModule
-import org.phantom.internal.garden.GardenMacroModule
-import org.phantom.internal.garden.PestWarningModule
 import org.phantom.internal.grotto.FairyGrottoModule
 import org.phantom.internal.mining.AutoForgeModule
 import org.phantom.internal.mining.AutoLanternModule
@@ -170,11 +166,7 @@ internal object BuiltinModules {
     ScathaMacroModule,
     LobbyHopperModule,
 
-    // Garden / farming / fishing / misc macros
-    GardenMacroModule,
-    GardenAnalyzerModule,
-    GardenHudModule,
-    PestWarningModule,
+    // Farming / fishing / misc macros
     FarmingMacroModule,
     FishingMacroModule,
     FishingHotspotModule,

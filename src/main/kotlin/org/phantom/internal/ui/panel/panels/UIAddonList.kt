@@ -13,8 +13,6 @@ import org.phantom.api.hud.modules.WatermarkModule
 import org.phantom.internal.mining.CommissionMacroModule
 import org.phantom.api.hud.modules.MiningHudModule
 import org.phantom.internal.combat.CombatMacroModule
-import org.phantom.internal.garden.GardenAnalyzerModule
-import org.phantom.internal.garden.GardenMacroModule
 import org.phantom.internal.grotto.FairyGrottoModule
 import org.phantom.internal.loader.AddonLoader
 import org.phantom.internal.mining.AutoLanternModule
@@ -164,26 +162,17 @@ internal class UIAddonList : UIPanel(
         it == OrbitFreecamModule || it == BlockOverlayModule || it == BlockOutlineModule
     }
 
-    val gardenModules = builtinModules.filter {
-      it == GardenMacroModule || it == GardenAnalyzerModule
-    }
-
     val coreModules = builtinModules.filter {
       it !in miningModules &&
         it !in combatModules &&
         it !in slayerModules &&
         it !in visualModules &&
-        it !in gardenModules &&
         it !in hudOnlyModules
     }
 
     val sections = mutableListOf<AddonSection>()
 
     createMiningSection(version, miningModules)?.let(sections::add)
-    createSection(
-      title = "Garden",
-      entries = listOfNotNull(createBuiltinEntry("phantom-garden", "Garden", version, gardenModules))
-    )?.let(sections::add)
     createSection(
       title = "Combat",
       entries = listOfNotNull(createBuiltinEntry("phantom-combat", "Combat", version, combatModules))
