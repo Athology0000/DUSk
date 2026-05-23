@@ -28,6 +28,8 @@ val buildChannel =
       requestedTaskNames.any { it in setOf("buildDev", "deployDev", "deploydev") } -> "dev"
       else -> "release"
     }
+val isBuildLocalInvocation = requestedTaskNames.any { it == "buildLocal" }
+val isBuildRemoteInvocation = requestedTaskNames.any { it == "buildRemote" }
 
 if (buildChannel !in setOf("dev", "release")) {
   throw GradleException("phantomBuildChannel must be 'dev' or 'release', found '$buildChannel'.")
@@ -165,64 +167,70 @@ val phantomSlayerAddonId = "phantom-slayer"
 val phantomSlayerAddonEntrypoint = "org.phantom.internal.remote.PhantomSlayerAddon"
 val phantomDianaAddonId = "phantom-diana"
 val phantomDianaAddonEntrypoint = "org.phantom.internal.remote.PhantomDianaAddon"
+// Strip list: classes removed from the loader jar in split mode. The union of
+// the four per-tier bundle include lists below MUST equal this list, otherwise
+// classes are either orphaned (stripped but in no .enc) or duplicated across
+// bundles. Verified by buildRemote's split-correctness check.
 val phantomProtectedIncludes = listOf(
   "org/phantom/internal/BuiltinModules.class",
   "org/phantom/internal/remote/**",
-  "org/phantom/internal/chat/**",
-  "org/phantom/internal/combat/**",
-  "org/phantom/internal/crimson/**",
-  "org/phantom/internal/diana/**",
-  "org/phantom/internal/dungeons/**",
+  "org/phantom/internal/qol/**",
   "org/phantom/internal/etherwarp/**",
+  "org/phantom/internal/combat/**",
+  "org/phantom/internal/chat/**",
+  "org/phantom/internal/crimson/**",
+  "org/phantom/internal/dungeons/**",
   "org/phantom/internal/farming/**",
   "org/phantom/internal/fishing/**",
   "org/phantom/internal/garden/**",
-  "org/phantom/internal/grotto/**",
-  "org/phantom/internal/mining/**",  "org/phantom/internal/pig/**",
-  "org/phantom/internal/qol/**",
+  "org/phantom/internal/pig/**",
   "org/phantom/internal/seal/**",
   "org/phantom/internal/spotify/**",
-  "org/phantom/internal/wardrobe/**",
+  "org/phantom/internal/mining/**",
+  "org/phantom/internal/grotto/**",
+  "org/phantom/internal/diana/**",
 )
 val phantomCoreIncludes = listOf(
+  "org/phantom/internal/BuiltinModules.class",
   "org/phantom/internal/remote/PhantomCoreAddon.class",
-  "org/phantom/internal/account/**",
-  "org/phantom/internal/debug/**",
-  "org/phantom/internal/helper/**",
-  "org/phantom/internal/pathfinding/**",
-  "org/phantom/internal/performance/**",
+  "org/phantom/internal/remote/RemoteModuleAddonsKt.class",
   "org/phantom/internal/qol/**",
-  "org/phantom/internal/rotation/**",
-  "org/phantom/internal/routes/**",
-  "org/phantom/internal/scheduler/**",
-  "org/phantom/internal/skyblock/**",
-  "org/phantom/internal/stats/**",
-  "org/phantom/internal/ui/**",
-  "org/phantom/internal/visual/**",
-  "org/phantom/internal/wardrobe/**",
+  "org/phantom/internal/etherwarp/**",
+  "org/phantom/internal/combat/*.class",
+  "org/phantom/internal/chat/**",
+  "org/phantom/internal/crimson/**",
+  "org/phantom/internal/dungeons/**",
+  "org/phantom/internal/farming/**",
+  "org/phantom/internal/fishing/**",
+  "org/phantom/internal/garden/**",
+  "org/phantom/internal/pig/**",
+  "org/phantom/internal/seal/**",
+  "org/phantom/internal/spotify/**",
 )
 val phantomMiningIncludes = listOf(
   "org/phantom/internal/remote/PhantomMiningAddon.class",
-  "org/phantom/internal/combat/*.class",
-  "org/phantom/internal/etherwarp/**",
+  "org/phantom/internal/mining/**",
   "org/phantom/internal/grotto/**",
-  "org/phantom/internal/mining/**",)
+)
 val phantomSlayerIncludes = listOf(
   "org/phantom/internal/remote/PhantomSlayerAddon.class",
-  "org/phantom/internal/combat/*.class",
   "org/phantom/internal/combat/slayer/**",
 )
 val phantomDianaIncludes = listOf(
   "org/phantom/internal/remote/PhantomDianaAddon.class",
   "org/phantom/internal/diana/**",
-  "org/phantom/internal/etherwarp/**",
-  "org/phantom/internal/qol/**",
 )
 
 val splitProtectedModules =
   providers.gradleProperty("phantomSplitModules")
     .map { it.equals("true", ignoreCase = true) }
-    .orElse(!isDevBuild)
+    .orElse(
+      when {
+        isBuildLocalInvocation -> false
+        isBuildRemoteInvocation -> true
+        else -> !isDevBuild
+      }
+    )
 
 tasks.named<Jar>("jar") {
   if (splitProtectedModules.get()) {
@@ -727,6 +735,7 @@ publishing {
 tasks.register<Copy>("syncPhantomNativeToServer") {
   group = "build"
   description = "Copies Phantom native components into the Go server content/native directory."
+  dependsOn("copyNativeDll")
   from(layout.projectDirectory.file("src/main/resources/natives/windows/phantom_pathfinder.dll"))
   into(layout.projectDirectory.dir("Go-Server/server/content/native"))
 }
@@ -877,4 +886,22 @@ tasks.register<Copy>("collectObfLibs") {
   from(configurations["compileClasspath"].resolvedConfiguration.resolvedArtifacts.map { it.file })
   into(layout.buildDirectory.dir("obf-libs"))
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// ── buildLocal / buildRemote — two-mode entry points ────────────────────────
+// Both modes pin their configuration via the task-name detection at the top of
+// this file (isBuildLocalInvocation / isBuildRemoteInvocation), which feeds
+// `splitProtectedModules` and indirectly the artifact naming. No -P flags need
+// to be passed by hand — the named tasks Do The Right Thing.
+
+tasks.register("buildLocal") {
+  group = "build"
+  description = "Builds the self-contained phantom-<version>.jar (every module baked in; no loader or server needed)."
+  dependsOn("build")
+}
+
+tasks.register("buildRemote") {
+  group = "build"
+  description = "Builds the stripped loader jar + encrypted .enc bundles and syncs them into Go-Server/server/content/."
+  dependsOn("build", "publishToMavenLocal", "syncPhantomModulesToServer")
 }
