@@ -52,12 +52,17 @@ func BuildStableManifest(_ context.Context, contentDir, baseURL, channel string,
 
 		hash := sha256Hex(bytecode)
 		moduleName := strings.TrimSuffix(entry.Name(), filepath.Ext(entry.Name()))
+		policy := "verify_on_toggle"
+		if moduleName == "phantom-core" {
+			policy = "auto"
+		}
 		modules = append(modules, db.ManifestModule{
-			Name:      moduleName,
-			URL:       baseURL + "/content/module/" + url.PathEscape(moduleName),
-			SHA256:    hash,
-			Required:  moduleName == "phantom-core",
-			InitOrder: len(modules),
+			Name:             moduleName,
+			URL:              baseURL + "/content/module/" + url.PathEscape(moduleName),
+			SHA256:           hash,
+			Required:         moduleName == "phantom-core",
+			InitOrder:        len(modules),
+			ActivationPolicy: policy,
 		})
 	}
 

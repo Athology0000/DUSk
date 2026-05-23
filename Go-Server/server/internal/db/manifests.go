@@ -9,11 +9,12 @@ import (
 )
 
 type ManifestModule struct {
-	Name      string `json:"name"`
-	URL       string `json:"url"`
-	SHA256    string `json:"sha256"`
-	Required  bool   `json:"required"`
-	InitOrder int    `json:"init_order"`
+	Name             string `json:"name"`
+	URL              string `json:"url"`
+	SHA256           string `json:"sha256"`
+	Required         bool   `json:"required"`
+	InitOrder        int    `json:"init_order"`
+	ActivationPolicy string `json:"activation_policy"`
 }
 
 type ManifestNative struct {
