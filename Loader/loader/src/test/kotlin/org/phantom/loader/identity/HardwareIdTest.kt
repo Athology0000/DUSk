@@ -25,6 +25,45 @@ class HardwareIdTest {
             .joinToString("") { String.format("%02x", it) }
     }
 
+    @Test
+    fun `missing machine guid throws HardwareIdUnavailable`() {
+        val ex = org.junit.jupiter.api.Assertions.assertThrows(HardwareIdUnavailable::class.java) {
+            HardwareId.compute(
+                guidReader = FakeGuidReader(null),
+                macReader = FakeMacReader("aa:bb:cc:dd:ee:ff"),
+            )
+        }
+        org.junit.jupiter.api.Assertions.assertTrue(ex.message!!.contains("machine GUID"))
+    }
+
+    @Test
+    fun `blank machine guid is treated as missing`() {
+        org.junit.jupiter.api.Assertions.assertThrows(HardwareIdUnavailable::class.java) {
+            HardwareId.compute(
+                guidReader = FakeGuidReader("   "),
+                macReader = FakeMacReader("aa:bb:cc:dd:ee:ff"),
+            )
+        }
+    }
+
+    @Test
+    fun `missing mac throws HardwareIdUnavailable`() {
+        val ex = org.junit.jupiter.api.Assertions.assertThrows(HardwareIdUnavailable::class.java) {
+            HardwareId.compute(
+                guidReader = FakeGuidReader("ABCDEF-0001"),
+                macReader = FakeMacReader(null),
+            )
+        }
+        org.junit.jupiter.api.Assertions.assertTrue(ex.message!!.contains("MAC"))
+    }
+
+    @Test
+    fun `same readers produce same hwid (deterministic)`() {
+        val a = HardwareId.compute(FakeGuidReader("g"), FakeMacReader("m"))
+        val b = HardwareId.compute(FakeGuidReader("g"), FakeMacReader("m"))
+        assertEquals(a, b)
+    }
+
     private class FakeGuidReader(private val value: String?) : MachineGuidReader {
         override fun read(): String? = value
     }
