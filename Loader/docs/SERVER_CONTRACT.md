@@ -120,3 +120,13 @@ Response:
 ```
 
 If the Minecraft account is not the one bound to the Cobalt account, return `ok: false` from auth with a reason that mentions the bound Minecraft account. The client will show a bind-account prompt instead of loading protected modules.
+
+## /auth/verify-session — hwid field (loader v0.2+)
+
+Request body adds `hwid` (lowercase hex SHA-256, 64 chars).
+Server contract:
+- No pinned HWID on the account → store this one (TOFU), respond `authorized: true`.
+- Pinned HWID matches → respond `authorized: true`.
+- Pinned HWID differs → respond `{ authorized: false, reason: "hwid_mismatch" }`.
+
+The loader surfaces `hwid_mismatch` as "Hardware mismatch — visit dashboard to reset binding". Unbinding is a server-side dashboard action; the loader has no rebind path.
