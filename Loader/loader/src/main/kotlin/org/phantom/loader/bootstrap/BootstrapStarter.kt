@@ -12,6 +12,8 @@ import org.phantom.loader.PhantomSession
 import org.phantom.loader.activation.ActivationExecutor
 import org.phantom.loader.activation.ActiveLoaderState
 import org.phantom.loader.activation.DefaultLoaderApi
+import org.phantom.loader.identity.HardwareId
+import org.phantom.loader.identity.HardwareIdUnavailable
 
 object BootstrapStarter {
     fun start() {
@@ -25,9 +27,19 @@ object BootstrapStarter {
 
         try {
             val minecraftUsername = Minecraft.getInstance().user.name.trim()
-            val auth = BootstrapAuthClient.verifySession(session.token, minecraftUsername)
+            val hwid = try {
+                HardwareId.compute()
+            } catch (e: HardwareIdUnavailable) {
+                return fail("Cannot determine hardware id: ${e.message}")
+            }
+            val auth = BootstrapAuthClient.verifySession(session.token, minecraftUsername, hwid)
             if (!auth.authorized) {
-                return fail("Auth failed: ${auth.reason.ifBlank { "not authorized" }}")
+                val message = if (auth.reason == "hwid_mismatch") {
+                    "Hardware mismatch — visit dashboard to reset binding"
+                } else {
+                    "Auth failed: ${auth.reason.ifBlank { "not authorized" }}"
+                }
+                return fail(message)
             }
 
             Auth.alias = auth.username.ifBlank { auth.alias }

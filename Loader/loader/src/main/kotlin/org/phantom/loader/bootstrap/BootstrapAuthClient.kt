@@ -19,14 +19,18 @@ object BootstrapAuthClient {
         .followRedirects(HttpClient.Redirect.NEVER)
         .build()
 
-    fun verifySession(sessionToken: String, minecraftUsername: String): VerifySessionResponse {
+    fun verifySession(
+        sessionToken: String,
+        minecraftUsername: String,
+        hwid: String,
+    ): VerifySessionResponse {
         val uri = trustedUri("${LoaderConfig.serverBaseUrl.trimEnd('/')}/auth/verify-session")
         val request = HttpRequest.newBuilder()
             .uri(uri)
             .timeout(Duration.ofSeconds(12))
             .header("Content-Type", "application/json")
             .header("Accept", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString(json.encodeToString(VerifySessionRequest(sessionToken, minecraftUsername))))
+            .POST(HttpRequest.BodyPublishers.ofString(json.encodeToString(VerifySessionRequest(sessionToken, minecraftUsername, hwid))))
             .build()
 
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())

@@ -26,6 +26,7 @@ enum class ActivationPolicy {
 data class VerifySessionRequest(
     @SerialName("session_token") val sessionToken: String,
     @SerialName("minecraft_username") val minecraftUsername: String,
+    val hwid: String,
 )
 
 @Serializable
