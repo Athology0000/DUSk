@@ -121,7 +121,11 @@ object HotbarOverlayModule : Module("Liquid Hotbar") {
         event.graphics.renderItem(stack, slotX + 2, gy + 3)
         event.graphics.renderItemDecorations(mc.font, stack, slotX + 2, gy + 3)
       }
-      ItemLockingModule.renderHotbarSlotOverlay(event.graphics, slot, slotX, gy + 1)
+      try {
+        ItemLockingModule.renderHotbarSlotOverlay(event.graphics, slot, slotX, gy + 1)
+      } catch (_: NoClassDefFoundError) {
+        // qol bundle unavailable; skip the locked-slot overlay.
+      }
     }
 
     if (!offhand.isEmpty) {

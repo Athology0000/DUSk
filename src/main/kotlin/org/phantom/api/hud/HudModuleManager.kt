@@ -29,18 +29,27 @@ object HudModuleManager {
     val window = mc.window
     val screenWidth = window.screenWidth.toFloat()
     val screenHeight = window.screenHeight.toFloat()
-    val enabledElements = getElements().filter { it.enabled }
+
+    // Per-element guards + paired NVG begin/end and push/pop. If one HUD's
+    // render touches a class from a bundle that failed to load
+    // (NoClassDefFoundError), it must not abort the whole frame — leaked
+    // begin/push state corrupts NanoVG across frames and causes flicker.
+    val enabledElements = getElements().filter { runCatching { it.enabled }.getOrDefault(false) }
     val blurredElements = enabledElements.filter {
-      it.usesManagedBlurBackground() && it.isBlurBackgroundEnabled()
+      runCatching { it.usesManagedBlurBackground() && it.isBlurBackgroundEnabled() }.getOrDefault(false)
     }
-    val maxBlurStrength = blurredElements.maxOfOrNull { it.getBlurStrength().toDouble() }?.toFloat() ?: 0f
+    val maxBlurStrength = blurredElements.maxOfOrNull {
+      runCatching { it.getBlurStrength().toDouble() }.getOrDefault(0.0)
+    }?.toFloat() ?: 0f
     val blurFramePrepared = blurredElements.isNotEmpty() && HudGlassBlurRenderer.beginFrame(maxBlurStrength)
 
     try {
       enabledElements.forEach { element ->
-        val (screenX, screenY) = element.getScreenPosition(screenWidth, screenHeight)
-        renderElementBlur(element, screenX, screenY, blurFramePrepared)
-        element.renderPre(screenX, screenY, element.scale)
+        runCatching {
+          val (screenX, screenY) = element.getScreenPosition(screenWidth, screenHeight)
+          renderElementBlur(element, screenX, screenY, blurFramePrepared)
+          element.renderPre(screenX, screenY, element.scale)
+        }
       }
     } finally {
       if (blurFramePrepared) {
@@ -49,21 +58,29 @@ object HudModuleManager {
     }
 
     NVGRenderer.beginFrame(screenWidth, screenHeight)
-
-    enabledElements.forEach { element ->
-      val (screenX, screenY) = element.getScreenPosition(screenWidth, screenHeight)
-
-      NVGRenderer.push()
-      NVGRenderer.translate(screenX, screenY)
-      NVGRenderer.scale(element.scale, element.scale)
-      element.render(0f, 0f, element.scale)
-      NVGRenderer.pop()
+    try {
+      enabledElements.forEach { element ->
+        runCatching {
+          val (screenX, screenY) = element.getScreenPosition(screenWidth, screenHeight)
+          NVGRenderer.push()
+          try {
+            NVGRenderer.translate(screenX, screenY)
+            NVGRenderer.scale(element.scale, element.scale)
+            element.render(0f, 0f, element.scale)
+          } finally {
+            NVGRenderer.pop()
+          }
+        }
+      }
+    } finally {
+      NVGRenderer.endFrame()
     }
 
-    NVGRenderer.endFrame()
     enabledElements.forEach { element ->
-      val (screenX, screenY) = element.getScreenPosition(screenWidth, screenHeight)
-      element.renderPost(screenX, screenY, element.scale)
+      runCatching {
+        val (screenX, screenY) = element.getScreenPosition(screenWidth, screenHeight)
+        element.renderPost(screenX, screenY, element.scale)
+      }
     }
   }
 
