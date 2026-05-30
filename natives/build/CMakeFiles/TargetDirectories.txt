@@ -1,3 +1,0 @@
-C:/Users/aeare/Desktop/duskv2/Cobalt/natives/build/CMakeFiles/cobalt_pathfinder.dir
-C:/Users/aeare/Desktop/duskv2/Cobalt/natives/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/aeare/Desktop/duskv2/Cobalt/natives/build/CMakeFiles/ZERO_CHECK.dir
